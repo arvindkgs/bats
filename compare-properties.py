@@ -2,6 +2,7 @@ import json
 import sys
 from Property import Property
 import comparelog
+import pdb
 
 """
 Application that compares two resources defined in a metadata.json file
@@ -40,14 +41,15 @@ class Compare_FusionApps_properties(object):
                         dynamicProperties = {}
                         if 'dynamic' in compare:
                             # Define dict with key, values for each dynamic object
-                            for dynamic in compare['dynamic']:
+                            for i, dynamic in enumerate(compare['dynamic']):
                                 # compute and store dynamic value
                                 dynamicProperty = Property(property=dynamic, check_name=check_name)
-                                # TODO: get key and value, and send tuple to source and target property
-                                dynamicProperties[dynamicProperty.getKey()] = dynamicProperty.getValue()
+                                key = str(i) if dynamicProperty.getKey() == None else dynamicProperty.getKey()
+                                dynamicProperties[key] = dynamicProperty.getValue()
                                 pass
                         checkPassed = False
                         sourceProperty = Property(property=compare['source'], check_name=check_name)
+                        # pdb.set_trace()
                         sourceData = sourceProperty.getValue(dynamicMap=dynamicProperties)
                         targetProperty = Property(property=compare['target'], check_name=check_name)
                         targetData = targetProperty.getValue(dynamicMap=dynamicProperties)

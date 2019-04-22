@@ -78,6 +78,8 @@ class Property(object):
                                                   'source': self.file})
                                         # return None
                                         error = True
+                                    else:
+                                        newdata = obj
                                     pass
                             elif node in obj:
                                 # data[j] = obj[node]

@@ -8,7 +8,6 @@
         {
           "dynamic": [
             {
-              "key": "clusterName",
               "file": "SDI_HOST_properties.json",
               "type": "JSON",
               "property": "topology.wlsClusters.[].clusterName"
@@ -17,7 +16,7 @@
           "source": {
             "file": "SDI_HOST_properties.json",
             "type": "JSON",
-            "property": "topology.wlsClusters.[clusterName = ${clusterName}].Xms"
+            "property": "topology.wlsClusters.[clusterName = ${1}].Xms"
           },
           "target": {
             "file": "fusionapps_start_params.properties",
