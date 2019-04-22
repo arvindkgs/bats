@@ -1,0 +1,78 @@
+{
+  "logDir": "",
+  "checks": [
+    {
+      "name": "jvm_args_check",
+      "source": {
+        "file": "SDI_HOST_properties.json",
+        "type": "JSON"
+      },
+      "target": {
+        "file": "fusionapps_start_params.properties",
+        "type": "PROPERTY"
+      },
+      "compare": [
+        {
+          "for-each": {
+            "source": {
+              "object": "topology.wlsClusters",
+              "property": "Xms",
+              "var": [
+                "clusterName"
+              ]
+            },
+            "target": {
+              "property": "${source.var[0]}...minmaxmemory.main",
+              "check-format": "-Xms{}?"
+            }
+          }
+        },
+        {
+          "for-each": {
+            "source": {
+              "object": "topology.wlsClusters",
+              "property": "Xmx",
+              "var": [
+                "clusterName"
+              ]
+            },
+            "target": {
+              "property": "${source.var[0]}...minmaxmemory.main",
+              "check-format": "-Xmx{}?"
+            }
+          }
+        },
+        {
+          "for-each": {
+            "source": {
+              "object": "topology.wlsClusters",
+              "property": "XssInKb",
+              "var": [
+                "clusterName"
+              ]
+            },
+            "target": {
+              "property": "${source.var[0]}...minmaxmemory.main",
+              "check-format": "-Xss{}?"
+            }
+          }
+        },
+        {
+          "for-each": {
+            "source": {
+              "object": "topology.wlsClusters",
+              "property": "XX:ParallelGCThreads",
+              "var": [
+                "clusterName"
+              ]
+            },
+            "target": {
+              "property": "${source.var[0]}...memoryargs",
+              "check-format": "-XX:ParallelGCThreads={}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,518 @@
+{
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "logDir": "",
+  "checks": [
+    {
+      "name": "JVM (WLS Cluster) Resizing",
+      "compare": [
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'AdminServer'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'UICluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ServiceCluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'MWCluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ESS_SOACluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'bip_cluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SingletonCluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'KnowledgeCluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.KnowledgeCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SEMSearchCluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SupplyPlanningEngineCluster'].Xms",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'AdminServer'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'UICluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ServiceCluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'MWCluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ESS_SOACluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'bip_cluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SingletonCluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'KnowledgeCluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.KnowledgeCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SEMSearchCluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SupplyPlanningEngineCluster'].Xmx",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'AdminServer'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'UICluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ServiceCluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'MWCluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ESS_SOACluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'bip_cluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SingletonCluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'KnowledgeCluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.KnowledgeCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SEMSearchCluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SupplyPlanningEngineCluster'].XssInKb",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'UICluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.UICluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ServiceCluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.ServiceCluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'MWCluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.MWCluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'ESS_SOACluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.ESS_SOACluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'bip_cluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.bip_cluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SingletonCluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.SingletonCluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'KnowledgeCluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.KnowledgeCluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SEMSearchCluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.SEMSearchCluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "source": {
+            "property": "topology.wlsClusters.[clusterName = 'SupplyPlanningEngineCluster'].XX:ParallelGCThreads",
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.SupplyPlanningEngineCluster.SunOS-sparc.memoryargs",
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        }
+      ]
+    }
+  ]
+}

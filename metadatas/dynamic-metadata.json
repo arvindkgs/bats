@@ -1,0 +1,32 @@
+{
+  "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
+  "logDir": "",
+  "checks": [
+    {
+      "name": "JVM ARGS",
+      "compare": [
+        {
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName = ${clusterName}].Xms"
+          },
+          "target": {
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "format": "-Xms{}?"
+          }
+        }
+      ]
+    }
+  ]
+}
