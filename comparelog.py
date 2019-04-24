@@ -6,6 +6,7 @@ MISSING_PROPERTY = "MISSING PROPERTY"
 SYNTAX_ERROR = "SYNTAX ERROR"
 COMPARE = "COMPARE"
 INFO = "MESSAGE"
+MISSING_DYNAMIC_VALUE = "MISSING DYNAMIC VALUE"
 
 name = "compare-properties"
 
@@ -19,7 +20,7 @@ class OptionalArgsFormatter(logging.Formatter, object):
     def format(self, record):
         self._fmt = self.formatStr
         for k, v in self.optional_args.items():
-            if record.__dict__ is not None and k not in record.__dict__:
+            if record.__dict__ is not None and (k not in record.__dict__ or record.__dict__[k] is None):
                 # Remove optional v
                 self._fmt = self._fmt.replace(v, "")
         return super(OptionalArgsFormatter, self).format(record)
@@ -46,8 +47,9 @@ fh.setLevel(logging.DEBUG)
 
 # create formatter
 formatter = OptionalArgsFormatter(
-    '[[%(asctime)s]\t[%(levelname)s]\t[%(funcName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
-    {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]'})
+    '[[%(asctime)s]\t[%(levelname)s]\t[%(funcName)s]\t[%(compareName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
+    {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]',
+     'compareName': '\t[%(compareName)s]'})
 
 # add formatter
 fh.setFormatter(formatter)
@@ -57,10 +59,11 @@ ch.setFormatter(formatter)
 getLogger().addHandler(fh)
 getLogger().addHandler(ch)
 
+
 def setLogDir(logDir):
     global fh
     getLogger().removeHandler(fh)
-    fh = logging.FileHandler(os.path.join(os.getcwd(), logDir+'/automation.log'), 'w')
+    fh = logging.FileHandler(os.path.join(os.getcwd(), logDir + '/automation.log'), 'w')
     fh.setLevel(logging.DEBUG)
 
     # add formatter
@@ -98,4 +101,3 @@ def print_info_log(msg, args={}):
                                     exc_info=None,
                                     func=fnName, extra=args)
     getLogger().handle(record)
-

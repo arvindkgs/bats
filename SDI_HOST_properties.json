@@ -144,6 +144,7 @@
         "clusterName": "UICluster",
         "Xms": 2014,
         "Xmx": 13388,
+        "XssInKb": 4096,
         "XX:MaxPermSize": 5172,
         "XX:NewRatio": 8,
         "XX:ParallelGCThreads": 15,

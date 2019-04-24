@@ -6,6 +6,7 @@
       "name": "JVM ARGS",
       "compare": [
         {
+          "name": "Xms",
           "dynamic": [
             {
               "file": "SDI_HOST_properties.json",
@@ -20,9 +21,72 @@
           },
           "target": {
             "file": "fusionapps_start_params.properties",
-            "type": "PROPERTIES",
-            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
             "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xmx",
+          "dynamic": [
+            {
+              "file": "SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName = ${1}].Xmx"
+          },
+          "target": {
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "dynamic": [
+            {
+              "file": "SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName = ${1}].XssInKb"
+          },
+          "target": {
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "ParallelGCThreads",
+          "dynamic": [
+            {
+              "file": "SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName = ${1}].XX:ParallelGCThreads"
+          },
+          "target": {
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${1}.Linux-x86_64.memoryargs",
+            "format": "-XX:ParallelGCThreads={}"
           }
         }
       ]

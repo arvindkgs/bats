@@ -38,31 +38,44 @@ class Compare_FusionApps_properties(object):
                     check_name = check['name']
                     for compare in check['compare']:
                         # get dynamic variables if any
+                        compare_name = compare['name'] if 'name' in compare else None
                         dynamicProperties = {}
                         if 'dynamic' in compare:
                             # Define dict with key, values for each dynamic object
                             for i, dynamic in enumerate(compare['dynamic']):
                                 # compute and store dynamic value
-                                dynamicProperty = Property(property=dynamic, check_name=check_name)
-                                key = str(i) if dynamicProperty.getKey() == None else dynamicProperty.getKey()
-                                dynamicProperties[key] = dynamicProperty.getValue()
+                                dynamicProperty = Property(property=dynamic, check_name=check_name,
+                                                           compare_name=compare_name)
+                                key = str(i + 1) if dynamicProperty.getKey() == None else dynamicProperty.getKey()
+                                # pdb.set_trace()
+                                value = dynamicProperty.getValue({})
+                                dynamicProperties[key] = None if value is None else value[0][1]
                                 pass
                         checkPassed = False
-                        sourceProperty = Property(property=compare['source'], check_name=check_name)
+                        sourceProperty = Property(property=compare['source'], check_name=check_name,
+                                                  compare_name=compare_name)
                         # pdb.set_trace()
                         sourceData = sourceProperty.getValue(dynamicMap=dynamicProperties)
-                        targetProperty = Property(property=compare['target'], check_name=check_name)
+                        # print "Source Data" + str(sourceData)
+                        targetProperty = Property(property=compare['target'], check_name=check_name,
+                                                  compare_name=compare_name)
                         targetData = targetProperty.getValue(dynamicMap=dynamicProperties)
+                        # print "Target Data" + str(targetData)
                         for i in range(0, len(sourceData)):
-                            if sourceData[i] is not None and targetData[i] is not None:
-                                if str(sourceData[i]) != str(targetData[i]):
-                                    comparelog.print_error(msg=sourceProperty.property + "(" + str(
-                                        sourceData[i]) + ") != " + targetProperty.property + "(" + str(targetData[i]) + ")",
-                                                           args={'fnName': check_name, 'type': comparelog.COMPARE})
+                            if sourceData[i] is not None and sourceData[i][1] is not None and targetData[
+                                i] is not None and targetData[i][1] is not None:
+                                if str(sourceData[i][1]) != str(targetData[i][1]):
+                                    comparelog.print_error(msg=sourceData[i][0] + "(" + str(
+                                        sourceData[i][1]) + ") != " + targetData[i][0] + "(" + str(
+                                        targetData[i][1]) + ")",
+                                                           args={'fnName': check_name, 'type': comparelog.COMPARE,
+                                                                 'compareName': compare_name})
                                 else:
-                                    comparelog.print_info_log(msg=sourceProperty.property + "(" + str(
-                                        sourceData[i]) + ") == " + targetProperty.property + "(" + str(targetData[i]) + ")",
-                                                              args={'fnName': check_name, 'type': "COMPARE"})
+                                    comparelog.print_info_log(msg=sourceData[i][0] + "(" + str(
+                                        sourceData[i][1]) + ") == " + targetData[i][0] + "(" + str(
+                                        targetData[i][1]) + ")",
+                                                              args={'fnName': check_name, 'type': "COMPARE",
+                                                                    'compareName': compare_name})
                                     checkPassed = True
                             else:
                                 checkPassed = False
