@@ -3,6 +3,7 @@ import pdb
 import re
 from subprocess import Popen, PIPE
 import comparelog
+import execute_shell_script
 
 
 class Type(object):
@@ -117,21 +118,15 @@ class Property(object):
         elif self.type == Type.PROPERTY:
             data = []
             for property in properties:
-                process = Popen(
-                    ['./grepProp.sh', property,
-                     self.file], stdout=PIPE, stderr=PIPE)
-                stdout, stderr = process.communicate()
-                error = True
-                if process.returncode == 0:
-                    if stdout.decode('ascii').strip() != "":
-                        data.append((property, stdout.decode('ascii').strip()))
-                        error = False
-                if error:
+                propFrmFile = execute_shell_script.grepProp(property, self.file)
+                if propFrmFile is None:
                     data.append((property, None))
                     comparelog.print_error(msg="Not able to get property: " + property + ", from file:" + self.file,
                                            args={'fnName': self.check_name, 'type': comparelog.MISSING_PROPERTY,
                                                  'source': self.file, 'compareName': self.compare_name})
                     data.append((property, None))
+                else:
+                    data.append((property, propFrmFile))
         else:
             comparelog.print_error(
                 msg="No type available '" + self.type + "' . Available types: JSON, PROPERTY, XML, SHELL, STATIC",
