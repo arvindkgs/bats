@@ -16,7 +16,7 @@ def grepProp(property, file):
                 returnVal = stdout.decode('ascii').strip()
     else:
         process = subprocess.Popen(
-            ['./grepProp.sh', property,
+            ['./scripts/grepProp.sh', property,
              file], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
         if process.returncode == 0:

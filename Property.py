@@ -1,7 +1,5 @@
 import json
-import pdb
 import re
-from subprocess import Popen, PIPE
 import comparelog
 import execute_shell_script
 
@@ -111,7 +109,6 @@ class Property(object):
                                 newdata.append(None)
                         jsondata = newdata
                     tupleValue = (str(property), jsondata)
-                    # print "Adding Property: "+str(tupleValue)
                     flatListValues.append(tuple((tupleValue[0], tupleValue[1])))
                 data = flatListValues
                 # data now is array of values to be given to formatter
@@ -120,20 +117,18 @@ class Property(object):
             for property in properties:
                 propFrmFile = execute_shell_script.grepProp(property, self.file)
                 if propFrmFile is None:
-                    data.append((property, None))
                     comparelog.print_error(msg="Not able to get property: " + property + ", from file:" + self.file,
                                            args={'fnName': self.check_name, 'type': comparelog.MISSING_PROPERTY,
                                                  'source': self.file, 'compareName': self.compare_name})
                     data.append((property, None))
                 else:
-                    data.append((property, propFrmFile))
+                    data.append((property, [propFrmFile]))
         else:
             comparelog.print_error(
                 msg="No type available '" + self.type + "' . Available types: JSON, PROPERTY, XML, SHELL, STATIC",
                 args={'fnName': self.check_name, 'type': comparelog.SYNTAX_ERROR, 'source': "Metadata.json",
                       'compareName': self.compare_name})
             return [None]
-        # print "Properties: " + str(data)
         if self.format is not None and data is not None and data != [None] * len(data):
             # extract data using self.format
             # meta-chars: {}, ?
@@ -147,22 +142,24 @@ class Property(object):
             regex_format = self.getRegexPatternFormat()
             newdata = []
             if regex_format is not None:
-                for j, obj in enumerate(data):
-                    # pdb.set_trace()
+                for obj in data:
                     if obj is not None and obj[1] is not None:
-                        m = re.match(regex_format, obj[1])
-                        if m:
-                            newdata.append((obj[0], m.group(1)))
-                        else:
-                            comparelog.print_error(
-                                msg="Not able to extract: '" + self.format + "' from " + obj[
-                                    0] + ", from file:" + self.file,
-                                args={'fnName': self.check_name, 'type': comparelog.MISSING_PROPERTY,
-                                      'source': self.file,
-                                      'compareName': self.compare_name})
-                            newdata.append((obj[0], None))
+                        values = []
+                        for val in obj[1]:
+                            m = re.match(regex_format, val)
+                            if m:
+                                values.append(m.group(1))
+                            else:
+                                comparelog.print_error(
+                                    msg="Not able to extract: '" + self.format + "' from " + obj[
+                                        0] + ", from file:" + self.file,
+                                    args={'fnName': self.check_name, 'type': comparelog.MISSING_PROPERTY,
+                                          'source': self.file,
+                                          'compareName': self.compare_name})
+                                values.append(None)
+                        newdata.append((obj[0], values))
                     else:
-                        newdata.append((None, None))
+                        newdata.append((obj[0], None))
             data = newdata
         return data
 

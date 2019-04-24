@@ -1,6 +1,8 @@
 {
+  "name": "Scaleout Automation Checks",
   "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
   "logDir": "",
+  "options": "",
   "checks": [
     {
       "name": "JVM ARGS",

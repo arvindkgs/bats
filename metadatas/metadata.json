@@ -1,4 +1,5 @@
 {
+  "name": "Scaleout Automation Checks",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
   "logDir": "",
   "checks": [

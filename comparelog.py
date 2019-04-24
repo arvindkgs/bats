@@ -10,6 +10,7 @@ MISSING_DYNAMIC_VALUE = "MISSING DYNAMIC VALUE"
 
 name = "compare-properties"
 
+logOnly = False
 
 class OptionalArgsFormatter(logging.Formatter, object):
     def __init__(self, formatStr, optional_args=None):
@@ -28,11 +29,6 @@ class OptionalArgsFormatter(logging.Formatter, object):
 
 def getLogger():
     return logging.getLogger(name)
-
-
-# dir_path = os.path.dirname(os.path.realpath(__file__))
-# current_date = datetime.now()
-# current_date_formatted = current_date.strftime('%Y_%m_%d_%H%M')
 
 # create logger
 getLogger().setLevel(logging.DEBUG)
@@ -59,6 +55,13 @@ ch.setFormatter(formatter)
 getLogger().addHandler(fh)
 getLogger().addHandler(ch)
 
+def setOptions(options):
+    global logOnly
+    global noOutput
+    for option in options.split(','):
+        if option == 'logonly':
+            getLogger().removeHandler(ch)
+            logOnly = True
 
 def setLogDir(logDir):
     global fh
@@ -75,6 +78,7 @@ def setLogDir(logDir):
 
 # Method to print Error log (prints to log and console)
 def print_error(msg, args={}):
+    global noOutput
     file_name = os.path.basename(__file__)
     fnName = args['fnName'] if 'fnName' in args else None
     record = getLogger().makeRecord(name, logging.ERROR, file_name, None, msg=msg, args=None,
@@ -85,16 +89,20 @@ def print_error(msg, args={}):
 
 # Method to print Info to both log and console
 def print_info(msg, args={}):
+    global logOnly
+    global noOutput
     file_name = os.path.basename(__file__)
     fnName = args['fnName'] if 'fnName' in args else None
     record = getLogger().makeRecord(name, logging.INFO, file_name, None, msg=msg, args=None, exc_info=None,
                                     func=fnName, extra=args)
     getLogger().handle(record)
-    print(formatter.format(record))
+    if not logOnly:
+        print(formatter.format(record))
 
 
 # Method to print Info to log
 def print_info_log(msg, args={}):
+    global noOutput
     file_name = os.path.basename(__file__)
     fnName = args['fnName'] if 'fnName' in args else None
     record = getLogger().makeRecord(name, logging.INFO, file_name, None, msg=msg, args=None,
