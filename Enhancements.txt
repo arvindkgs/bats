@@ -1,0 +1,44 @@
+To-Do
+-----------------------------------------------------------------------------------------------------------------------------------------
+1. Use POJO for storing property instead of tuple to avoid array of values when using extend
+2. Add SHELL type
+3. Use REGEX for parsing format text.
+4. Add name to dynamic property instead of referring to it using index.
+5. Try to speed up dynamic matching for wlsCluster.[clusterName = ${1}].Xmx,
+    3.1 Currently dynamic components gets a list of size(n) wlsCluster names as - topology.wlsClusters.[].clusterName -> ['AdminServer', 'bip_cluster' ...] and replaces and extrapolates
+        source property - topology.wlsClusters.[clusterName = ${1}].Xms to size(n) properties and compare these size(n) target properties.
+    3.2 This fetching size(n) dynamic values from JSON and again fetching size(n) corresponding properties from same JSON slowes the tool.
+    3.3 Instead get dynamic wlsCluster objects as [{'name': 'AdminServer', 'Xmx': 12, 'Xms': 13}, {'name': 'bip_cluster', 'Xmx': 12, 'Xms': 13}]
+        and use this in the comparision as
+        {
+          "name": "Dynamic Object comparision",
+          "dynamic": [
+            {
+              "file": "metadatas/tests/source.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[]"
+            }
+          ],
+          "source": {
+            "name": "${1.name}",
+            "type": "STATIC",
+            "property": "${1.Xmx}"
+          },
+          "target": {
+            "file": "metadatas/tests/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${1.name}.default.minmaxmemory.main",
+            "format": "-Xms{}?"
+          }
+          Here the source block produces size(n) list of (key,value) properties, key - name, value - evaluated property.
+          with size(n) list of (key,value) properties from target block.
+
+          IMPORTANT:
+           * The dynamic block produces a list of values.
+           * Each value from this list is used to evaluate a source and corresponding property value.
+           * These values are then compared.
+           * So based on the ordering of the dynamic block values, source and target properties are computed and compared.
+           * So LIMITATION is extrapolation resulting in size(n) source properties, should also result in similar extrapolation
+             on the target as well.
+
+

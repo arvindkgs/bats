@@ -3,12 +3,13 @@
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
   "logDir": "",
   "options": "logonly",
-  "checks": [
+  "tests": [
     {
-      "name": "JVM Checks",
-      "compare": [
+      "name": "JVM test",
+      "checks": [
         {
           "name": "Value mismatch",
+          "type": "COMPARE",
           "source": {
             "property": "topology.wlsClusters.[clusterName = 'AdminServer'].Xmx",
             "file": "metadatas/tests/source.json",
@@ -23,6 +24,7 @@
         },
         {
           "name": "No Property",
+          "type": "COMPARE",
           "source": {
             "property": "topology.wlsClusters.[clusterName = 'xyz'].Xmx",
             "file": "metadatas/tests/source.json",
@@ -37,6 +39,7 @@
         },
         {
           "name": "No Property",
+          "type": "COMPARE",
           "source": {
             "property": "topology.wlsClusters.[clusterName = 'AdminServer'].Xmx",
             "file": "metadatas/tests/source.json",
@@ -51,6 +54,7 @@
         },
         {
           "name": "No Format found",
+          "type": "COMPARE",
           "source": {
             "property": "topology.wlsClusters.[clusterName = 'xyz'].Xmx",
             "file": "metadatas/tests/source.json",
@@ -65,6 +69,7 @@
         },
         {
           "name": "Dynamic mismatch",
+          "type": "COMPARE",
           "dynamic": [
             {
               "file": "metadatas/tests/source.json",

@@ -2,12 +2,13 @@
   "name": "Positive Checks",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
   "logDir": "",
-  "checks": [
+  "tests": [
     {
-      "name": "JVM Checks",
-      "compare": [
+      "name": "JVM Args Test",
+      "checks": [
         {
           "name": "Single Compare",
+          "type": "COMPARE",
           "source": {
             "property": "topology.wlsClusters.[clusterName = 'AdminServer'].Xms",
             "file": "metadatas/tests/source.json",
@@ -22,6 +23,7 @@
         },
         {
           "name": "Dynamic Multiple",
+          "type": "COMPARE",
           "dynamic": [
             {
               "file": "metadatas/tests/source.json",
@@ -43,6 +45,7 @@
         },
         {
           "name": "Dynamic + Changed format",
+          "type": "COMPARE",
           "dynamic": [
             {
               "file": "metadatas/tests/source.json",

@@ -43,9 +43,9 @@ fh.setLevel(logging.DEBUG)
 
 # create formatter
 formatter = OptionalArgsFormatter(
-    '[[%(asctime)s]\t[%(levelname)s]\t[%(funcName)s]\t[%(compareName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
+    '[[%(asctime)s]\t[%(levelname)s]\t[%(funcName)s]\t[%(checkName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
     {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]',
-     'compareName': '\t[%(compareName)s]'})
+     'checkName': '\t[%(checkName)s]'})
 
 # add formatter
 fh.setFormatter(formatter)

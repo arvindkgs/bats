@@ -3,12 +3,13 @@
   "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
   "logDir": "",
   "options": "",
-  "checks": [
+  "tests": [
     {
-      "name": "JVM ARGS",
-      "compare": [
+      "name": "JVM ARGS test",
+      "checks": [
         {
-          "name": "Xms",
+          "name": "Xms check",
+          "type": "COMPARE",
           "dynamic": [
             {
               "file": "SDI_HOST_properties.json",
@@ -29,7 +30,8 @@
           }
         },
         {
-          "name": "Xmx",
+          "name": "Xmx check",
+          "type": "COMPARE",
           "dynamic": [
             {
               "file": "SDI_HOST_properties.json",
@@ -51,6 +53,7 @@
         },
         {
           "name": "XssInKb",
+          "type": "COMPARE",
           "dynamic": [
             {
               "file": "SDI_HOST_properties.json",
@@ -71,7 +74,8 @@
           }
         },
         {
-          "name": "ParallelGCThreads",
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
           "dynamic": [
             {
               "file": "SDI_HOST_properties.json",
@@ -89,6 +93,50 @@
             "type": "PROPERTY",
             "property": "fusion.${1}.Linux-x86_64.memoryargs",
             "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "NewRatio check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "file": "SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName = ${1}].XX:NewRatio"
+          },
+          "target": {
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${1}.Linux-x86_64.memoryargs",
+            "format": "-XX:NewRatio={}"
+          }
+        },
+        {
+          "name": "MaxPermGen check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "file": "SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName = ${1}].XX:MaxPermSize"
+          },
+          "target": {
+            "file": "fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${1}.Linux-x86_64.memoryargs",
+            "format": "-XX:MaxPermSize={}"
           }
         }
       ]
