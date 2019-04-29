@@ -1,8 +1,7 @@
 import json
 import re
-import comparelog
 import execute_shell_script
-from Property import Property
+from lib import *
 
 
 class Type(object):
@@ -23,94 +22,106 @@ class Resource(object):
         self.key = None if "key" not in property else property['key']
         self.checkName = checkName
 
-    def getValue(self, dynamicMap):
+
+    def getProperties(self, dynamicMap):
         global logger
         properties = self.extrapolate(dynamicMap)
         if properties is None:
             return None
         if self.type == Type.JSON:
-            with open(self.file, 'r') as json_file:
-                data = json.load(json_file)
-                # key : "topology.wlsClusters.[clusterName = 'AdminServer'].Xms"
-                flatListValues = []
-                for property in properties:
-                    nodes = property.split('.')
-                    jsondata = data
-                    for i, node in enumerate(nodes):
-                        if not isinstance(jsondata, list):
-                            jsondata = [jsondata]
-                        newdata = []
-                        for j, obj in enumerate(jsondata):
-                            index = re.match("\[(.*)\]", node)
-                            error = False
-                            if obj != None:
-                                if index:
-                                    index = index.group(1)
-                                    if index.isdigit():
-                                        try:
-                                            # jsondata[j] = obj[index]
-                                            newdata.append(obj[index])
-                                        except:
-                                            error = True
-                                            pass
-                                    elif "=" in index:
-                                        key, value = index.split("=")
-                                        key = key.strip()
-                                        value = value.strip()
-                                        if value is not None and value != '':
-                                            value = value if value[0] != '\'' and value[
-                                                len(value) - 1] != '\'' else value[
-                                                                             1:len(
-                                                                                 value) - 1]
-                                            if key:
-                                                found = False
-                                                for item in obj:
-                                                    if key in item and item[key] == value:
-                                                        # jsondata[j] = item
-                                                        newdata.append(item)
-                                                        found = True
-                                                if not found:
-                                                    comparelog.print_error(
-                                                        msg="No object with attribute: " + key + " = " + value + " found in : " + str(
-                                                            self.file),
-                                                        args={'fnName': self.testName,
-                                                              'type': comparelog.MISSING_PROPERTY,
-                                                              'source': self.file, 'checkName': self.checkName})
-                                                    error = True
-                                        else:
-                                            comparelog.print_error(msg="Value expected for '" + node + "' after '='",
-                                                                   args={'fnName': self.testName,
-                                                                         'type': comparelog.SYNTAX_ERROR,
-                                                                         'source': "Metadata.json",
-                                                                         'checkName': self.checkName})
-                                            error = True
-                                    elif index == '':
-                                        if not isinstance(obj, list):
-                                            comparelog.print_error(
-                                                msg="Property '" + property + "' specified is not an array.",
-                                                args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
-                                                      'source': self.file, 'checkName': self.checkName})
-                                        else:
-                                            newdata = obj
+            try:
+                with open(self.file, 'r') as json_file:
+                    data = json.load(json_file)
+                    # key : "topology.wlsClusters.[clusterName = 'AdminServer'].Xms"
+                    flatListValues = []
+                    for property in properties:
+                        nodes = property.split('.')
+                        jsondata = data
+                        for i, node in enumerate(nodes):
+                            if not isinstance(jsondata, list):
+                                jsondata = [jsondata]
+                            newdata = []
+                            for j, obj in enumerate(jsondata):
+                                index = re.match("\[(.*)\]", node)
+                                error = False
+                                if obj != None:
+                                    if index:
+                                        index = index.group(1)
+                                        if index.isdigit():
+                                            try:
+                                                # jsondata[j] = obj[index]
+                                                newdata.append(obj[index])
+                                            except:
+                                                comparelog.print_error(msg="No object at index: " + index + " in property " + property, args={
+                                                    'fnName': self.testName,
+                                                    'type': comparelog.MISSING_PROPERTY,
+                                                    'source': self.file, 'checkName': self.checkName
+                                                })
+                                                error = True
+                                                pass
+                                        elif "=" in index:
+                                            key, value = index.split("=")
+                                            key = key.strip()
+                                            value = value.strip()
+                                            if value is not None and value != '':
+                                                value = value if value[0] != '\'' and value[
+                                                    len(value) - 1] != '\'' else value[
+                                                                                 1:len(
+                                                                                     value) - 1]
+                                                if key:
+                                                    found = False
+                                                    for item in obj:
+                                                        if key in item and item[key] == value:
+                                                            # jsondata[j] = item
+                                                            newdata.append(item)
+                                                            found = True
+                                                    if not found:
+                                                        comparelog.print_error(
+                                                            msg="No object with attribute: " + key + " = " + value + " found in : " + str(
+                                                                self.file),
+                                                            args={'fnName': self.testName,
+                                                                  'type': comparelog.MISSING_PROPERTY,
+                                                                  'source': self.file, 'checkName': self.checkName})
+                                                        error = True
+                                            else:
+                                                comparelog.print_error(msg="Value expected for '" + node + "' after '='",
+                                                                       args={'fnName': self.testName,
+                                                                             'type': comparelog.SYNTAX_ERROR,
+                                                                             'source': "Metadata.json",
+                                                                             'checkName': self.checkName})
+                                                error = True
+                                        elif index == '':
+                                            if not isinstance(obj, list):
+                                                comparelog.print_error(
+                                                    msg="Property '" + property + "' specified is not an array.",
+                                                    args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
+                                                          'source': self.file, 'checkName': self.checkName})
+                                                error = True
+                                            else:
+                                                newdata = obj
 
-                                elif node in obj:
-                                    # jsondata[j] = obj[node]
-                                    newdata.append(obj[node])
+                                    elif node in obj:
+                                        # jsondata[j] = obj[node]
+                                        newdata.append(obj[node])
+                                    else:
+                                        comparelog.print_error(msg="No attribute: " + str(node) + " in " + property,
+                                                               args={'fnName': self.testName,
+                                                                     'type': comparelog.MISSING_PROPERTY,
+                                                                     'source': self.file, 'checkName': self.checkName})
+                                        error = True
+                                    if error:
+                                        newdata.append(None)
                                 else:
-                                    comparelog.print_error(msg="No attribute: " + str(node) + " in " + property,
-                                                           args={'fnName': self.testName,
-                                                                 'type': comparelog.MISSING_PROPERTY,
-                                                                 'source': self.file, 'checkName': self.checkName})
-                                    error = True
-                                if error:
                                     newdata.append(None)
-                            else:
-                                newdata.append(None)
-                        jsondata = newdata
-                    # tupleValue = (str(property), jsondata)
-                    flatListValues.append(Property(str(property), jsondata))
-                data = flatListValues
+                            jsondata = newdata
+                        # tupleValue = (str(property), jsondata)
+                        flatListValues.append(Property(str(property), jsondata))
+                    data = flatListValues
                 # data now is array of values to be given to formatter
+            except Exception:
+                comparelog.print_error(msg="File '" + self.file + "' not found", args={'fnName': self.testName,
+                                                              'type': comparelog.FILE_NOT_FOUND,
+                                                              'source': self.file, 'checkName': self.checkName})
         elif self.type == Type.PROPERTY:
             data = []
             for property in properties:
