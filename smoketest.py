@@ -1,4 +1,4 @@
-from compare_properties import CompareProperties
+from bin.validation_suite import CompareProperties
 
 def test_postive_compare():
     assert CompareProperties("metadatas/tests/positive_test.json").validate() == True

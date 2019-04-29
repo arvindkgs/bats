@@ -1,7 +1,8 @@
 import json
 import re
 import execute_shell_script
-from lib import *
+from lib import comparelog
+from lib import Property
 
 
 class Type(object):

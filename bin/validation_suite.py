@@ -1,5 +1,12 @@
 import json
 import sys
+
+if __name__ == "__main__" and __package__ is None:
+    from sys import path
+    from os.path import dirname as dir
+
+    path.append(dir(path[0]))
+
 from lib import *
 
 """
@@ -52,7 +59,7 @@ if __name__ == "__main__":
     global metadata_file
     if len(sys.argv) < 2:
         print "Missing Metadata.json argument."
-        print "Usage: compare_properties.py <metadata.json>"
+        print "Usage: validation_suite.py <metadata.json>"
         sys.exit(1)
     if CompareProperties(sys.argv[1]).validate():
         comparelog.print_info(msg="--------------------------------", args={})
