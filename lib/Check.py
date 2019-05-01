@@ -26,37 +26,40 @@ def evaluateCheck(check, testName):
         target = Resource(property=check['target'], testName=testName,
                           checkName=checkName)
         targetProperty = target.getProperties(dynamicMap=dynamicProperties)
-        if len(sourceProperty) == len(targetProperty):
-            for i, source_property in enumerate(sourceProperty):
-                compare = source_property.compare(targetProperty[i])
-                if compare == Property.MATCH:
-                    comparelog.print_info_log(msg=source_property.name + "(" + str(
-                        source_property.value) + ") == " + targetProperty[
-                                                      i].name + "(" + str(
-                        targetProperty[i].value) + ")",
-                                              args={'fnName': testName, 'type': checkType,
-                                                    'checkName': checkName})
-                    passed = passed and True
-                elif compare == Property.NO_MATCH:
-                    comparelog.print_info_log(msg=source_property.name + "(" + str(
-                        source_property.value) + ") != " + targetProperty[
-                                                      i].name + "(" + str(
-                        targetProperty[i].value) + ")",
-                                              args={'fnName': testName, 'type': checkType,
-                                                    'checkName': checkName})
-                    passed = passed and False
+        if sourceProperty is not None and targetProperty is not None:
+            if len(sourceProperty) == len(targetProperty):
+                for i, source_property in enumerate(sourceProperty):
+                    compare = source_property.compare(targetProperty[i])
+                    if compare == Property.MATCH:
+                        comparelog.print_info_log(msg=source_property.name + "(" + str(
+                            source_property.value) + ") == " + targetProperty[
+                                                          i].name + "(" + str(
+                            targetProperty[i].value) + ")",
+                                                  args={'fnName': testName, 'type': checkType,
+                                                        'checkName': checkName})
+                        passed = passed and True
+                    elif compare == Property.NO_MATCH:
+                        comparelog.print_info_log(msg=source_property.name + "(" + str(
+                            source_property.value) + ") != " + targetProperty[
+                                                          i].name + "(" + str(
+                            targetProperty[i].value) + ")",
+                                                  args={'fnName': testName, 'type': checkType,
+                                                        'checkName': checkName})
+                        passed = passed and False
+            else:
+                comparelog.print_info_log(
+                    msg="Mismatch in extrapolation on properties in Source resource: (File: '" + source.file + "', Property: '" + str(
+                        source.property) + "') and  Target resource: (File: '" + target.file + "', Property: '" + str(
+                        target.property) + "')",
+                    args={'fnName': testName, 'type': checkType,
+                          'checkName': checkName})
+                passed = False
         else:
-            comparelog.print_info_log(
-                msg="Mismatch in extrapolation on properties in Source resource: (File: '" + source.file + "', Property: '" + str(
-                    source.property) + "') and  Target resource: (File: '" + target.file + "', Property: '" + str(
-                    target.property) + "')",
-                args={'fnName': testName, 'type': "COMPARE",
-                      'compareName': checkName})
             passed = False
     else:
         comparelog.print_error(
             msg="Unsupported check type '" + checkType + "'. Only 'COMPARE' and 'SUCCESS' is supported.", args={
-                'fnName': testName, 'compareName': checkName
+                'fnName': testName, 'checkName': checkName
             })
         passed = False
     return passed

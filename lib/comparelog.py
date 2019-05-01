@@ -7,10 +7,12 @@ SYNTAX_ERROR = "SYNTAX ERROR"
 COMPARE = "COMPARE"
 INFO = "MESSAGE"
 MISSING_DYNAMIC_VALUE = "MISSING DYNAMIC VALUE"
+FILE_NOT_FOUND = "FILE NOT FOUND"
 
 name = "compare-properties"
 
 logOnly = False
+
 
 class OptionalArgsFormatter(logging.Formatter, object):
     def __init__(self, formatStr, optional_args=None):
@@ -30,6 +32,7 @@ class OptionalArgsFormatter(logging.Formatter, object):
 def getLogger():
     return logging.getLogger(name)
 
+
 # create logger
 getLogger().setLevel(logging.DEBUG)
 
@@ -43,7 +46,7 @@ fh.setLevel(logging.DEBUG)
 
 # create formatter
 formatter = OptionalArgsFormatter(
-    '[[%(asctime)s]\t[%(levelname)s]\t[%(funcName)s]\t[%(checkName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
+    '[[%(levelname)s]\t[%(funcName)s]\t[%(checkName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
     {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]',
      'checkName': '\t[%(checkName)s]'})
 
@@ -55,6 +58,7 @@ ch.setFormatter(formatter)
 getLogger().addHandler(fh)
 getLogger().addHandler(ch)
 
+
 def setOptions(options):
     global logOnly
     global noOutput
@@ -62,11 +66,20 @@ def setOptions(options):
         if option == 'logonly':
             getLogger().removeHandler(ch)
             logOnly = True
+        if option == 'test':
+            getLogger().removeHandler(ch)
+            logOnly = True
+            for handler in getLogger().handlers:
+                handler.setFormatter(OptionalArgsFormatter(
+                    '[[%(funcName)s]\t[%(checkName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
+                    {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]',
+                     'checkName': '\t[%(checkName)s]'}))
 
-def setLogDir(logDir):
+
+def setLogFileName(logFileName):
     global fh
     getLogger().removeHandler(fh)
-    fh = logging.FileHandler(os.path.join(os.getcwd(), logDir + '/automation.log'), 'w')
+    fh = logging.FileHandler(logFileName, 'w')
     fh.setLevel(logging.DEBUG)
 
     # add formatter

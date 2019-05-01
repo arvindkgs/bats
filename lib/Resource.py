@@ -1,7 +1,7 @@
 import json
+from collections import OrderedDict
 import re
-import execute_shell_script
-from lib import comparelog
+from lib import comparelog, execute_shell_script
 from lib import Property
 
 
@@ -23,17 +23,16 @@ class Resource(object):
         self.key = None if "key" not in property else property['key']
         self.checkName = checkName
 
-
     def getProperties(self, dynamicMap):
         global logger
+        data = None
         properties = self.extrapolate(dynamicMap)
         if properties is None:
             return None
         if self.type == Type.JSON:
             try:
                 with open(self.file, 'r') as json_file:
-                    data = json.load(json_file)
-                    # key : "topology.wlsClusters.[clusterName = 'AdminServer'].Xms"
+                    data = json.load(json_file, object_pairs_hook=OrderedDict)
                     flatListValues = []
                     for property in properties:
                         nodes = property.split('.')
@@ -53,15 +52,17 @@ class Resource(object):
                                                 # jsondata[j] = obj[index]
                                                 newdata.append(obj[index])
                                             except:
-                                                comparelog.print_error(msg="No object at index: " + index + " in property " + property, args={
-                                                    'fnName': self.testName,
-                                                    'type': comparelog.MISSING_PROPERTY,
-                                                    'source': self.file, 'checkName': self.checkName
-                                                })
+                                                comparelog.print_error(
+                                                    msg="No object at index: " + index + " in property " + property,
+                                                    args={
+                                                        'fnName': self.testName,
+                                                        'type': comparelog.MISSING_PROPERTY,
+                                                        'source': self.file, 'checkName': self.checkName
+                                                    })
                                                 error = True
                                                 pass
-                                        elif "=" in index:
-                                            key, value = index.split("=")
+                                        elif "==" in index:
+                                            key, value = index.split("==")
                                             key = key.strip()
                                             value = value.strip()
                                             if value is not None and value != '':
@@ -73,7 +74,6 @@ class Resource(object):
                                                     found = False
                                                     for item in obj:
                                                         if key in item and item[key] == value:
-                                                            # jsondata[j] = item
                                                             newdata.append(item)
                                                             found = True
                                                     if not found:
@@ -85,11 +85,12 @@ class Resource(object):
                                                                   'source': self.file, 'checkName': self.checkName})
                                                         error = True
                                             else:
-                                                comparelog.print_error(msg="Value expected for '" + node + "' after '='",
-                                                                       args={'fnName': self.testName,
-                                                                             'type': comparelog.SYNTAX_ERROR,
-                                                                             'source': "Metadata.json",
-                                                                             'checkName': self.checkName})
+                                                comparelog.print_error(
+                                                    msg="Value expected for '" + node + "' after '='",
+                                                    args={'fnName': self.testName,
+                                                          'type': comparelog.SYNTAX_ERROR,
+                                                          'source': "Metadata.json",
+                                                          'checkName': self.checkName})
                                                 error = True
                                         elif index == '':
                                             if not isinstance(obj, list):
@@ -102,7 +103,6 @@ class Resource(object):
                                                 newdata = obj
 
                                     elif node in obj:
-                                        # jsondata[j] = obj[node]
                                         newdata.append(obj[node])
                                     else:
                                         comparelog.print_error(msg="No attribute: " + str(node) + " in " + property,
@@ -115,14 +115,14 @@ class Resource(object):
                                 else:
                                     newdata.append(None)
                             jsondata = newdata
-                        # tupleValue = (str(property), jsondata)
                         flatListValues.append(Property(str(property), jsondata))
                     data = flatListValues
                 # data now is array of values to be given to formatter
             except Exception:
                 comparelog.print_error(msg="File '" + self.file + "' not found", args={'fnName': self.testName,
-                                                              'type': comparelog.FILE_NOT_FOUND,
-                                                              'source': self.file, 'checkName': self.checkName})
+                                                                                       'type': comparelog.FILE_NOT_FOUND,
+                                                                                       'source': self.file,
+                                                                                       'checkName': self.checkName})
         elif self.type == Type.PROPERTY:
             data = []
             for property in properties:
@@ -179,15 +179,22 @@ class Resource(object):
     def extrapolate(self, dynamicMap):
         properties = [self.property]
         dynamic_pattern = "\\${([^}]*)(?=})"
-        if dynamicMap:
+        if dynamicMap is not None and len(dynamicMap) > 0:
             for m in re.finditer(dynamic_pattern, self.property):
                 if m.group(1) in dynamicMap:
                     values = dynamicMap[m.group(1)]
                     newproperties = []
-                    for value in values:
-                        for property in properties:
-                            newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
-                    properties = newproperties
+                    if values is not None and any(values):
+                        for value in values:
+                            for property in properties:
+                                newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
+                        properties = newproperties
+                    else:
+                        comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1),
+                                               args={'fnName': self.testName,
+                                                     'type': comparelog.MISSING_DYNAMIC_VALUE,
+                                                     'source': self.file, 'checkName': self.checkName})
+                        return None
                 else:
                     comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1),
                                            args={'fnName': self.testName,
