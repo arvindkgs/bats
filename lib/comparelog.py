@@ -40,10 +40,6 @@ getLogger().setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.ERROR)
 
-# Prints ALL log levels to file
-fh = logging.FileHandler(os.path.join(os.getcwd(), 'automation.log'), 'w')
-fh.setLevel(logging.DEBUG)
-
 # create formatter
 formatter = OptionalArgsFormatter(
     '[[%(levelname)s]\t[%(funcName)s]\t[%(checkName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
@@ -51,17 +47,14 @@ formatter = OptionalArgsFormatter(
      'checkName': '\t[%(checkName)s]'})
 
 # add formatter
-fh.setFormatter(formatter)
 ch.setFormatter(formatter)
 
 # add ch to logger
-getLogger().addHandler(fh)
 getLogger().addHandler(ch)
 
 
 def setOptions(options):
     global logOnly
-    global noOutput
     for option in options.split(','):
         if option == 'logonly':
             getLogger().removeHandler(ch)
@@ -76,22 +69,26 @@ def setOptions(options):
                      'checkName': '\t[%(checkName)s]'}))
 
 
-def setLogFileName(logFileName):
+logFileSet = False
+
+def setLogFileName(logFileName='automation.log'):
     global fh
-    getLogger().removeHandler(fh)
-    fh = logging.FileHandler(logFileName, 'w')
-    fh.setLevel(logging.DEBUG)
+    global logFileSet
+    if not logFileSet:
+        logFileSet = True
+        fh = logging.FileHandler(logFileName, 'w')
+        fh.setLevel(logging.DEBUG)
 
-    # add formatter
-    fh.setFormatter(formatter)
+        # add formatter
+        fh.setFormatter(formatter)
 
-    # add ch to logger
-    getLogger().addHandler(fh)
+        # add ch to logger
+        getLogger().addHandler(fh)
 
 
 # Method to print Error log (prints to log and console)
 def print_error(msg, args={}):
-    global noOutput
+    setLogFileName()
     file_name = os.path.basename(__file__)
     fnName = args['fnName'] if 'fnName' in args else None
     record = getLogger().makeRecord(name, logging.ERROR, file_name, None, msg=msg, args=None,
@@ -103,7 +100,7 @@ def print_error(msg, args={}):
 # Method to print Info to both log and console
 def print_info(msg, args={}):
     global logOnly
-    global noOutput
+    setLogFileName()
     file_name = os.path.basename(__file__)
     fnName = args['fnName'] if 'fnName' in args else None
     record = getLogger().makeRecord(name, logging.INFO, file_name, None, msg=msg, args=None, exc_info=None,
@@ -115,7 +112,7 @@ def print_info(msg, args={}):
 
 # Method to print Info to log
 def print_info_log(msg, args={}):
-    global noOutput
+    setLogFileName()
     file_name = os.path.basename(__file__)
     fnName = args['fnName'] if 'fnName' in args else None
     record = getLogger().makeRecord(name, logging.INFO, file_name, None, msg=msg, args=None,
