@@ -1,0 +1,72 @@
+{
+  "name": "Positive Checks",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "logDir": "",
+  "options": "test",
+  "tests": [
+    {
+      "name": "JVM Args Test",
+      "checks": [
+        {
+          "name": "Single Compare",
+          "type": "COMPARE",
+          "source": {
+            "property": "topology.wlsClusters.[clusterName == 'AdminServer'].Xms",
+            "file": "source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "target.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Dynamic Multiple",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "file": "source.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "source.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName == ${1}].Xms"
+          },
+          "target": {
+            "file": "target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Dynamic + Changed format",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "file": "source.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "source.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName == ${1}].XX:ParallelGCThreads"
+          },
+          "target": {
+            "file": "target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${1}.Linux-x86_64.memoryargs",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        }
+      ]
+    }
+  ]
+}
