@@ -1,0 +1,95 @@
+{
+  "name": "Negative Checks",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "options": "test",
+  "logFileName": "metadatas/tests/negative/negative.log",
+  "tests": [
+    {
+      "name": "JVM test",
+      "checks": [
+        {
+          "name": "Value mismatch",
+          "type": "COMPARE",
+          "source": {
+            "property": "topology.wlsClusters.[clusterName == 'AdminServer'].Xmx",
+            "file": "metadatas/tests/negative/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "metadatas/tests/negative/target.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "No Property",
+          "type": "COMPARE",
+          "source": {
+            "property": "topology.wlsClusters.[clusterName == 'xyz'].Xmx",
+            "file": "metadatas/tests/negative/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "metadatas/tests/negative/target.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "No Property",
+          "type": "COMPARE",
+          "source": {
+            "property": "topology.wlsClusters.[clusterName == 'AdminServer'].Xmx",
+            "file": "metadatas/tests/negative/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.xyz",
+            "file": "metadatas/tests/negative/target.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "No Format found",
+          "type": "COMPARE",
+          "source": {
+            "property": "topology.wlsClusters.[clusterName == 'xyz'].Xmx",
+            "file": "metadatas/tests/negative/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "metadatas/tests/negative/target.properties",
+            "type": "PROPERTY",
+            "format": "xyz{}?"
+          }
+        },
+        {
+          "name": "Dynamic mismatch",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "file": "metadatas/tests/negative/source.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/negative/source.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName == ${1}].XX:MaxPermSize"
+          },
+          "target": {
+            "file": "metadatas/tests/negative/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
+            "format": "-XX:MaxPermSize={}?"
+          }
+        }
+      ]
+    }
+  ]
+}
