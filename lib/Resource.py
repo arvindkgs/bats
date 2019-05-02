@@ -1,8 +1,7 @@
 import json
-from collections import OrderedDict
 import re
-from lib import comparelog, execute_shell_script
 from lib import Property
+from lib import comparelog, execute_shell_script
 
 
 class Type(object):
@@ -32,7 +31,7 @@ class Resource(object):
         if self.type == Type.JSON:
             try:
                 with open(self.file, 'r') as json_file:
-                    data = json.load(json_file, object_pairs_hook=OrderedDict)
+                    data = json.load(json_file)
                     flatListValues = []
                     for property in properties:
                         nodes = property.split('.')

@@ -1,7 +1,7 @@
 {
   "name": "Scaleout Automation Checks",
   "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
-  "logFileName": "dynamic.log",
+  "logFileName": "metadatas/tests/all/dynamic.log",
   "options": "test",
   "tests": [
     {
@@ -12,18 +12,18 @@
           "type": "COMPARE",
           "dynamic": [
             {
-              "file": "SDI_HOST_properties.json",
+              "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
               "property": "topology.wlsClusters.[].clusterName"
             }
           ],
           "source": {
-            "file": "SDI_HOST_properties.json",
+            "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
             "property": "topology.wlsClusters.[clusterName == ${1}].Xms"
           },
           "target": {
-            "file": "fusionapps_start_params.properties",
+            "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
             "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
             "format": "-Xms{}?"
@@ -34,18 +34,18 @@
           "type": "COMPARE",
           "dynamic": [
             {
-              "file": "SDI_HOST_properties.json",
+              "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
               "property": "topology.wlsClusters.[].clusterName"
             }
           ],
           "source": {
-            "file": "SDI_HOST_properties.json",
+            "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
             "property": "topology.wlsClusters.[clusterName == ${1}].Xmx"
           },
           "target": {
-            "file": "fusionapps_start_params.properties",
+            "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
             "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
             "format": "-Xmx{}?"
@@ -56,18 +56,18 @@
           "type": "COMPARE",
           "dynamic": [
             {
-              "file": "SDI_HOST_properties.json",
+              "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
               "property": "topology.wlsClusters.[].clusterName"
             }
           ],
           "source": {
-            "file": "SDI_HOST_properties.json",
+            "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
             "property": "topology.wlsClusters.[clusterName == ${1}].XssInKb"
           },
           "target": {
-            "file": "fusionapps_start_params.properties",
+            "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
             "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
             "format": "-Xss{}?"
@@ -78,18 +78,18 @@
           "type": "COMPARE",
           "dynamic": [
             {
-              "file": "SDI_HOST_properties.json",
+              "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
               "property": "topology.wlsClusters.[].clusterName"
             }
           ],
           "source": {
-            "file": "SDI_HOST_properties.json",
+            "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
             "property": "topology.wlsClusters.[clusterName == ${1}].XX:ParallelGCThreads"
           },
           "target": {
-            "file": "fusionapps_start_params.properties",
+            "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
             "property": "fusion.${1}.Linux-x86_64.memoryargs",
             "format": "-XX:ParallelGCThreads={}"
