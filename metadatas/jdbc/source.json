@@ -1,0 +1,719 @@
+{
+  "generalInfo": {
+    "name": "s",
+    "schemaVersion": "1.0",
+    "description": "small"
+  },
+  "postFactoryInfo": {
+    "postFactoryVersion": "39795798"
+  },
+  "topology": {
+    "vmHosts": [
+       {
+        "vmName": "idm-midtier.oracleoutsourcing.com",
+        "hostType": "idm",
+        "memory": 18484,
+        "max.memory": 18484,
+        "cpus": 11,
+        "swap.size": 15360
+      },
+      {
+        "vmName": "ohs.oracleoutsourcing.com",
+        "hostType": "ohs",
+        "memory": 9292,
+        "max.memory": 9292,
+        "cpus": 6,
+        "swap.size": 15360
+      },
+      {
+        "vmName": "fa.oracleoutsourcing.com",
+        "hostType": "fa",
+        "memory": 164928,
+        "max.memory": 164928,
+        "cpus": 16,
+        "swap.size": 15360
+      },
+      {
+        "vmName": "opt1.oracleoutsourcing.com",
+        "hostType": "opt1",
+        "memory": 5120, 
+        "max.memory": 5120,
+        "cpus": 8,
+        "swap.size": 15360,
+        "max.heap": "6048m",
+        "elasticSearchNodes": 1,
+	"elasticFileImageVolume": "100g"
+      },
+      {
+        "vmName": "opt2.oracleoutsourcing.com",
+        "hostType": "opt2",
+        "memory": 122880,
+        "max.memory": 122880,
+        "cpus": 12,
+        "swap.size": 15360 
+      },
+      {
+        "vmName": "opt3.oracleoutsourcing.com",
+        "hostType": "opt3",
+        "memory": 24576, 
+        "max.memory": 24576,
+        "cpus": 6, 
+        "swap.size": 15360
+      },
+      {
+        "vmName": "opt4.oracleoutsourcing.com",
+        "hostType": "opt4",
+        "memory": 17408,
+        "max.memory": 17408,
+        "cpus": 4,
+        "swap.size": 15360
+      },
+      {
+        "vmName": "fa-ha1.oracleoutsourcing.com",
+        "hostType": "fa-ha1",
+        "memory": 117520,
+        "max.memory": 117520,
+        "cpus": 15,
+        "swap.size": 15360
+      },
+      {
+        "vmName": "ohs-ha1.oracleoutsourcing.com",
+        "hostType": "ohs-ha1",
+        "memory": 9192,
+        "max.memory": 9192,
+        "cpus": 5,
+        "swap.size": 15360
+      }
+    ],
+    "extensionInstances": {
+      "min": 0,
+      "max": 2
+    },
+    "extensionDefinition": {
+       "auxVM": {
+          "cpus": 14,
+          "memory": 108544,
+          "max.memory": 108544,
+          "scaleoutManagedServers": [
+            {
+               "domainName": "FADomain",
+               "clusterName": "UICluster",
+               "numScaleoutServers": 3
+            },
+            { 
+               "domainName": "FADomain",
+               "clusterName": "ServiceCluster",
+               "numScaleoutServers": 1
+            },
+            {
+               "domainName": "FADomain",
+               "clusterName": "MWCluster",
+               "numScaleoutServers": 1
+            },
+            {
+               "domainName": "FADomain",
+               "clusterName": "ESS_SOACluster",
+               "numScaleoutServers": 1
+            }
+          ]
+    },
+  "blr": {
+       	"cpus" : 2,
+        "memory" : 35000,
+       	"max.memory" : 35000,
+        "scaleoutManagedServers" : [ {
+       	"domainName" : "FADomain",
+       	"clusterName" : "MWCluster",
+       	"numScaleoutServers" : 2
+        }
+      ]
+     }
+    },
+
+    "scaleoutManagedServers": [
+      {
+        "domainName": "FADomain",
+        "clusterName": "SupplyPlanningEngineCluster",
+        "targetMachineName": "opt2.oracleoutsourcing.com",
+        "numScaleoutServers": 4
+      }
+    ],
+    "wlsClusters": [
+      {
+        "domainName": "FADomain",
+        "clusterName": "UICluster",
+        "Xms": 2014,
+        "Xmx": 13388,
+        "XssInKb": 4096,
+        "XX:MaxPermSize": 5172,
+        "XX:NewRatio": 8,
+        "XX:ParallelGCThreads": 10,
+        "numberOfServersInClusterAddress": 100
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "ServiceCluster",
+        "Xms": 2200,
+        "Xmx": 12299,
+        "XX:MaxPermSize": 3072,
+        "XX:NewRatio": 3,
+        "XX:ParallelGCThreads": 10,
+        "numberOfServersInClusterAddress": 100
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "MWCluster",
+        "Xms": 2800,
+        "Xmx": 7899,
+        "XX:MaxPermSize": 3172,
+        "XX:ParallelGCThreads": 8,
+        "numberOfServersInClusterAddress": 100
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "ESS_SOACluster",
+        "Xms": 2900,
+        "Xmx": 12399,
+        "XX:MaxPermSize": 3172,
+        "XssInKb": 4096,
+        "XX:NewRatio": 3,
+        "XX:ParallelGCThreads": 12,
+        "numberOfServersInClusterAddress": 100
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "AdminServer",
+        "Xms": 1024,
+        "Xmx": 2700,
+        "XX:MaxPermSize": 3072,
+        "XX:NewRatio": 7,
+        "XX:ParallelGCThreads": 10
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "SingletonCluster",
+        "Xms": 256,
+        "Xmx": 8192,
+        "XX:MaxPermSize": 3072,
+        "XX:ParallelGCThreads": 4,
+        "numberOfServersInClusterAddress": 100
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "SupplyPlanningEngineCluster",
+        "Xms": 512,
+        "Xmx": 16384,
+        "XX:MaxPermSize": 3072,
+        "XssInKb": 102400,
+        "XX:ParallelGCThreads": 8,
+        "numberOfServersInClusterAddress": 100
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "SEMSearchCluster",
+        "Xms": 256,
+        "Xmx": 8192,
+        "XX:MaxPermSize": 3072,
+        "XX:ParallelGCThreads": 8,
+        "numberOfServersInClusterAddress": 100
+      },
+      {
+        "domainName": "FADomain",
+        "clusterName": "bip_cluster",
+        "Xms": 1024,
+        "Xmx": 10240,
+        "XX:MaxPermSize": 3072,
+        "XssInKb": 4096,
+        "XX:ParallelGCThreads": 8,
+        "numberOfServersInClusterAddress": 100
+      }
+    ],
+    "wlsTunings": [
+     
+{
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "EDNSource",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595000"
+      },   
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "SOADataSource",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595000"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "SOALocalTxDataSource",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595000"
+      }, 
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "mds-soa",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595000"
+      },  
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "fmwDB",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595000"
+      },       
+	  
+
+       {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "EDNSource",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "695000"
+      },
+
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "EDNSource",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595555"
+      },   
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "SOADataSource",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595666"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "SOALocalTxDataSource",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595777"
+      }, 
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "mds-soa",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595888"
+      },  
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCDriverParams",
+         "applicationName": "fmwDB",
+         "attributeName": "oracle.jdbc.ReadTimeout",
+         "value": "595999"
+      },       
+
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDB",
+         "attributeName": "MaxCapacity",
+         "value": "300"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDBBatch",
+         "attributeName": "MaxCapacity",
+         "value": "100"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationServiceDB",
+         "attributeName": "MaxCapacity",
+         "value": "200"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "fmwDB",
+         "attributeName": "MaxCapacity",
+         "value": "100"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDBBI",
+         "attributeName": "MaxCapacity",
+         "value": "205"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "bip_datasource",
+         "attributeName": "MaxCapacity",
+         "value": "200"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDB-rac*",
+         "attributeName": "MaxCapacity",
+         "value": "150"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDBBatch-rac*",
+         "attributeName": "MaxCapacity",
+         "value": "50"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationServiceDB-rac*",
+         "attributeName": "MaxCapacity",
+         "value": "50"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "fmwDB-rac*",
+         "attributeName": "MaxCapacity",
+         "value": "50"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDBBI-rac*",
+         "attributeName": "MaxCapacity",
+         "value": "100"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "bip_datasource-rac*",
+         "attributeName": "MaxCapacity",
+         "value": "100"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDB",
+         "attributeName": "MinCapacity",
+         "value": "4"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDB-rac1",
+         "attributeName": "MinCapacity",
+         "value": "2"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "ApplicationDB-rac2",
+         "attributeName": "MinCapacity",
+         "value": "2"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "fmwDB",
+         "attributeName": "MinCapacity",
+         "value": "2"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "fmwDB-rac1",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "fmwDB-rac2",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-ESS_MDS_DS",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-ESS_MDS_DS-rac1",
+         "attributeName": "MinCapacity",
+         "value": "0"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-ESS_MDS_DS-rac2",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "OraSDPMDataSource",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "OraSDPMDataSource-rac1",
+         "attributeName": "MinCapacity",
+         "value": "0"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "OraSDPMDataSource-rac2",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-soa",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {  
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-soa-rac1",
+         "attributeName": "MinCapacity",
+         "value": "0"
+      }, 
+      {  
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-soa-rac2",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "SOADataSource",
+         "attributeName": "MinCapacity",
+         "value": "4"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "SOADataSource-rac1",
+         "attributeName": "MinCapacity",
+         "value": "2"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "SOADataSource-rac2",
+         "attributeName": "MinCapacity",
+         "value": "2"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "bip_datasource",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "bip_datasource-rac1",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "bip_datasource-rac2",
+         "attributeName": "MinCapacity",
+         "value": "1"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-ESS_MDS_DS",
+         "attributeName": "AlgorithmType",
+         "value": "Failover"
+      },
+      {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-ESS_MDS_DS",
+         "attributeName": "DataSourceList",
+         "value": "mds-ESS_MDS_DS-rac2,mds-ESS_MDS_DS-rac1"
+     },
+     {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-soa",
+         "attributeName": "AlgorithmType",
+         "value": "Failover"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "JDBCSystemResource",
+         "applicationName": "mds-soa",
+         "attributeName": "DataSourceList",
+         "value": "mds-soa-rac2,mds-soa-rac1"
+    }, 
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "AdminServer",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "SupplyPlanningEngineServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "ServiceServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "SEMSearchServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "SingletonServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "SharedServicesServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "SharedServicesServer_HA",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "MWServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "UIServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "bi_server1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "bip_server1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "bi_serverHA",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "bip_serverHA",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ServerResource",
+         "applicationName": "ESS_SOAServer_1",
+         "attributeName": "SelfTuningThreadPoolSizeMin",
+         "value": "40"
+    },
+    {
+         "domainName": "FADomain",
+         "resourceName": "ClusterResource",
+         "applicationName": "UICluster",
+         "attributeName": "IdlePeriodsUntilTimeout",
+         "value": "10"
+    }
+    ],
+    "ohsTunings": {
+        "KeepAliveTimeout": 91,
+        "ThreadLimit": 290,
+        "ServerLimit": 10,
+        "StartServers": 2,
+        "MaxClients": 2900,
+        "MinSpareThreads": 200,
+        "MaxSpareThreads": 800,
+        "ThreadsPerChild": 290,
+        "MaxRequestsPerChild": 10000,
+        "AcceptMutex": "fcntl",
+        "WLSocketTimeoutSecs": 15
+    },
+    "haEnabled": {
+        "production": true,
+        "stage": false
+    },
+    "dbSizing": {
+        "production": {
+            "dbs": {
+                "fa": {
+                    "vcores": "6"
+                },
+                "oid": {
+                    "vcores": "2"
+                }
+            }
+        },
+        "stage": {
+            "dbs": {
+               "fa": {
+                   "vcores": "6"
+               },
+               "oid": {
+                   "vcores": "2"
+               }
+            }
+        }
+    }
+  }
+}

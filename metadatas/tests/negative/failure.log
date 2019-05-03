@@ -2,9 +2,9 @@
 [[INFO]]	Negative Checks
 [[INFO]]	--------------------------------
 [[INFO]	[JVM test]	[Value mismatch]	[COMPARE]]	topology.wlsClusters.[clusterName == 'AdminServer'].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
-[[ERROR]	[JVM test]	[No Property]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No object with attribute: clusterName = xyz found in : metadatas/tests/negative/source.json
+[[ERROR]	[JVM test]	[No Property]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No object with attribute: clusterName == 'xyz' found in : metadatas/tests/negative/source.json
 [[ERROR]	[JVM test]	[No Property]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to get property: fusion.FADomain.AdminServer.default.minmaxmemory.xyz, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[No Format found]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No object with attribute: clusterName = xyz found in : metadatas/tests/negative/source.json
+[[ERROR]	[JVM test]	[No Format found]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No object with attribute: clusterName == 'xyz' found in : metadatas/tests/negative/source.json
 [[ERROR]	[JVM test]	[No Format found]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: 'xyz{}?' from fusion.FADomain.AdminServer.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
 [[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.UICluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
 [[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.ServiceCluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties

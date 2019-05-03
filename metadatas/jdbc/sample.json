@@ -10,25 +10,13 @@
         {
           "name": "Max capacity",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "file": "SDI_HOST_properties.json",
-              "type": "JSON",
-              "property": "topology.wlsTunings.[attributeName == 'MaxCapacity' && applicationName != '.*rac\\*^'].applicationName"
-            },
-            {
-              "file": "config.xml",
-              "type": "XML",
-              "property": "domain.jdbc-system-resource.[name == ${1}].descriptor-file-name"
-            }
-          ],
           "source": {
-            "file": "SDI_HOST_properties.json",
+            "file": "metadatas/jdbc/source.json",
             "type": "JSON",
-            "property": "topology.wlsTunings.[applicationName == ${1}].value"
+            "property": "topology.wlsTunings.[applicationName == 'fmwDB' && attributeName == 'MaxCapacity'].value"
           },
           "target": {
-            "file": "${2}",
+            "file": "metadatas/jdbc/fmwDB-jdbc.xml",
             "type": "XML",
             "property": "jdbc-data-source.jdbc-connection-pool-params.max-capacity"
           }

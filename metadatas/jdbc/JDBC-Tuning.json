@@ -1,0 +1,39 @@
+{
+  "name": "Scaleout Automation Checks",
+  "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
+  "logDir": "",
+  "options": "",
+  "tests": [
+    {
+      "name": "JDBC tuning",
+      "checks": [
+        {
+          "name": "Max capacity",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "file": "source.json",
+              "type": "JSON",
+              "property": "topology.wlsTunings.[attributeName == 'MaxCapacity' && applicationName == 'fmwDB'].applicationName"
+            },
+            {
+              "file": "config.xml",
+              "type": "XML",
+              "property": "domain.jdbc-system-resource[name == ${1}].descriptor-file-name"
+            }
+          ],
+          "source": {
+            "file": "SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "topology.wlsTunings.[applicationName == ${1} && attributeName == 'MaxCapacity'].value"
+          },
+          "target": {
+            "file": "${2}",
+            "type": "XML",
+            "property": "jdbc-data-source.jdbc-connection-pool-params.max-capacity"
+          }
+        }
+      ]
+    }
+  ]
+}
