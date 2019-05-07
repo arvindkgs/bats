@@ -1,6 +1,6 @@
 {
-  "name": "Scaleout Automation Checks",
-  "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
+  "name": "JDBC Automation Checks",
+  "description": "Demonstrates XML and JSON comparision, as well as dynamic computation of the files to check",
   "logDir": "",
   "options": "",
   "tests": [
@@ -12,25 +12,55 @@
           "type": "COMPARE",
           "dynamic": [
             {
-              "file": "source.json",
+              "key": "applicationName",
+              "file": "metadatas/jdbc/source.json",
               "type": "JSON",
-              "property": "topology.wlsTunings.[attributeName == 'MaxCapacity' && applicationName == 'fmwDB'].applicationName"
+              "property": "topology.wlsTunings.[attributeName == 'MaxCapacity' && applicationName != '.*rac.*'].applicationName"
             },
             {
-              "file": "config.xml",
+              "key": "fileName",
+              "file": "metadatas/jdbc/config.xml",
               "type": "XML",
-              "property": "domain.jdbc-system-resource[name == ${1}].descriptor-file-name"
+              "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
             }
           ],
           "source": {
-            "file": "SDI_HOST_properties.json",
+            "file": "metadatas/jdbc/source.json",
             "type": "JSON",
-            "property": "topology.wlsTunings.[applicationName == ${1} && attributeName == 'MaxCapacity'].value"
+            "property": "topology.wlsTunings.[applicationName == '${applicationName}' && attributeName == 'MaxCapacity'].value"
           },
           "target": {
-            "file": "${2}",
+            "file": "metadatas/${fileName}",
             "type": "XML",
             "property": "jdbc-data-source.jdbc-connection-pool-params.max-capacity"
+          }
+        },
+        {
+          "name": "Min capacity",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "applicationName",
+              "file": "metadatas/jdbc/source.json",
+              "type": "JSON",
+              "property": "topology.wlsTunings.[attributeName == 'MinCapacity' && applicationName != '.*rac.*'].applicationName"
+            },
+            {
+              "key": "fileName",
+              "file": "metadatas/jdbc/config.xml",
+              "type": "XML",
+              "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
+            }
+          ],
+          "source": {
+            "file": "metadatas/jdbc/source.json",
+            "type": "JSON",
+            "property": "topology.wlsTunings.[applicationName == '${applicationName}' && attributeName == 'MinCapacity'].value"
+          },
+          "target": {
+            "file": "metadatas/${fileName}",
+            "type": "XML",
+            "property": "jdbc-data-source.jdbc-connection-pool-params.min-capacity"
           }
         }
       ]

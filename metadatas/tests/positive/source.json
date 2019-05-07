@@ -337,7 +337,7 @@
          "resourceName": "JDBCSystemResource",
          "applicationName": "fmwDB",
          "attributeName": "MaxCapacity",
-         "value": "101"
+         "value": "100"
       },
       {
          "domainName": "FADomain",

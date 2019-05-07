@@ -37,7 +37,8 @@ class Resource(object):
                     with open(fileobj, 'r') as json_file:
                         data = json.load(json_file)
                         for property in extrapolated_properties:
-                            nodes = property.split('.')
+
+                            nodes = self.splitNodes(property)
                             jsondata = data
                             for i, node in enumerate(nodes):
                                 if not isinstance(jsondata, list):
@@ -66,7 +67,8 @@ class Resource(object):
                                                 if not isinstance(obj, list):
                                                     comparelog.print_error(
                                                         msg="Property '" + property + "' specified is not an array.",
-                                                        args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
+                                                        args={'fnName': self.testName,
+                                                              'type': comparelog.MISSING_PROPERTY,
                                                               'source': self.file, 'checkName': self.checkName})
                                                     error = True
                                                 else:
@@ -111,8 +113,8 @@ class Resource(object):
                                                             if key not in item:
                                                                 matches = False
                                                             else:
-                                                                pattern = re.compile(str(value))
-                                                                rematch = pattern.search(str(item[key]))
+                                                                pattern = re.compile('^' + str(value) + '$')
+                                                                rematch = pattern.match(str(item[key]))
                                                                 if not rematch and type == "EQUAL":
                                                                     matches = False
                                                                     break
@@ -136,7 +138,8 @@ class Resource(object):
                                             comparelog.print_error(msg="No attribute: " + str(node) + " in " + property,
                                                                    args={'fnName': self.testName,
                                                                          'type': comparelog.MISSING_PROPERTY,
-                                                                         'source': self.file, 'checkName': self.checkName})
+                                                                         'source': self.file,
+                                                                         'checkName': self.checkName})
                                             error = True
                                         if error:
                                             newdata.append(None)
@@ -166,29 +169,40 @@ class Resource(object):
                         properties.append(Property(property, [propFrmFile]))
         elif self.type == Type.XML:
             properties = []
-            try:
+            if files is not None:
                 for fileobj in files:
-                    it = ET.iterparse(StringIO(open(fileobj).read()))
-                    for _, el in it:
-                        if '}' in el.tag:
-                            el.tag = el.tag.split('}', 1)[1]  # strip all namespaces
-                    root = it.root
-                    topelement = root.find(".")
-                    if topelement is not None and len(topelement) > 0:
-                        for property in extrapolated_properties:
-                            split = property.split(".")
-                            if topelement.tag == split[0]:
-                                xPath = ''
-                                for ele in split[1:]:
-                                    ele = ele.replace('==', '=')
-                                    xPath += ele + '/'
-                                if xPath != '':
-                                    xPath = xPath[:len(xPath)-1]
-                                    nodes = root.findall(xPath)
-                                    for node in nodes:
-                                        properties.append(Property(property, node.text))
-            except Exception as e:
-                pass
+                    it = None
+                    try:
+                        it = ET.iterparse(StringIO(open(fileobj).read()))
+                    except Exception as e:
+                        comparelog.print_error(msg="File: " + self.file + ", does not exist.",
+                                               args={'fnName': self.testName, 'type': comparelog.FILE_NOT_FOUND,
+                                                     'source': fileobj, 'checkName': self.checkName})
+                    if it is not None:
+                        for _, el in it:
+                            if '}' in el.tag:
+                                el.tag = el.tag.split('}', 1)[1]  # strip all namespaces
+                        root = it.root
+                        topelement = root.find(".")
+                        if topelement is not None and len(topelement) > 0:
+                            for property in extrapolated_properties:
+                                try:
+                                    split = property.split(".")
+                                    if topelement.tag == split[0]:
+                                        xPath = ''
+                                        for ele in split[1:]:
+                                            ele = ele.replace(' == ', '=')
+                                            ele = ele.replace('==', '=')
+                                            xPath += ele + '/'
+                                        if xPath != '':
+                                            xPath = xPath[:len(xPath) - 1]
+                                            nodes = root.findall(xPath)
+                                            for node in nodes:
+                                                properties.append(Property(property, [node.text]))
+                                except Exception as e:
+                                    comparelog.print_error(msg="XPath error for property: "+property+" from xml file: " + self.file,
+                                                   args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
+                                                         'source': fileobj, 'checkName': self.checkName})
         else:
             comparelog.print_error(
                 msg="No type available '" + self.type + "' . Available types: JSON, PROPERTY, XML, SHELL, STATIC",
@@ -240,18 +254,21 @@ class Resource(object):
                     values = dynamicMap[m.group(1)]
                     newproperties = []
                     if values is not None and any(values):
-                        for value in values:
-                            for property in properties:
-                                newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
+                        for property in properties:
+                            if isinstance(values, list):
+                                for value in values:
+                                    newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
+                            else:
+                                newproperties.append(property.replace("${" + str(m.group(1)) + "}", values))
                         properties = newproperties
                     else:
-                        comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1),
+                        comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1)+"'",
                                                args={'fnName': self.testName,
                                                      'type': comparelog.MISSING_DYNAMIC_VALUE,
                                                      'source': self.file, 'checkName': self.checkName})
                         return None
                 else:
-                    comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1),
+                    comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1)+"'",
                                            args={'fnName': self.testName,
                                                  'type': comparelog.MISSING_DYNAMIC_VALUE,
                                                  'source': self.file, 'checkName': self.checkName})
@@ -296,3 +313,27 @@ class Resource(object):
                     suffix = replacedStr
             pattern = '.*' + prefix + '([^ ]+)' + '(?=' + suffix + '\\b)' + '.*'
         return pattern
+
+    def splitNodes(self, str):
+        pattern = re.compile('(\'.*\')')
+        nodesEsc = pattern.split(str)
+        nodes = []
+        joinWithPrev = False
+        for node in nodesEsc:
+            quotesPattern = re.compile("^'.*'$")
+            matcher = quotesPattern.match(node)
+            if matcher:
+                if len(nodes) > 1:
+                    nodes[len(nodes)-1] = nodes[len(nodes)-1]+''+node
+                else:
+                    nodes.append(node)
+                joinWithPrev = True
+            else:
+                nodesDelim = node.split('.')
+                if joinWithPrev:
+                    nodes[len(nodes)-1] = nodes[len(nodes)-1]+''+nodesDelim[0]
+                else:
+                    nodes.append(nodesDelim[0])
+                nodes.extend(nodesDelim[1:])
+                joinWithPrev = False
+        return nodes

@@ -17,8 +17,12 @@ def evaluateCheck(check, testName):
                                        checkName=checkName)
             key = str(i + 1) if dynamicProperty.getKey() is None else dynamicProperty.getKey()
             value = dynamicProperty.getProperties(dynamicProperties)
-            dynamicProperties[key] = None if value is None else value[0].value
-            pass
+            dynamicProperties[key] = []
+            if isinstance(value, list):
+                for item in value:
+                    dynamicProperties[key].extend(item.value)
+            elif value is not None:
+                dynamicProperties[key] = [value]
     if checkType == 'COMPARE':
         source = Resource(property=check['source'], testName=testName,
                           checkName=checkName)

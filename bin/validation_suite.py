@@ -52,6 +52,9 @@ class CompareProperties(object):
         except IOError:
             comparelog.print_error(msg="Metadata file '" + self.metadata + "' not found.")
             sys.exit(1)
+        except ValueError as e:
+            comparelog.print_error(msg="Error parsing metadata file '" + self.metadata + "'.")
+            sys.exit(1)
         return passed
 
 
