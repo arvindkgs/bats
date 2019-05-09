@@ -75,15 +75,30 @@ def setLogFileName(logFileName='automation.log'):
     global fh
     global logFileSet
     if not logFileSet:
-        logFileSet = True
-        fh = logging.FileHandler(logFileName, 'w')
-        fh.setLevel(logging.DEBUG)
+        try:
+            logFileSet = True
+            fh = logging.FileHandler(logFileName, 'w')
+            fh.setLevel(logging.DEBUG)
 
-        # add formatter
-        fh.setFormatter(formatter)
+            # add formatter
+            fh.setFormatter(formatter)
 
-        # add ch to logger
-        getLogger().addHandler(fh)
+            # add ch to logger
+            getLogger().addHandler(fh)
+        except IOError:
+            record = getLogger().makeRecord(name, logging.ERROR, os.path.basename(__file__), None, msg="Path to logFileName '"+logFileName+"' incorrect. Creating default log 'automation.log'", args=None, exc_info=None,
+                                            func="ERROR", extra={})
+            getLogger().handle(record)
+            print(formatter.format(record))
+            fh = logging.FileHandler('automation.log', 'w')
+            fh.setLevel(logging.DEBUG)
+
+            # add formatter
+            fh.setFormatter(formatter)
+
+            # add ch to logger
+            getLogger().addHandler(fh)
+
 
 
 # Method to print Error log (prints to log and console)

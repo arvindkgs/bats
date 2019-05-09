@@ -47,7 +47,7 @@ runAllTest(){
     fi
 }
 
-runPositiveTest "metadatas/tests/positive/" "success.log" "positive.log"
+runPositiveTest "metadatas/tests/jvm" "success.log" "positive.log"
 runPositiveTest "metadatas/tests/jdbc" "success.log" "jdbc.log"
 runNegativeTest "metadatas/tests/negative/" "failure.log" "negative.json"
 runAllTest "metadatas/tests/all/"

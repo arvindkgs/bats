@@ -1,5 +1,5 @@
 from lib import comparelog
-from Resource import Resource
+import ResourceBuilder
 from Property import Property
 
 
@@ -13,8 +13,8 @@ def evaluateCheck(check, testName):
         # Define dict with key, values for each dynamic object
         for i, dynamic in enumerate(check['dynamic']):
             # compute and store dynamic value
-            dynamicProperty = Resource(property=dynamic, testName=testName,
-                                       checkName=checkName)
+            dynamicProperty = ResourceBuilder.build(property=dynamic, testName=testName,
+                                             checkName=checkName)
             key = str(i + 1) if dynamicProperty.getKey() is None else dynamicProperty.getKey()
             value = dynamicProperty.getProperties(dynamicProperties)
             dynamicProperties[key] = []
@@ -24,11 +24,11 @@ def evaluateCheck(check, testName):
             elif value is not None:
                 dynamicProperties[key] = [value]
     if checkType == 'COMPARE':
-        source = Resource(property=check['source'], testName=testName,
-                          checkName=checkName)
+        source = ResourceBuilder.build(property=check['source'], testName=testName,
+                                checkName=checkName)
         sourceProperty = source.getProperties(dynamicMap=dynamicProperties)
-        target = Resource(property=check['target'], testName=testName,
-                          checkName=checkName)
+        target = ResourceBuilder.build(property=check['target'], testName=testName,
+                                checkName=checkName)
         targetProperty = target.getProperties(dynamicMap=dynamicProperties)
         if sourceProperty is not None and targetProperty is not None:
             if len(sourceProperty) == len(targetProperty):
