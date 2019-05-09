@@ -1,30 +1,30 @@
 #!/usr/bin/env bash
 
 runPositiveTest() {
-    python bin/validation_suite.py $1
+    python bin/validation_suite.py $1/metadata.json
     if [ $? -eq 0 ]; then
-        diff metadatas/tests/positive/success.log metadatas/tests/positive/positive.log
+        diff $1/$3 $1/$4
         if [ $? -eq 0 ]; then
-            echo "PositiveTest: Success!"
+            echo "$1 : Success!"
         else
-            echo "PositiveTest: Failure : expected log(metadatas/tests/positive/success.log) not same as generated log(metadatas/tests/positive/positive.log)"
+            echo "$1: Failure : expected log(metadatas/tests/positive/success.log) not same as generated log(metadatas/tests/positive/positive.log)"
         fi
      else
-        echo "PositiveTest: Failure, validation should pass"
+        echo "$1: Failure, validation should pass"
     fi
 }
 
 runNegativeTest() {
-    python bin/validation_suite.py $1
+    python bin/validation_suite.py $1/metadata.json
     if [ $? -ne 0 ]; then
-        diff metadatas/tests/negative/failure.log metadatas/tests/negative/negative.log
+        diff $1/failure.log $1/negative.log
         if [ $? -eq 0 ]; then
-            echo "NegativeTest: Success!"
+            echo "$1: Success!"
         else
-            echo "NegativeTest: Failure : expected log(metadatas/tests/negative/failure.log) not same as generated log(metadatas/tests/negative/negative.log)"
+            echo "$1: Failure : expected log(metadatas/tests/negative/failure.log) not same as generated log(metadatas/tests/negative/negative.log)"
         fi
     else
-        echo "NegativeTest: Failure : validation should fail"
+        echo "$1: Failure : validation should fail"
     fi
 }
 
@@ -35,18 +35,20 @@ runAllTest(){
         if [ $? -ne 0 ]; then
             diff metadatas/tests/all/individual.log metadatas/tests/all/dynamic.log
             if [ $? -eq 0 ]; then
-                echo "AllTest: Success"
+                echo "metadatas/tests/all: Success!"
             else
-                echo "AllTest: Failure : generated individual log(metadatas/tests/all/individual.log) not same as dynamic generated log(metadatas/tests/all/dynamic.log)"
+                echo "metadatas/tests/all: Failure : generated individual log(metadatas/tests/all/individual.log) not same as dynamic generated log(metadatas/tests/all/dynamic.log)"
             fi
         else
-          echo "AllTest: Failed, dynamic json validation should pass"
+          echo "metadatas/tests/all: Failed, dynamic json validation should pass"
         fi
     else
-        echo "AllTest: Failed, individual json validation should pass"
+        echo "metadatas/tests/all: Failed, individual json validation should pass"
     fi
 }
-runPositiveTest "metadatas/tests/positive/positive.json"
-runNegativeTest "metadatas/tests/negative/negative.json"
-runAllTest
+
+runPositiveTest "metadatas/tests/positive/" "success.log" "positive.log"
+runPositiveTest "metadatas/tests/jdbc" "success.log" "jdbc.log"
+runNegativeTest "metadatas/tests/negative/" "failure.log" "negative.json"
+runAllTest "metadatas/tests/all/"
 

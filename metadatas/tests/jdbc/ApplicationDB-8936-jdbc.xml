@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jdbc-data-source xsi:schemaLocation="http://xmlns.oracle.com/weblogic/jdbc-data-source http://xmlns.oracle.com/weblogic/jdbc-data-source/1.2/jdbc-data-source.xsd" xmlns="http://xmlns.oracle.com/weblogic/jdbc-data-source" xmlns:sec="http://xmlns.oracle.com/weblogic/security" xmlns:wls="http://xmlns.oracle.com/weblogic/security/wls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <name>ApplicationDB</name>
+  <jdbc-driver-params>
+    <url>jdbc:oracle:thin:@FA_DEFAULT</url>
+    <driver-name>oracle.jdbc.OracleDriver</driver-name>
+    <properties>
+      <property>
+        <name>user</name>
+        <value>fusion_runtime</value>
+      </property>
+      <property>
+        <name>oracle.net.CONNECT_TIMEOUT</name>
+        <value>120000</value>
+      </property>
+      <property>
+        <name>oracle.jdbc.implicitStatementCacheSize</name>
+        <value>10</value>
+      </property>
+      <property>
+        <name>oracle.jdbc.maxCachedBufferSize</name>
+        <value>19</value>
+      </property>
+      <property>
+        <name>v$session.process</name>
+        <value>ApplicationDB</value>
+      </property>
+      <property>
+        <name>v$session.program</name>
+        <value>null</value>
+      </property>
+      <property>
+        <name>oracle.jdbc.ReadTimeout</name>
+        <value>44560</value>
+      </property>
+    </properties>
+    <password-encrypted>{AES}obvtFk/r9tV7JJ0boduXHQosuGuQECHwGSGmSISyMR0=</password-encrypted>
+  </jdbc-driver-params>
+  <jdbc-connection-pool-params>
+    <initial-capacity>0</initial-capacity>
+    <max-capacity>300</max-capacity>
+    <min-capacity>4</min-capacity>
+    <capacity-increment>1</capacity-increment>
+    <shrink-frequency-seconds>7200</shrink-frequency-seconds>
+    <connection-creation-retry-frequency-seconds>60</connection-creation-retry-frequency-seconds>
+    <test-frequency-seconds>300</test-frequency-seconds>
+    <test-connections-on-reserve>true</test-connections-on-reserve>
+    <test-table-name>SQL SELECT 1 FROM DUAL</test-table-name>
+    <login-delay-seconds>0</login-delay-seconds>
+    <init-sql>SQL SELECT 1 FROM DUAL</init-sql>
+    <statement-cache-size>0</statement-cache-size>
+    <remove-infected-connections>true</remove-infected-connections>
+    <seconds-to-trust-an-idle-pool-connection>15</seconds-to-trust-an-idle-pool-connection>
+  </jdbc-connection-pool-params>
+  <jdbc-data-source-params>
+    <jndi-name>jdbc/ApplicationDBDS</jndi-name>
+    <jndi-name>jdbc/SearchDBDS</jndi-name>
+    <jndi-name>jdbc/AppMasterDBDS</jndi-name>
+    <global-transactions-protocol>None</global-transactions-protocol>
+  </jdbc-data-source-params>
+  <jdbc-oracle-params>
+    <fan-enabled>true</fan-enabled>
+    <ons-node-list>fusiondb.oracleoutsourcing.com:999</ons-node-list>
+  </jdbc-oracle-params>
+</jdbc-data-source>
