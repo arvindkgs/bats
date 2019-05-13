@@ -9,6 +9,7 @@ class Type(object):
     XML = "XML"
     SHELL = "SHELL"
     STATIC = "STATIC"
+    CONFIG = "CONF"
 
 
 class Resource(object):

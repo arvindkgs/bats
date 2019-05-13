@@ -3,6 +3,7 @@ from lib import comparelog
 import JsonHandler
 import XmlHandler
 import PropertiesHandler
+import ConfigHandler
 
 def build(property, testName, checkName):
     if property['type'] == Type.JSON:
@@ -11,6 +12,8 @@ def build(property, testName, checkName):
         return Resource(property, testName, checkName, XmlHandler.getProperties)
     elif property['type'] == Type.PROPERTY:
         return Resource(property, testName, checkName, PropertiesHandler.getProperties)
+    elif property['type'] == Type.CONFIG:
+        return Resource(property, testName, checkName, ConfigHandler.getProperties)
     else:
         comparelog.print_error(
             msg="No type available '" + property['type'] + "' . Available types: JSON, PROPERTY, XML, SHELL, STATIC",

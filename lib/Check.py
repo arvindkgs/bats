@@ -35,18 +35,12 @@ def evaluateCheck(check, testName):
                 for i, source_property in enumerate(sourceProperty):
                     compare = source_property.compare(targetProperty[i])
                     if compare == Property.MATCH:
-                        comparelog.print_info_log(msg=source_property.name + "(" + str(
-                            source_property.value) + ") == " + targetProperty[
-                                                          i].name + "(" + str(
-                            targetProperty[i].value) + ")",
+                        comparelog.print_info_log(msg=str(source_property)+" == " + str(targetProperty[i]),
                                                   args={'fnName': testName, 'type': checkType,
                                                         'checkName': checkName})
                         passed = passed and True
                     elif compare == Property.NO_MATCH:
-                        comparelog.print_info_log(msg=source_property.name + "(" + str(
-                            source_property.value) + ") != " + targetProperty[
-                                                          i].name + "(" + str(
-                            targetProperty[i].value) + ")",
+                        comparelog.print_info_log(msg=str(source_property)+" != " + str(targetProperty[i]),
                                                   args={'fnName': testName, 'type': checkType,
                                                         'checkName': checkName})
                         passed = passed and False
