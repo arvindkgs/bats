@@ -1,0 +1,364 @@
+{
+  "Timeout": "300",
+  "AddCharset": [
+    "us-ascii.ascii .us-ascii",
+    "ISO-8859-1  .iso8859-1  .latin1",
+    "ISO-8859-2  .iso8859-2  .latin2 .cen",
+    "ISO-8859-3  .iso8859-3  .latin3",
+    "ISO-8859-4  .iso8859-4  .latin4",
+    "ISO-8859-5  .iso8859-5  .cyr .iso-ru",
+    "ISO-8859-6  .iso8859-6  .arb .arabic",
+    "ISO-8859-7  .iso8859-7  .grk .greek",
+    "ISO-8859-8  .iso8859-8  .heb .hebrew",
+    "ISO-8859-9  .iso8859-9  .latin5 .trk",
+    "ISO-8859-10  .iso8859-10  .latin6",
+    "ISO-8859-13  .iso8859-13",
+    "ISO-8859-14  .iso8859-14  .latin8",
+    "ISO-8859-15  .iso8859-15  .latin9",
+    "ISO-8859-16  .iso8859-16  .latin10",
+    "ISO-2022-JP .iso2022-jp .jis",
+    "ISO-2022-KR .iso2022-kr .kis",
+    "ISO-2022-CN .iso2022-cn .cis",
+    "Big5.Big5   .big5 .b5",
+    "cn-Big5 .cn-big5",
+    "WINDOWS-1251 .cp-1251   .win-1251",
+    "CP866   .cp866",
+    "KOI8  .koi8",
+    "KOI8-E  .koi8-e",
+    "KOI8-r  .koi8-r .koi8-ru",
+    "KOI8-U  .koi8-u",
+    "KOI8-ru .koi8-uk .ua",
+    "ISO-10646-UCS-2 .ucs2",
+    "ISO-10646-UCS-4 .ucs4",
+    "UTF-7   .utf7",
+    "UTF-8   .utf8",
+    "UTF-16  .utf16",
+    "UTF-16BE .utf16be",
+    "UTF-16LE .utf16le",
+    "UTF-32  .utf32",
+    "UTF-32BE .utf32be",
+    "UTF-32LE .utf32le",
+    "euc-cn  .euc-cn",
+    "euc-gb  .euc-gb",
+    "euc-jp  .euc-jp",
+    "euc-kr  .euc-kr",
+    "EUC-TW  .euc-tw",
+    "gb2312  .gb2312 .gb",
+    "iso-10646-ucs-2 .ucs-2 .iso-10646-ucs-2",
+    "iso-10646-ucs-4 .ucs-4 .iso-10646-ucs-4",
+    "shift_jis   .shift_jis .sjis"
+  ],
+  "DocumentRoot": "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/htdocs",
+  "OraLogRotationParams": "S 10:70",
+  "AddLanguage": [
+    "ca .ca",
+    "cs .cz .cs",
+    "da .dk",
+    "de .de",
+    "el .el",
+    "en .en",
+    "eo .eo",
+    "es .es",
+    "et .et",
+    "fr .fr",
+    "he .he",
+    "hr .hr",
+    "it .it",
+    "ja .ja",
+    "ko .ko",
+    "ltz .ltz",
+    "nl .nl",
+    "nn .nn",
+    "no .no",
+    "pl .po",
+    "pt .pt",
+    "pt-BR .pt-br",
+    "ru .ru",
+    "sv .sv",
+    "zh-CN .zh-cn",
+    "zh-TW .zh-tw"
+  ],
+  "IndexOptions": "FancyIndexing HTMLTable VersionSort",
+  "Listen": "10601",
+  "DefaultIcon": "/icons/unknown.gif",
+  "ServerRoot": "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}",
+  "//include": [
+    "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/mod_wl_ohs.conf",
+    "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/admin.conf",
+    "moduleconf/*.conf",
+    "/u02/instance/FADomain_webtier_local/config/OHS/ohs1/webgate.conf"
+  ],
+  "DefaultLanguage": "en",
+  "BrowserMatch": [
+    "\"Mozilla/2\" nokeepalive",
+    "\"MSIE 4\\.0b2;\" nokeepalive downgrade-1.0 force-response-1.0",
+    "\"RealPlayer 4\\.0\" force-response-1.0",
+    "\"Java/1\\.0\" force-response-1.0",
+    "\"JDK/1\\.0\" force-response-1.0",
+    "\"Microsoft Data Access Internet Publishing Provider\" redirect-carefully",
+    "\"^WebDrive\" redirect-carefully",
+    "\"^WebDAVFS/1.[012]\" redirect-carefully",
+    "\"^gnome-vfs\" redirect-carefully"
+  ],
+  "AddIcon": [
+    "/icons/binary.gif .bin .exe",
+    "/icons/binhex.gif .hqx",
+    "/icons/tar.gif .tar",
+    "/icons/world2.gif .wrl .wrl.gz .vrml .vrm .iv",
+    "/icons/compressed.gif .Z .z .tgz .gz .zip",
+    "/icons/a.gif .ps .ai .eps",
+    "/icons/layout.gif .html .shtml .htm .pdf",
+    "/icons/text.gif .txt",
+    "/icons/c.gif .c",
+    "/icons/p.gif .pl .py",
+    "/icons/f.gif .for",
+    "/icons/dvi.gif .dvi",
+    "/icons/uuencoded.gif .uu",
+    "/icons/script.gif .conf .sh .shar .csh .ksh .tcl",
+    "/icons/tex.gif .tex",
+    "/icons/bomb.gif core",
+    "/icons/back.gif ..",
+    "/icons/hand.right.gif README",
+    "/icons/folder.gif ^^DIRECTORY^^",
+    "/icons/blank.gif ^^BLANKICON^^"
+  ],
+  "HostnameLookups": "Off",
+  "IfDefine": {
+    "SSL": {
+      "LoadModule": "ossl_module        \"${ORACLE_HOME}/ohs/modules/mod_ossl.so\""
+    }
+  },
+  "LoadModule": [
+    "file_cache_module \"${ORACLE_HOME}/ohs/modules/mod_file_cache.so\"",
+    "vhost_alias_module \"${ORACLE_HOME}/ohs/modules/mod_vhost_alias.so\"",
+    "env_module \"${ORACLE_HOME}/ohs/modules/mod_env.so\"",
+    "log_config_module \"${ORACLE_HOME}/ohs/modules/mod_log_config.so\"",
+    "mime_magic_module \"${ORACLE_HOME}/ohs/modules/mod_mime_magic.so\"",
+    "mime_module \"${ORACLE_HOME}/ohs/modules/mod_mime.so\"",
+    "negotiation_module \"${ORACLE_HOME}/ohs/modules/mod_negotiation.so\"",
+    "status_module \"${ORACLE_HOME}/ohs/modules/mod_status.so\"",
+    "info_module \"${ORACLE_HOME}/ohs/modules/mod_info.so\"",
+    "include_module \"${ORACLE_HOME}/ohs/modules/mod_include.so\"",
+    "autoindex_module \"${ORACLE_HOME}/ohs/modules/mod_autoindex.so\"",
+    "dir_module \"${ORACLE_HOME}/ohs/modules/mod_dir.so\"",
+    "asis_module \"${ORACLE_HOME}/ohs/modules/mod_asis.so\"",
+    "imagemap_module \"${ORACLE_HOME}/ohs/modules/mod_imagemap.so\"",
+    "actions_module \"${ORACLE_HOME}/ohs/modules/mod_actions.so\"",
+    "speling_module \"${ORACLE_HOME}/ohs/modules/mod_speling.so\"",
+    "userdir_module \"${ORACLE_HOME}/ohs/modules/mod_userdir.so\"",
+    "alias_module \"${ORACLE_HOME}/ohs/modules/mod_alias.so\"",
+    "authz_host_module \"${ORACLE_HOME}/ohs/modules/mod_authz_host.so\"",
+    "auth_basic_module \"${ORACLE_HOME}/ohs/modules/mod_auth_basic.so\"",
+    "authz_user_module \"${ORACLE_HOME}/ohs/modules/mod_authz_user.so\"",
+    "authn_file_module \"${ORACLE_HOME}/ohs/modules/mod_authn_file.so\"",
+    "authn_anon_module \"${ORACLE_HOME}/ohs/modules/mod_authn_anon.so\"",
+    "authn_dbm_module \"${ORACLE_HOME}/ohs/modules/mod_authn_dbm.so\"",
+    "proxy_module \"${ORACLE_HOME}/ohs/modules/mod_proxy.so\"",
+    "proxy_http_module \"${ORACLE_HOME}/ohs/modules/mod_proxy_http.so\"",
+    "proxy_ftp_module \"${ORACLE_HOME}/ohs/modules/mod_proxy_ftp.so\"",
+    "proxy_connect_module \"${ORACLE_HOME}/ohs/modules/mod_proxy_connect.so\"",
+    "proxy_balancer_module \"${ORACLE_HOME}/ohs/modules/mod_proxy_balancer.so\"",
+    "cern_meta_module \"${ORACLE_HOME}/ohs/modules/mod_cern_meta.so\"",
+    "expires_module \"${ORACLE_HOME}/ohs/modules/mod_expires.so\"",
+    "headers_module \"${ORACLE_HOME}/ohs/modules/mod_headers.so\"",
+    "usertrack_module \"${ORACLE_HOME}/ohs/modules/mod_usertrack.so\"",
+    "unique_id_module \"${ORACLE_HOME}/ohs/modules/mod_unique_id.so\"",
+    "setenvif_module \"${ORACLE_HOME}/ohs/modules/mod_setenvif.so\"",
+    "context_module \"${ORACLE_HOME}/ohs/modules/mod_context.so\"",
+    "rewrite_module \"${ORACLE_HOME}/ohs/modules/mod_rewrite.so\"",
+    "onsint_module \"${ORACLE_HOME}/ohs/modules/mod_onsint.so\""
+  ],
+  "KeepAlive": "On",
+  "ServerName": "ohs.oracleoutsourcing.com",
+  "UseCanonicalName": "On",
+  "ReadmeName": "README.html",
+  "HeaderName": "HEADER.html",
+  "ServerSignature": "Off",
+  "CustomLog": "\"|${ORACLE_HOME}/ohs/bin/odl_rotatelogs ${ORACLE_INSTANCE}/diagnostics/logs/${COMPONENT_TYPE}/${COMPONENT_NAME}/access_log 50M\" common",
+  "Alias": "/icons/ \"${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/icons/\"",
+  "ForceLanguagePriority": "Prefer Fallback",
+  "KeepAliveTimeout": "61",
+  "Directory": [
+    {
+      "/": {
+        "Options": "FollowSymLinks",
+        "AllowOverride": "None"
+      }
+    },
+    {
+      "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/htdocs": {
+        "Order": "allow,deny",
+        "AllowOverride": "None",
+        "DirectoryIndex": "welcome-index.html",
+        "Allow": "from all",
+        "Options": "FollowSymLinks"
+      }
+    },
+    {
+      "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/cgi-bin": {
+        "Allow": "from all",
+        "Options": "None",
+        "AllowOverride": "None",
+        "Order": "allow,deny"
+      }
+    },
+    {
+      "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/icons": {
+        "Allow": "from all",
+        "Order": "allow,deny",
+        "AllowOverride": "None"
+      }
+    },
+    {
+      "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/manual": {
+        "Files": [
+          {
+            "*.html": {
+              "SetHandler": "type-map"
+            }
+          },
+          {
+            "*.html.tr.utf8": {
+              "ForceType": "text/html"
+            }
+          }
+        ],
+        "Allow": "from all",
+        "LanguagePriority": "en de es fr ja ko pt-br ru tr",
+        "SetEnvIf": "Request_URI ^/manual/(de|en|es|fr|ja|ko|pt-br|ru|tr)/ prefer-language=$1",
+        "AllowOverride": "None",
+        "ForceLanguagePriority": "Prefer Fallback",
+        "Order": "allow,deny",
+        "RedirectMatch": "301 ^/manual(?:/(de|en|es|fr|ja|ko|pt-br|ru|tr)){2,}(/.*)?$ /manual/$1$2"
+      }
+    }
+  ],
+  "OraAuditEnable": "On",
+  "AccessFileName": ".htaccess",
+  "TraceEnable": "off",
+  "RedirectMatch": "^/$ https://isodevpod1-v0002-fa.us1.vfarm.oraclecorp.com/homePage/faces/AtkHomePageWelcome",
+  "AddIconByEncoding": "(CMP,/icons/compressed.gif) x-compress x-gzip",
+  "FilesMatch": {
+    "^\\.ht": {
+      "Satisfy": "All",
+      "Deny": "from all",
+      "Order": "allow,deny"
+    }
+  },
+  "LanguagePriority": "en ca cs da de el eo es et fr he hr it ja ko ltz nl nn no pl pt pt-BR ru sv zh-CN zh-TW",
+  "OraLogSeverity": "WARNING:32",
+  "OraLogDir": "${ORACLE_INSTANCE}/diagnostics/logs/${COMPONENT_TYPE}/${COMPONENT_NAME}",
+  "ServerTokens": "Prod",
+  "IfModule": [
+    {
+      "!mpm_winnt_module": {}
+    },
+    {
+      "mpm_prefork_module": {
+        "StartServers": "5",
+        "AcceptMutex": "fcntl",
+        "MaxClients": "150",
+        "MaxSpareServers": "10",
+        "MinSpareServers": "5",
+        "LockFile": "/dev/shm/ohs_ohs1_http_lock",
+        "MaxRequestsPerChild": "0"
+      }
+    },
+    {
+      "mpm_worker_module": {
+        "AcceptMutex": "fcntl",
+        "ServerLimit": "4",
+        "StartServers": "2",
+        "MinSpareThreads": "100",
+        "MaxClients": "1000",
+        "MaxSpareThreads": "400",
+        "ThreadLimit": "250",
+        "LockFile": "/dev/shm/ohs_ohs1_http_lock",
+        "MaxRequestsPerChild": "10000",
+        "ThreadsPerChild": "250"
+      }
+    },
+    {
+      "mpm_winnt_module": {
+        "ThreadsPerChild": "150",
+        "MaxRequestsPerChild": "0"
+      }
+    },
+    {
+      "mpm_prefork_module": {
+        "LoadModule": "cgi_module \"${ORACLE_HOME}/ohs/modules/mod_cgi.so\""
+      }
+    },
+    {
+      "mpm_worker_module": {
+        "LoadModule": "cgid_module \"${ORACLE_HOME}/ohs/modules/mod_cgid.so\""
+      }
+    },
+    {
+      "mpm_winnt_module": {
+        "LoadModule": "cgi_module \"${ORACLE_HOME}/ohs/modules/mod_cgi.so\""
+      }
+    },
+    {
+      "dumpio_module": {
+        "DumpIOLogLevel": "warn",
+        "DumpIOOutput": "On",
+        "DumpIOInput": "On"
+      }
+    },
+    {
+      "!mpm_winnt_module": {
+        "User": "oracle"
+      }
+    },
+    {
+      "dir_module": {
+        "DirectoryIndex": "index.html"
+      }
+    },
+    {
+      "logio_module": {
+        "LogFormat": "\"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O\" combinedio"
+      }
+    },
+    {
+      "alias_module": {
+        "ScriptAlias": "/cgi-bin/ \"${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/cgi-bin/\""
+      }
+    },
+    {
+      "cgid_module": {
+        "Scriptsock": "${ORACLE_HOME}/network/log/cgisock"
+      }
+    },
+    {
+      "mime_module": {
+        "TypesConfig": "${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/mime.types",
+        "AddType": [
+          "application/x-compress .Z",
+          "application/x-gzip .gz .tgz"
+        ]
+      }
+    }
+  ],
+  "AliasMatch": "^/manual(?:/(?:de|en|es|fr|ja|ko|pt-br|ru|tr))?(/.*)?$ \"${ORACLE_INSTANCE}/config/${COMPONENT_TYPE}/${COMPONENT_NAME}/manual$1\"",
+  "Header": [
+    "unset X-Powered-By",
+    "always unset X-Powered-By"
+  ],
+  "LogFormat": [
+    "\"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"\" combined",
+    "\"%{X-Forwarded-For}i %h %l %u %t \"%r\" %>s %b %D %{X-ORACLE-DMS-ECID}o \"%{OAM_REMOTE_USER}i\" \"%{True-Client-IP}i\"\" common"
+  ],
+  "AddIconByType": [
+    "(TXT,/icons/text.gif) text/*",
+    "(IMG,/icons/image2.gif) image/*",
+    "(SND,/icons/sound2.gif) audio/*",
+    "(VID,/icons/movie.gif) video/*"
+  ],
+  "OraLogMode": "odl-text",
+  "MaxKeepAliveRequests": "100",
+  "DefaultType": "text/plain",
+  "PidFile": "${ORACLE_INSTANCE}/diagnostics/logs/${COMPONENT_TYPE}/${COMPONENT_NAME}/httpd.pid",
+  "IndexIgnore": ".??* *~ *"
+}

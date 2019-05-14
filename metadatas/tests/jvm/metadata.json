@@ -1,0 +1,151 @@
+{
+  "name": "jvm Checks",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "logFileName": "metadatas/tests/jvm/jvm.log",
+  "options": "test",
+  "tests": [
+    {
+      "name": "JVM Args Test",
+      "checks": [
+        {
+          "name": "Xms Check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "$..wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].Xms",
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "file": "metadatas/tests/jvm/target.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xmx Check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "$..wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].Xmx"
+          },
+          "target": {
+            "file": "metadatas/tests/jvm/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xss Check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "$..wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].XssInKb"
+          },
+          "target": {
+            "file": "metadatas/tests/jvm/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XX:NewRatio Check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "$..wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:NewRatio'"
+          },
+          "target": {
+            "file": "metadatas/tests/jvm/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:NewRatio={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads Check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "$..wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/jvm/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "XX:MaxPermSize check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "$..wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:MaxPermSize'"
+          },
+          "target": {
+            "file": "metadatas/tests/jvm/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:MaxPermSize={}?"
+          }
+        }
+      ]
+    }
+  ]
+}

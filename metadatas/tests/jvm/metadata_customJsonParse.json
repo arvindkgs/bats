@@ -1,0 +1,36 @@
+{
+  "name": "jvm Checks",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "logFileName": "metadatas/tests/jvm/jvm.log",
+  "options": "test",
+  "tests": [
+    {
+      "name": "JVM Args Test",
+      "checks": [
+        {
+          "name": "XX:NewRatio",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "topology.wlsClusters.[].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "topology.wlsClusters.[clusterName == ${clusterName}].XX:NewRatio"
+          },
+          "target": {
+            "file": "metadatas/tests/jvm/target.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:NewRatio={}"
+          }
+        }
+      ]
+    }
+  ]
+}
