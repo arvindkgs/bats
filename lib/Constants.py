@@ -6,6 +6,7 @@ class RegularExpression:
     findDefaultXMLNamespace = '^{([^}]*)(?=})'
     findIndexExpression = '{([^}]*)(?=})'
 
+
 def getDefaultXMLNamespace(str):
     pattern = re.compile(RegularExpression.findDefaultXMLNamespace)
     matcher = pattern.match(str)

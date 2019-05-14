@@ -50,11 +50,11 @@ class Resource(object):
                                 values.append(m.group(1))
                             else:
                                 comparelog.print_error(
-                                    msg="Not able to extract: '" + self.format + "' from " + property.name + ", from file:" + self.file,
+                                    msg="No pattern '" + self.format + "' in " + property.name,
                                     args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
                                           'source': self.file,
                                           'checkName': self.checkName})
-                                values.append(None)
+                                # values.append(None)
                         property.value = values
         return properties
 
@@ -133,4 +133,3 @@ class Resource(object):
                     suffix = replacedStr
             pattern = '.*' + prefix + '([^ ]+)' + '(?=' + suffix + '\\b)' + '.*'
         return pattern
-

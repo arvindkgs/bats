@@ -14,7 +14,7 @@ def evaluateCheck(check, testName):
         for i, dynamic in enumerate(check['dynamic']):
             # compute and store dynamic value
             dynamicProperty = ResourceBuilder.build(property=dynamic, testName=testName,
-                                             checkName=checkName)
+                                                    checkName=checkName)
             key = str(i + 1) if dynamicProperty.getKey() is None else dynamicProperty.getKey()
             value = dynamicProperty.getProperties(dynamicProperties)
             dynamicProperties[key] = []
@@ -25,29 +25,29 @@ def evaluateCheck(check, testName):
                 dynamicProperties[key] = [value]
     if checkType == 'COMPARE':
         source = ResourceBuilder.build(property=check['source'], testName=testName,
-                                checkName=checkName)
+                                       checkName=checkName)
         sourceProperty = source.getProperties(dynamicMap=dynamicProperties)
         target = ResourceBuilder.build(property=check['target'], testName=testName,
-                                checkName=checkName)
+                                       checkName=checkName)
         targetProperty = target.getProperties(dynamicMap=dynamicProperties)
         if sourceProperty is not None and targetProperty is not None:
             if len(sourceProperty) == len(targetProperty):
                 for i, source_property in enumerate(sourceProperty):
                     compare = source_property.compare(targetProperty[i])
                     if compare == Property.MATCH:
-                        comparelog.print_info_log(msg=str(source_property)+" == " + str(targetProperty[i]),
+                        comparelog.print_info_log(msg=str(source_property) + " == " + str(targetProperty[i]),
                                                   args={'fnName': testName, 'type': checkType,
                                                         'checkName': checkName})
                         passed = passed and True
                     elif compare == Property.NO_MATCH:
-                        comparelog.print_info_log(msg=str(source_property)+" != " + str(targetProperty[i]),
+                        comparelog.print_info_log(msg=str(source_property) + " != " + str(targetProperty[i]),
                                                   args={'fnName': testName, 'type': checkType,
                                                         'checkName': checkName})
                         passed = passed and False
             else:
                 comparelog.print_info_log(
-                    msg="Mismatch in extrapolation on properties in Source resource: (File: '" + source.file + "', Property: '" + str(
-                        source.property) + "') and  Target resource: (File: '" + target.file + "', Property: '" + str(
+                    msg="Mismatch in number of properties in Source: (File: '" + source.file + "', Property: '" + str(
+                        source.property) + "') and  Target: (File: '" + target.file + "', Property: '" + str(
                         target.property) + "')",
                     args={'fnName': testName, 'type': checkType,
                           'checkName': checkName})

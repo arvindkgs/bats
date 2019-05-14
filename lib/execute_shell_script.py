@@ -16,10 +16,10 @@ def grepProp(property, file):
                 returnVal = stdout.decode('ascii').strip()
     else:
         process = subprocess.Popen(
-            ['grep \'^\\s*\'"' + property + '"\'=\' ./"' + file + '"|cut -d\'=\' -f2-'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            ['grep \'^\\s*\'"' + property + '"\'=\' ./"' + file + '"|cut -d\'=\' -f2-'], stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, shell=True)
         stdout, stderr = process.communicate()
         if process.returncode == 0:
             if stdout.decode('ascii').strip() != "":
                 returnVal = stdout.decode('ascii').strip()
     return returnVal
-

@@ -7,7 +7,7 @@ def getProperties(resource, extrapolated_properties, files):
         for property in extrapolated_properties:
             propFrmFile = execute_shell_script.grepProp(property, fileobj)
             if propFrmFile is None:
-                comparelog.print_error(msg="Not able to get property: " + property + ", from file:" + resource.file,
+                comparelog.print_error(msg="No property: " + property,
                                        args={'fnName': resource.testName, 'type': comparelog.MISSING_PROPERTY,
                                              'source': resource.file, 'checkName': resource.checkName})
                 properties.append(Property(property, None))

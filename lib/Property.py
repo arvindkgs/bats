@@ -1,8 +1,8 @@
-
 class Property(object):
     MATCH = "0"
     NO_MATCH = "1"
     ERROR = "-1"
+
     def __init__(self, name, value):
         self.name = name
         self.value = value
@@ -13,7 +13,7 @@ class Property(object):
     def compare(self, target):
         if self.value is not None and target is not None and target.value is not None:
             if len(self.value) == len(
-                target.value):
+                    target.value):
                 for j in range(0, len(self.value)):
                     if self.value[j] is not None and target.value[j] is not None:
                         if str(self.value[j]) != str(target.value[j]):
@@ -21,6 +21,6 @@ class Property(object):
                         else:
                             return Property.MATCH
             else:
-                return Property.NO_MATCH
+                return Property.ERROR
         else:
             return Property.ERROR

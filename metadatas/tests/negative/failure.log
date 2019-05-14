@@ -1,20 +1,20 @@
 [[INFO]]	--------------------------------
 [[INFO]]	Negative Checks
 [[INFO]]	--------------------------------
-[[INFO]	[JVM test]	[Value mismatch]	[COMPARE]]	topology.wlsClusters.[clusterName == 'AdminServer'].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
-[[ERROR]	[JVM test]	[No Property]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No object with attribute: clusterName == 'xyz' found in : metadatas/tests/negative/source.json
-[[ERROR]	[JVM test]	[No Property]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to get property: fusion.FADomain.AdminServer.default.minmaxmemory.xyz, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[No Format found]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No object with attribute: clusterName == 'xyz' found in : metadatas/tests/negative/source.json
-[[ERROR]	[JVM test]	[No Format found]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: 'xyz{}?' from fusion.FADomain.AdminServer.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.UICluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.ServiceCluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.MWCluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.AdminServer.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.SingletonCluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	Not able to extract: '-XX:MaxPermSize={}?' from fusion.FADomain.bip_cluster.default.minmaxmemory.main, from file:metadatas/tests/negative/target.properties
+[[INFO]	[JVM test]	[Value mismatch]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
+[[ERROR]	[JVM test]	[No Property]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No property: '$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx' found.
+[[ERROR]	[JVM test]	[No Property]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No property: fusion.FADomain.AdminServer.default.minmaxmemory.xyz
+[[ERROR]	[JVM test]	[No Format found]	[MISSING PROPERTY]	[metadatas/tests/negative/source.json]]	No property: '$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx' found.
+[[ERROR]	[JVM test]	[No Format found]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern 'xyz{}?' in fusion.FADomain.AdminServer.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.UICluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.ServiceCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.MWCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.AdminServer.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.SingletonCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.bip_cluster.default.minmaxmemory.main
 [[INFO]]	--------------------------------
 [[INFO]]	Validation Failed.
 [[INFO]]	--------------------------------

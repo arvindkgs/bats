@@ -11,7 +11,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bi_cluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -26,7 +26,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SharedServicesCluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -41,7 +41,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == UICluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -56,7 +56,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ServiceCluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -71,7 +71,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == MWCluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -86,7 +86,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ESS_SOACluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -101,7 +101,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == AdminServer].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -116,7 +116,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SingletonCluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -131,7 +131,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SupplyPlanningEngineCluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -146,7 +146,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SEMSearchCluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -161,7 +161,7 @@
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bip_cluster].Xms",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xms",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -176,7 +176,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bi_cluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -191,7 +191,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SharedServicesCluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -206,7 +206,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == UICluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -221,7 +221,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ServiceCluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -236,7 +236,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == MWCluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -251,7 +251,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ESS_SOACluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -266,7 +266,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == AdminServer].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -281,7 +281,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SingletonCluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -296,7 +296,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SupplyPlanningEngineCluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -311,7 +311,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SEMSearchCluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -326,7 +326,7 @@
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bip_cluster].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xmx",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -341,7 +341,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ServiceCluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -356,7 +356,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bi_cluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -371,7 +371,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SharedServicesCluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -386,7 +386,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == UICluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -401,22 +401,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == AdminServer].XssInKb",
-            "file": "metadatas/tests/all/SDI_HOST_properties.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
-            "file": "metadatas/tests/all/fusionapps_start_params.properties",
-            "type": "PROPERTY",
-            "format": "-Xss{}?"
-          }
-        },
-        {
-          "name": "XssInKb",
-          "type": "COMPARE",
-          "source": {
-            "property": "topology.wlsClusters.[clusterName == MWCluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -431,7 +416,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ESS_SOACluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -446,7 +431,22 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SingletonCluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].XssInKb",
+            "file": "metadatas/tests/all/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "metadatas/tests/all/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -461,7 +461,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SupplyPlanningEngineCluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -476,7 +476,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SEMSearchCluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -491,7 +491,7 @@
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bip_cluster].XssInKb",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].XssInKb",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -506,7 +506,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bi_cluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -521,7 +521,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == AdminServer].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -536,7 +536,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SharedServicesCluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -551,7 +551,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == UICluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -566,7 +566,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ServiceCluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -581,7 +581,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == MWCluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -596,7 +596,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == ESS_SOACluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -611,7 +611,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SingletonCluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -626,7 +626,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SupplyPlanningEngineCluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -641,7 +641,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == SEMSearchCluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },
@@ -656,7 +656,7 @@
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == bip_cluster].XX:ParallelGCThreads",
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].'XX:ParallelGCThreads'",
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON"
           },

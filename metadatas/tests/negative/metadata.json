@@ -11,7 +11,7 @@
           "name": "Value mismatch",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == 'AdminServer'].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx",
             "file": "metadatas/tests/negative/source.json",
             "type": "JSON"
           },
@@ -26,7 +26,7 @@
           "name": "No Property",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == 'xyz'].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx",
             "file": "metadatas/tests/negative/source.json",
             "type": "JSON"
           },
@@ -41,7 +41,7 @@
           "name": "No Property",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == 'AdminServer'].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx",
             "file": "metadatas/tests/negative/source.json",
             "type": "JSON"
           },
@@ -56,7 +56,7 @@
           "name": "No Format found",
           "type": "COMPARE",
           "source": {
-            "property": "topology.wlsClusters.[clusterName == 'xyz'].Xmx",
+            "property": "$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx",
             "file": "metadatas/tests/negative/source.json",
             "type": "JSON"
           },
@@ -74,13 +74,13 @@
             {
               "file": "metadatas/tests/negative/source.json",
               "type": "JSON",
-              "property": "topology.wlsClusters.[].clusterName"
+              "property": "$.topology.wlsClusters[*].clusterName"
             }
           ],
           "source": {
             "file": "metadatas/tests/negative/source.json",
             "type": "JSON",
-            "property": "topology.wlsClusters.[clusterName == ${1}].XX:MaxPermSize"
+            "property": "$.topology.wlsClusters[?(@.clusterName=${1})].'XX:MaxPermSize'"
           },
           "target": {
             "file": "metadatas/tests/negative/target.properties",

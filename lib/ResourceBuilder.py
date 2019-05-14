@@ -1,9 +1,9 @@
-from Resource import Type, Resource
-from lib import comparelog
-import JsonHandler
-import XmlHandler
-import PropertiesHandler
 import ConfigHandler
+import PropertiesHandler
+import XmlHandler
+from Resource import Type, Resource
+from lib import comparelog, JsonHandler
+
 
 def build(property, testName, checkName):
     if property['type'] == Type.JSON:

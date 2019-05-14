@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
 runPositiveTest() {
-    python bin/validation_suite.py $1/metadata.json
+    path=$1
+    metadatafile=$2
+    generatedlog=$3
+    expectedlog=$4
+    python bin/validation_suite.py $path/$metadatafile
     if [ $? -eq 0 ]; then
-        diff $1/$3 $1/$4
+        diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
             echo "$1 : Success!"
         else
-            echo "$1: Failure : expected log(metadatas/tests/positive/success.log) not same as generated log(metadatas/tests/positive/positive.log)"
+            echo "$1: Failure : generated log($path/$generatedlog) not same as expected log($path/$expectedlog)"
         fi
      else
         echo "$1: Failure, validation should pass"
@@ -15,13 +19,17 @@ runPositiveTest() {
 }
 
 runNegativeTest() {
-    python bin/validation_suite.py $1/metadata.json
+    path=$1
+    metadatafile=$2
+    generatedlog=$3
+    expectedlog=$4
+    python bin/validation_suite.py $path/$metadatafile
     if [ $? -ne 0 ]; then
-        diff $1/failure.log $1/negative.log
+        diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
             echo "$1: Success!"
         else
-            echo "$1: Failure : expected log(metadatas/tests/negative/failure.log) not same as generated log(metadatas/tests/negative/negative.log)"
+            echo "$1: Failure : generated log($path/$generatedlog) not same as expected log($path/$expectedlog)"
         fi
     else
         echo "$1: Failure : validation should fail"
@@ -33,7 +41,7 @@ runAllTest(){
     if [ $? -ne 0 ]; then
         python bin/validation_suite.py metadatas/tests/all/dynamic.json
         if [ $? -ne 0 ]; then
-            diff metadatas/tests/all/individual.log metadatas/tests/all/dynamic.log
+            diff metadatas/tests/all/individual.log metadatas/tests/all/dynamic.log > /dev/null
             if [ $? -eq 0 ]; then
                 echo "metadatas/tests/all: Success!"
             else
@@ -47,8 +55,9 @@ runAllTest(){
     fi
 }
 
-runPositiveTest "metadatas/tests/jvm" "success.log" "positive.log"
-runPositiveTest "metadatas/tests/jdbc" "success.log" "jdbc.log"
-runNegativeTest "metadatas/tests/negative/" "failure.log" "negative.json"
+runPositiveTest "metadatas/tests/jvm" "metadata.json" "jvm.log" "success.log"
+runPositiveTest "metadatas/tests/jdbc" "metadata.json" "jdbc.log" "success.log"
+runNegativeTest "metadatas/tests/ohs" "metadata.json" "ohs.log" "failure.log"
+runNegativeTest "metadatas/tests/negative" "metadata.json" "negative.log" "failure.log"
 runAllTest "metadatas/tests/all/"
 

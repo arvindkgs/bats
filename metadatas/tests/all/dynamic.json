@@ -12,20 +12,21 @@
           "type": "COMPARE",
           "dynamic": [
             {
+              "key": "clusterName",
               "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
-              "property": "topology.wlsClusters.[].clusterName"
+              "property": "$.topology.wlsClusters[*].clusterName"
             }
           ],
           "source": {
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
-            "property": "topology.wlsClusters.[clusterName == ${1}].Xms"
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].Xms"
           },
           "target": {
             "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
-            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xms{}?"
           }
         },
@@ -34,20 +35,21 @@
           "type": "COMPARE",
           "dynamic": [
             {
+              "key": "clusterName",
               "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
-              "property": "topology.wlsClusters.[].clusterName"
+              "property": "$.topology.wlsClusters[*].clusterName"
             }
           ],
           "source": {
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
-            "property": "topology.wlsClusters.[clusterName == ${1}].Xmx"
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].Xmx"
           },
           "target": {
             "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
-            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xmx{}?"
           }
         },
@@ -56,20 +58,21 @@
           "type": "COMPARE",
           "dynamic": [
             {
+              "key": "clusterName",
               "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
-              "property": "topology.wlsClusters.[].clusterName"
+              "property": "$.topology.wlsClusters[*].clusterName"
             }
           ],
           "source": {
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
-            "property": "topology.wlsClusters.[clusterName == ${1}].XssInKb"
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].XssInKb"
           },
           "target": {
             "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
-            "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xss{}?"
           }
         },
@@ -78,20 +81,21 @@
           "type": "COMPARE",
           "dynamic": [
             {
+              "key": "clusterName",
               "file": "metadatas/tests/all/SDI_HOST_properties.json",
               "type": "JSON",
-              "property": "topology.wlsClusters.[].clusterName"
+              "property": "$.topology.wlsClusters[*].clusterName"
             }
           ],
           "source": {
             "file": "metadatas/tests/all/SDI_HOST_properties.json",
             "type": "JSON",
-            "property": "topology.wlsClusters.[clusterName == ${1}].XX:ParallelGCThreads"
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].'XX:ParallelGCThreads'"
           },
           "target": {
             "file": "metadatas/tests/all/fusionapps_start_params.properties",
             "type": "PROPERTY",
-            "property": "fusion.${1}.Linux-x86_64.memoryargs",
+            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:ParallelGCThreads={}"
           }
         }

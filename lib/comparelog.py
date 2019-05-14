@@ -71,6 +71,7 @@ def setOptions(options):
 
 logFileSet = False
 
+
 def setLogFileName(logFileName='automation.log'):
     global fh
     global logFileSet
@@ -86,7 +87,9 @@ def setLogFileName(logFileName='automation.log'):
             # add ch to logger
             getLogger().addHandler(fh)
         except IOError:
-            record = getLogger().makeRecord(name, logging.ERROR, os.path.basename(__file__), None, msg="Path to logFileName '"+logFileName+"' incorrect. Creating default log 'automation.log'", args=None, exc_info=None,
+            record = getLogger().makeRecord(name, logging.ERROR, os.path.basename(__file__), None,
+                                            msg="Path to logFileName '" + logFileName + "' incorrect. Creating default log 'automation.log'",
+                                            args=None, exc_info=None,
                                             func="ERROR", extra={})
             getLogger().handle(record)
             print(formatter.format(record))
@@ -98,7 +101,6 @@ def setLogFileName(logFileName='automation.log'):
 
             # add ch to logger
             getLogger().addHandler(fh)
-
 
 
 # Method to print Error log (prints to log and console)
