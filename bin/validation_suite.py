@@ -40,7 +40,7 @@ class CompareProperties(object):
                     comparelog.print_info("--------------------------------")
                 else:
                     comparelog.print_info("--------------------------------")
-                    comparelog.print_info("Running tests defined in '" + self.metadata + "'")
+                    comparelog.print_info("Running '" + self.metadata + "'")
                     comparelog.print_info("--------------------------------")
 
                 for test in config['tests']:

@@ -36,7 +36,7 @@ def getProperties(resource, extrapolated_properties, files):
                                     for node in nodes:
                                         properties.append(Property(property, [node.text]))
                         except Exception as e:
-                            comparelog.print_error(
+                            comparelog.print_error_log(
                                 msg="XPath error for property: " + property + " from xml file: " + resource.file,
                                 args={'fnName': resource.testName, 'type': comparelog.MISSING_PROPERTY,
                                       'source': fileobj, 'checkName': resource.checkName})

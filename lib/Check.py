@@ -40,12 +40,12 @@ def evaluateCheck(check, testName):
                                                         'checkName': checkName})
                         passed = passed and True
                     elif compare == Property.NO_MATCH:
-                        comparelog.print_info_log(msg=str(source_property) + " != " + str(targetProperty[i]),
+                        comparelog.print_info(msg=str(source_property) + " != " + str(targetProperty[i]),
                                                   args={'fnName': testName, 'type': checkType,
                                                         'checkName': checkName})
                         passed = passed and False
             else:
-                comparelog.print_info_log(
+                comparelog.print_info(
                     msg="Mismatch in number of properties in Source: (File: '" + source.file + "', Property: '" + str(
                         source.property) + "') and  Target: (File: '" + target.file + "', Property: '" + str(
                         target.property) + "')",
@@ -55,7 +55,7 @@ def evaluateCheck(check, testName):
         else:
             passed = False
     else:
-        comparelog.print_error(
+        comparelog.print_error_log(
             msg="Unsupported check type '" + checkType + "'. Only 'COMPARE' and 'SUCCESS' is supported.", args={
                 'fnName': testName, 'checkName': checkName
             })

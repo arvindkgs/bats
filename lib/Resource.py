@@ -49,7 +49,7 @@ class Resource(object):
                             if m:
                                 values.append(m.group(1))
                             else:
-                                comparelog.print_error(
+                                comparelog.print_error_log(
                                     msg="No pattern '" + self.format + "' in " + property.name,
                                     args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
                                           'source': self.file,
@@ -82,13 +82,13 @@ class Resource(object):
                                 newproperties.append(property.replace("${" + str(m.group(1)) + "}", values))
                         properties = newproperties
                     else:
-                        comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1) + "'",
+                        comparelog.print_error_log(msg="No dynamic value present for key: '" + m.group(1) + "'",
                                                args={'fnName': self.testName,
                                                      'type': comparelog.MISSING_DYNAMIC_VALUE,
                                                      'source': self.file, 'checkName': self.checkName})
                         return None
                 else:
-                    comparelog.print_error(msg="No dynamic value present for key: '" + m.group(1) + "'",
+                    comparelog.print_error_log(msg="No dynamic value present for key: '" + m.group(1) + "'",
                                            args={'fnName': self.testName,
                                                  'type': comparelog.MISSING_DYNAMIC_VALUE,
                                                  'source': self.file, 'checkName': self.checkName})

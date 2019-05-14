@@ -1,14 +1,13 @@
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
-1. Use POJO for storing property instead of tuple to avoid array of values when using extend
-2. Add SHELL type
-3. Use REGEX for parsing format text.
-4. Add name to dynamic property instead of referring to it using index.
-5. Try to speed up dynamic matching for wlsCluster.[clusterName = ${1}].Xmx,
-    3.1 Currently dynamic components gets a list of size(n) wlsCluster names as - topology.wlsClusters.[].clusterName -> ['AdminServer', 'bip_cluster' ...] and replaces and extrapolates
+1. Add SHELL type
+2. Use REGEX for parsing format text.
+3. Add STATIC type and
+    3.1 Speed up dynamic matching for wlsCluster.[clusterName = ${1}].Xmx,
+    3.2 Currently dynamic components gets a list of size(n) wlsCluster names as - topology.wlsClusters.[].clusterName -> ['AdminServer', 'bip_cluster' ...] and replaces and extrapolates
         source property - topology.wlsClusters.[clusterName = ${1}].Xms to size(n) properties and compare these size(n) target properties.
-    3.2 This fetching size(n) dynamic values from JSON and again fetching size(n) corresponding properties from same JSON slowes the tool.
-    3.3 Instead get dynamic wlsCluster objects as [{'name': 'AdminServer', 'Xmx': 12, 'Xms': 13}, {'name': 'bip_cluster', 'Xmx': 12, 'Xms': 13}]
+    3.3 This fetching size(n) dynamic values from JSON and again fetching size(n) corresponding properties from same JSON slowes the tool.
+    3.4 Instead get dynamic wlsCluster objects as [{'name': 'AdminServer', 'Xmx': 12, 'Xms': 13}, {'name': 'bip_cluster', 'Xmx': 12, 'Xms': 13}]
         and use this in the comparision as
         {
           "name": "Dynamic Object comparision",
@@ -41,4 +40,8 @@ To-Do
            * So LIMITATION is extrapolation resulting in size(n) source properties, should also result in similar extrapolation
              on the target as well.
 
+Done
+---------------------------------------------------------------------------------------------------------------------------------------
+1. Use POJO for storing property instead of tuple to avoid array of values when using extend.
+2. Add name to dynamic property instead of referring to it using index.
 

@@ -37,8 +37,8 @@ def getLogger():
 getLogger().setLevel(logging.DEBUG)
 
 # Prints only ERROR CRITICAL to stdout
-ch = logging.StreamHandler()
-ch.setLevel(logging.ERROR)
+# ch = logging.StreamHandler()
+# ch.setLevel(logging.ERROR)
 
 # create formatter
 formatter = OptionalArgsFormatter(
@@ -47,20 +47,18 @@ formatter = OptionalArgsFormatter(
      'checkName': '\t[%(checkName)s]'})
 
 # add formatter
-ch.setFormatter(formatter)
+# ch.setFormatter(formatter)
 
 # add ch to logger
-getLogger().addHandler(ch)
+# getLogger().addHandler(ch)
 
 
 def setOptions(options):
     global logOnly
     for option in options.split(','):
         if option == 'logonly':
-            getLogger().removeHandler(ch)
             logOnly = True
         if option == 'test':
-            getLogger().removeHandler(ch)
             logOnly = True
             for handler in getLogger().handlers:
                 handler.setFormatter(OptionalArgsFormatter(
@@ -105,6 +103,18 @@ def setLogFileName(logFileName='automation.log'):
 
 # Method to print Error log (prints to log and console)
 def print_error(msg, args={}):
+    setLogFileName()
+    file_name = os.path.basename(__file__)
+    fnName = args['fnName'] if 'fnName' in args else None
+    record = getLogger().makeRecord(name, logging.ERROR, file_name, None, msg=msg, args=None,
+                                    exc_info=None,
+                                    func=fnName, extra=args)
+    getLogger().handle(record)
+    if not logOnly:
+        print(formatter.format(record))
+
+# Method to print Error log (prints to log and console)
+def print_error_log(msg, args={}):
     setLogFileName()
     file_name = os.path.basename(__file__)
     fnName = args['fnName'] if 'fnName' in args else None
