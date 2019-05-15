@@ -1,5 +1,6 @@
 import json
 import sys
+
 if __name__ == "__main__" and __package__ is None:
     from sys import path
     from os.path import dirname as dir
@@ -80,4 +81,3 @@ if __name__ == "__main__":
         print "Missing Metadata.json argument."
         print "Usage: validation_suite.py <metadata.json>"
         sys.exit(1)
-

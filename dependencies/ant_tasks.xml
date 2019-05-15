@@ -1,5 +1,5 @@
 <project name="Get Remote file" basedir=".">
-  <target name="getFile">
-    <scp file="${username}:${password}@${hostname}:${remotefile}" todir="${todir}"/>
-  </target>
+    <target name="getFile">
+        <scp file="${username}:${password}@${hostname}:${remotefile}" todir="${todir}"/>
+    </target>
 </project>

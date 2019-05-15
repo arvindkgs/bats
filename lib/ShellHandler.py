@@ -1,7 +1,8 @@
 import os
 import platform
 import subprocess
-from lib import Property
+
+from Property import Property
 
 
 def getProperties(resource, extrapolated_properties, files):
@@ -9,7 +10,7 @@ def getProperties(resource, extrapolated_properties, files):
     for property in extrapolated_properties:
         command = property
         if resource.hostname and resource.username and resource.password:
-            command = 'sh ./scripts/runSSHCommand.sh '+resource.hostname+' '+resource.username+' '+resource.password+' "'+command+'"'
+            command = 'sh ./scripts/runSSHCommand.sh ' + resource.hostname + ' ' + resource.username + ' ' + resource.password + ' "' + command + '"'
         commandOutput = runShellCommand(command)
         if commandOutput is not None:
             commandOutput = commandOutput.split('\n')[2:]
@@ -17,6 +18,7 @@ def getProperties(resource, extrapolated_properties, files):
             commandOutput = [None]
         properties.append(Property(property, commandOutput))
     return properties
+
 
 def runShellCommand(command):
     returnVal = None
@@ -41,9 +43,11 @@ def runShellCommand(command):
                 returnVal = stdout.decode('ascii').strip()
     return returnVal
 
+
 def getRemoteFile(hostname, username, password, path):
-    filename = hostname+"_"+path
-    filename = "./tmp/"+filename.replace("/","_")
+    filename = hostname + "_" + path
+    filename = "./tmp/" + filename.replace("/", "_")
     if not os.path.isfile(filename):
-        runShellCommand('sh ./scripts/runSCPCommand.sh '+hostname+' '+username+' '+password+' '+path+' '+filename)
+        runShellCommand(
+            'sh ./scripts/runSCPCommand.sh ' + hostname + ' ' + username + ' ' + password + ' ' + path + ' ' + filename)
     return filename

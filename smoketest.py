@@ -1,5 +1,6 @@
-from bin.validation_suite import CompareProperties
 import subprocess
+
+from bin.validation_suite import CompareProperties
 
 
 def test_postive_compare():

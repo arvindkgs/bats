@@ -46,6 +46,7 @@ formatter = OptionalArgsFormatter(
     {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]',
      'checkName': '\t[%(checkName)s]'})
 
+
 # add formatter
 # ch.setFormatter(formatter)
 
@@ -112,6 +113,7 @@ def print_error(msg, args={}):
     getLogger().handle(record)
     if not logOnly:
         print(formatter.format(record))
+
 
 # Method to print Error log (prints to log and console)
 def print_error_log(msg, args={}):

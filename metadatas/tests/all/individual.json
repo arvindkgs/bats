@@ -157,7 +157,7 @@
             "format": "-Xms{}?"
           }
         },
-		{
+        {
           "name": "Xms check",
           "type": "COMPARE",
           "source": {
@@ -322,7 +322,7 @@
             "format": "-Xmx{}?"
           }
         },
-		{
+        {
           "name": "Xmx check",
           "type": "COMPARE",
           "source": {
@@ -412,7 +412,7 @@
             "format": "-Xss{}?"
           }
         },
-		{
+        {
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
@@ -487,7 +487,7 @@
             "format": "-Xss{}?"
           }
         },
-		{
+        {
           "name": "XssInKb",
           "type": "COMPARE",
           "source": {
@@ -622,7 +622,7 @@
             "format": "-XX:ParallelGCThreads={}"
           }
         },
-		{
+        {
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
@@ -637,7 +637,7 @@
             "format": "-XX:ParallelGCThreads={}"
           }
         },
-		{
+        {
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {
@@ -652,7 +652,7 @@
             "format": "-XX:ParallelGCThreads={}"
           }
         },
-		{
+        {
           "name": "ParallelGCThreads check",
           "type": "COMPARE",
           "source": {

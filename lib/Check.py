@@ -1,6 +1,6 @@
-from lib import comparelog
 import ResourceBuilder
 from Property import Property
+from lib import comparelog
 from lib.Dynamic import addDynamicProperties
 
 
@@ -28,8 +28,8 @@ def evaluateCheck(check, testName, dynamicProperties):
                         passed = passed and True
                     elif compare == Property.NO_MATCH:
                         comparelog.print_info(msg=str(source_property) + " != " + str(targetProperty[i]),
-                                                  args={'fnName': testName, 'type': checkType,
-                                                        'checkName': checkName})
+                                              args={'fnName': testName, 'type': checkType,
+                                                    'checkName': checkName})
                         passed = passed and False
             else:
                 comparelog.print_info(
@@ -48,5 +48,3 @@ def evaluateCheck(check, testName, dynamicProperties):
             })
         passed = False
     return passed
-
-

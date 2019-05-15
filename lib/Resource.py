@@ -1,7 +1,9 @@
 import re
+
 import Constants
-from lib import comparelog
 from lib import ShellHandler
+from lib import comparelog
+
 
 class Type(object):
     JSON = "JSON"
@@ -37,7 +39,7 @@ class Resource(object):
         if hostname and username and password and files and any(files):
             for i, file in enumerate(files):
                 if file:
-                    #print "HOSTNAME:"+hostname+", USERNAME:"+username+", PASSWORD:"+password+", file:"+file
+                    # print "HOSTNAME:"+hostname+", USERNAME:"+username+", PASSWORD:"+password+", file:"+file
                     files[i] = ShellHandler.getRemoteFile(hostname, username, password, file)
         properties = self.extractProperties(self, extrapolated_properties, files)
         if self.format is not None and properties is not None and properties != [None] * len(properties):
@@ -96,15 +98,15 @@ class Resource(object):
                             properties = newproperties
                         else:
                             comparelog.print_error_log(msg="No dynamic value present for key: '" + m.group(1) + "'",
-                                                   args={'fnName': self.testName,
-                                                         'type': comparelog.MISSING_DYNAMIC_VALUE,
-                                                         'source': self.file, 'checkName': self.checkName})
+                                                       args={'fnName': self.testName,
+                                                             'type': comparelog.MISSING_DYNAMIC_VALUE,
+                                                             'source': self.file, 'checkName': self.checkName})
                             return [None]
                     else:
                         comparelog.print_error_log(msg="No dynamic value present for key: '" + m.group(1) + "'",
-                                               args={'fnName': self.testName,
-                                                     'type': comparelog.MISSING_DYNAMIC_VALUE,
-                                                     'source': self.file, 'checkName': self.checkName})
+                                                   args={'fnName': self.testName,
+                                                         'type': comparelog.MISSING_DYNAMIC_VALUE,
+                                                         'source': self.file, 'checkName': self.checkName})
                         return [None]
         return properties
 

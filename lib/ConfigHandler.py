@@ -1,8 +1,10 @@
-from apacheconfig import *
-import jsonpath_rw_ext as jp
 import re
 
-from lib import comparelog, Property, JsonHandler
+import jsonpath_rw_ext as jp
+from apacheconfig import *
+
+from lib import comparelog, JsonHandler
+from Property import Property
 
 
 def getProperties(resource, extrapolated_properties, files):

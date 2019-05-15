@@ -1,9 +1,9 @@
 import json
 import re
-
 import jsonpath_rw_ext as jp
 
-from lib import comparelog, Property
+from Property import Property
+from lib import comparelog
 
 
 def getProperties(resource, extrapolated_properties, files):
@@ -34,17 +34,19 @@ def getProperties(resource, extrapolated_properties, files):
                                 values.append(match.value)
                     if values is None:
                         comparelog.print_error_log(msg="No property: '" + str(property) + "' found.",
+                                                   args={'fnName': resource.testName,
+                                                         'type': comparelog.MISSING_PROPERTY,
+                                                         'source': resource.file,
+                                                         'checkName': resource.checkName})
+
+                    properties.append(Property(str(property), values))
+                except Exception as e:
+                    print e
+                    comparelog.print_error_log(msg="Parser error, check jsonpath for property '" + str(property),
                                                args={'fnName': resource.testName,
-                                                     'type': comparelog.MISSING_PROPERTY,
+                                                     'type': comparelog.SYNTAX_ERROR,
                                                      'source': resource.file,
                                                      'checkName': resource.checkName})
-                    properties.append(Property(str(property), values))
-                except Exception:
-                    comparelog.print_error_log(msg="Parser error, check jsonpath for property '" + str(property),
-                                           args={'fnName': resource.testName,
-                                                 'type': comparelog.SYNTAX_ERROR,
-                                                 'source': resource.file,
-                                                 'checkName': resource.checkName})
         except ValueError:
             comparelog.print_error(msg="Invalid json file '" + resource.file + "'",
                                    args={'fnName': resource.testName,

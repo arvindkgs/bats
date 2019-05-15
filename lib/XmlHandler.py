@@ -1,6 +1,8 @@
-from StringIO import StringIO
 import xml.etree.ElementTree as ET
-from lib import Property, comparelog
+from StringIO import StringIO
+
+from lib import comparelog
+from Property import Property
 
 
 def getProperties(resource, extrapolated_properties, files):
@@ -37,7 +39,7 @@ def getProperties(resource, extrapolated_properties, files):
                                         args={'fnName': resource.testName, 'type': comparelog.MISSING_PROPERTY,
                                               'source': fileobj, 'checkName': resource.checkName})
             except Exception:
-                    comparelog.print_error(msg="File not found: " + resource.file,
-                                           args={'fnName': resource.testName, 'type': comparelog.FILE_NOT_FOUND,
-                                                 'source': fileobj, 'checkName': resource.checkName})
+                comparelog.print_error(msg="File not found: " + resource.file,
+                                       args={'fnName': resource.testName, 'type': comparelog.FILE_NOT_FOUND,
+                                             'source': fileobj, 'checkName': resource.checkName})
     return properties
