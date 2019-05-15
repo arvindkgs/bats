@@ -21,7 +21,8 @@ def getProperties(resource, extrapolated_properties, files):
                                                                                      'source': resource.file,
                                                                                      'checkName': resource.checkName})
             if dataStr is not None:
-                dataStr = re.sub('^include.*', '', dataStr, flags=re.MULTILINE)
+                pattern = re.compile('^include.*', flags=re.MULTILINE)
+                dataStr = pattern.sub('', dataStr)
                 try:
                     with make_loader() as loader:
                         confDict = None
