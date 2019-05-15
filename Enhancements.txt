@@ -1,3 +1,12 @@
+NOTES:
+-----------------------------------------------------------------------------------------------------------------------------------------
+1. If dependent py_modules cannot be installed, the go for the custom JSON parser, but remember to implement following feature for (OHS):
+   '..' - go to any depth and fetch the item/s named the following word
+   Example: IfModule..mpm_worker_module..ServerLimit
+   So in 'IfModule' go to its children/grandchildren/great-grandchildren/etc, till 'mpm_worker_module' is found.
+2. Using the 'jsonpath_rw_ext' parser, causes it to return only elements that are found, unlike custom JSON parser that adds 'None' if particular object in array does not have property.
+   This should not affect unless a property can have multiple values.
+
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
 1. Add SHELL type

@@ -1,28 +1,15 @@
 from lib import comparelog
 import ResourceBuilder
 from Property import Property
+from lib.Dynamic import addDynamicProperties
 
 
-def evaluateCheck(check, testName):
+def evaluateCheck(check, testName, dynamicProperties):
     checkType = check['type']
     # get dynamic variables if any
     checkName = check['name'] if 'name' in check else None
-    dynamicProperties = {}
     passed = True
-    if 'dynamic' in check:
-        # Define dict with key, values for each dynamic object
-        for i, dynamic in enumerate(check['dynamic']):
-            # compute and store dynamic value
-            dynamicProperty = ResourceBuilder.build(property=dynamic, testName=testName,
-                                                    checkName=checkName)
-            key = str(i + 1) if dynamicProperty.getKey() is None else dynamicProperty.getKey()
-            value = dynamicProperty.getProperties(dynamicProperties)
-            dynamicProperties[key] = []
-            if isinstance(value, list):
-                for item in value:
-                    dynamicProperties[key].extend(item.value)
-            elif value is not None:
-                dynamicProperties[key] = [value]
+    addDynamicProperties(check, dynamicProperties, testName)
     if checkType == 'COMPARE':
         source = ResourceBuilder.build(property=check['source'], testName=testName,
                                        checkName=checkName)
@@ -61,3 +48,5 @@ def evaluateCheck(check, testName):
             })
         passed = False
     return passed
+
+

@@ -1,11 +1,11 @@
-from lib import execute_shell_script, comparelog, Property
+from lib import comparelog, Property, ShellHandler
 
 
 def getProperties(resource, extrapolated_properties, files):
     properties = []
     for fileobj in files:
         for property in extrapolated_properties:
-            propFrmFile = execute_shell_script.grepProp(property, fileobj)
+            propFrmFile = ShellHandler.runShellCommand('grep \'^\\s*\'"' + property + '"\'=\' ./"' + fileobj + '"|cut -d\'=\' -f2-')
             if propFrmFile is None:
                 comparelog.print_error_log(msg="No property: " + property,
                                        args={'fnName': resource.testName, 'type': comparelog.MISSING_PROPERTY,

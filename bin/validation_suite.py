@@ -1,6 +1,5 @@
 import json
 import sys
-
 if __name__ == "__main__" and __package__ is None:
     from sys import path
     from os.path import dirname as dir
@@ -20,6 +19,7 @@ class CompareProperties(object):
 
     def __init__(self, metadataFile):
         self.metadata = metadataFile
+        ShellHandler.runShellCommand("if [-d tmp]; then rm -rf tmp; fi; mkdir tmp")
 
     def validate(self):
         # read metadata.json
@@ -45,8 +45,10 @@ class CompareProperties(object):
 
                 for test in config['tests']:
                     testName = test['name']
+                    dynamicProperties = {}
+                    Dynamic.addDynamicProperties(test, dynamicProperties)
                     for check in test['checks']:
-                        checkPassed = Check.evaluateCheck(check, testName)
+                        checkPassed = Check.evaluateCheck(check, testName, dynamicProperties)
                         passed = passed and checkPassed
 
         except IOError:
@@ -57,20 +59,25 @@ class CompareProperties(object):
             sys.exit(1)
         return passed
 
+    def __del__(self):
+        ShellHandler.runShellCommand("if [ -d tmp ]; then rm -rf tmp; fi;")
+
 
 if __name__ == "__main__":
     global metadata_file
-    if len(sys.argv) < 2:
+    if len(sys.argv) > 1:
+        if CompareProperties(sys.argv[1]).validate():
+            comparelog.print_info(msg="--------------------------------", args={})
+            comparelog.print_info("Validation Successful.")
+            comparelog.print_info("--------------------------------")
+
+        else:
+            comparelog.print_info(msg="--------------------------------", args={})
+            comparelog.print_info("Validation Failed.")
+            comparelog.print_info("--------------------------------")
+            sys.exit(1)
+    else:
         print "Missing Metadata.json argument."
         print "Usage: validation_suite.py <metadata.json>"
         sys.exit(1)
-    if CompareProperties(sys.argv[1]).validate():
-        comparelog.print_info(msg="--------------------------------", args={})
-        comparelog.print_info("Validation Successful.")
-        comparelog.print_info("--------------------------------")
 
-    else:
-        comparelog.print_info(msg="--------------------------------", args={})
-        comparelog.print_info("Validation Failed.")
-        comparelog.print_info("--------------------------------")
-        sys.exit(1)

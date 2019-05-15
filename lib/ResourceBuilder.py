@@ -2,7 +2,7 @@ import ConfigHandler
 import PropertiesHandler
 import XmlHandler
 from Resource import Type, Resource
-from lib import comparelog, JsonHandler
+from lib import comparelog, JsonHandler, ShellHandler
 
 
 def build(property, testName, checkName):
@@ -14,8 +14,10 @@ def build(property, testName, checkName):
         return Resource(property, testName, checkName, PropertiesHandler.getProperties)
     elif property['type'] == Type.CONFIG:
         return Resource(property, testName, checkName, ConfigHandler.getProperties)
+    elif property['type'] == Type.SHELL:
+        return Resource(property, testName, checkName, ShellHandler.getProperties)
     else:
         comparelog.print_error(
-            msg="No type available '" + property['type'] + "' . Available types: JSON, PROPERTY, XML, SHELL, STATIC",
+            msg="No type available '" + property['type'] + "' . Available types: JSON, PROPERTY, CONF, XML, SHELL",
             args={'fnName': testName, 'type': comparelog.SYNTAX_ERROR, 'source': "Metadata.json",
                   'checkName': checkName})

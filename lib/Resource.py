@@ -1,7 +1,7 @@
 import re
 import Constants
 from lib import comparelog
-
+from lib import ShellHandler
 
 class Type(object):
     JSON = "JSON"
@@ -16,6 +16,9 @@ class Resource(object):
     def __init__(self, property, testName, checkName, handlerFn):
         self.type = None if "type" not in property else property['type']
         self.property = None if "property" not in property else property['property']
+        self.hostname = None if "hostname" not in property else property['hostname']
+        self.username = None if "username" not in property else property['username']
+        self.password = None if "password" not in property else property['password']
         self.file = None if "file" not in property else property['file']
         self.format = None if "format" not in property else property['format']
         self.testName = testName
@@ -28,6 +31,14 @@ class Resource(object):
         if extrapolated_properties is None:
             return None
         files = self.extrapolate(dynamicMap, self.file)
+        hostname = self.extrapolate(dynamicMap, self.hostname)[0]
+        username = self.extrapolate(dynamicMap, self.username)[0]
+        password = self.extrapolate(dynamicMap, self.password)[0]
+        if hostname and username and password and files and any(files):
+            for i, file in enumerate(files):
+                if file:
+                    #print "HOSTNAME:"+hostname+", USERNAME:"+username+", PASSWORD:"+password+", file:"+file
+                    files[i] = ShellHandler.getRemoteFile(hostname, username, password, file)
         properties = self.extractProperties(self, extrapolated_properties, files)
         if self.format is not None and properties is not None and properties != [None] * len(properties):
             # extract data using self.format
@@ -56,6 +67,7 @@ class Resource(object):
                                           'checkName': self.checkName})
                                 # values.append(None)
                         property.value = values
+
         return properties
 
     def toString(self):
@@ -67,32 +79,33 @@ class Resource(object):
 
     def extrapolate(self, dynamicMap, propertyStr):
         properties = [propertyStr]
-        dynamic_pattern = Constants.RegularExpression.findIndexExpression
-        if dynamicMap is not None and len(dynamicMap) > 0:
-            for m in re.finditer(dynamic_pattern, propertyStr):
-                if m.group(1) in dynamicMap:
-                    values = dynamicMap[m.group(1)]
-                    newproperties = []
-                    if values is not None and any(values):
-                        for property in properties:
-                            if isinstance(values, list):
-                                for value in values:
-                                    newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
-                            else:
-                                newproperties.append(property.replace("${" + str(m.group(1)) + "}", values))
-                        properties = newproperties
+        if any(properties):
+            dynamic_pattern = Constants.RegularExpression.findIndexExpression
+            if dynamicMap is not None and len(dynamicMap) > 0:
+                for m in re.finditer(dynamic_pattern, propertyStr):
+                    if m.group(1) in dynamicMap:
+                        values = dynamicMap[m.group(1)]
+                        newproperties = []
+                        if values is not None and any(values):
+                            for property in properties:
+                                if isinstance(values, list):
+                                    for value in values:
+                                        newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
+                                else:
+                                    newproperties.append(property.replace("${" + str(m.group(1)) + "}", values))
+                            properties = newproperties
+                        else:
+                            comparelog.print_error_log(msg="No dynamic value present for key: '" + m.group(1) + "'",
+                                                   args={'fnName': self.testName,
+                                                         'type': comparelog.MISSING_DYNAMIC_VALUE,
+                                                         'source': self.file, 'checkName': self.checkName})
+                            return [None]
                     else:
                         comparelog.print_error_log(msg="No dynamic value present for key: '" + m.group(1) + "'",
                                                args={'fnName': self.testName,
                                                      'type': comparelog.MISSING_DYNAMIC_VALUE,
                                                      'source': self.file, 'checkName': self.checkName})
-                        return None
-                else:
-                    comparelog.print_error_log(msg="No dynamic value present for key: '" + m.group(1) + "'",
-                                           args={'fnName': self.testName,
-                                                 'type': comparelog.MISSING_DYNAMIC_VALUE,
-                                                 'source': self.file, 'checkName': self.checkName})
-                    return None
+                        return [None]
         return properties
 
     def getRegexPatternFormat(self):

@@ -1,0 +1,185 @@
+{
+  "name": "OHS Checks",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "logFileName": "metadatas/tests/ohs/ohs.log",
+  "options": "test",
+  "tests": [
+    {
+      "name": "OHS Test",
+      "dynamic": [
+        {
+          "key": "ohs-hostname",
+          "property": "grep '.*ohs.*' /etc/hosts | cut -d' ' -f1",
+          "type": "SHELL"
+        },
+        {
+          "key": "ohs-home",
+          "property": "grep '.*ohs.*' /etc/hosts | cut -d' ' -f2",
+          "type": "SHELL"
+        },
+        {
+          "key": "httpd-conf-file",
+          "hostname": "${ohs-hostname}",
+          "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+          "type": "FILE"
+        }
+      ],
+      "checks": [
+        {
+          "name": "KeepAliveTimeout Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.KeepAliveTimeout",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.KeepAliveTimeout",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ThreadLimit Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadLimit",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ThreadLimit",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ServerLimit Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ServerLimit",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ServerLimit",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "StartServers Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.StartServers",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..StartServers",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxClients Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxClients",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxClients",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MinSpareThreads Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MinSpareThreads",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MinSpareThreads",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxSpareThreads Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxSpareThreads",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxSpareThreads",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ThreadsPerChild Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadsPerChild",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ThreadsPerChild",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxRequestsPerChild Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxRequestsPerChild",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxRequestsPerChild",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "AcceptMutex Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.AcceptMutex",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..AcceptMutex",
+            "dynamic": "httpd-conf-file",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "WLSocketTimeoutSecs Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
+            "file": "metadatas/tests/ohs/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..WLSocketTimeoutSecs",
+            "file": "metadatas/tests/ohs/mod_wl_ohs.conf",
+            "type": "CONF"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "Resizing Validation",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
-  "logFileName": "metadatas/resizing.log",
+  "logFileName": "metadatas/resizing/resizing.log",
   "tests": [
     {
       "name": "JVM Args Test",

@@ -58,6 +58,7 @@ runAllTest(){
 runPositiveTest "metadatas/tests/jvm" "metadata.json" "jvm.log" "success.log"
 runPositiveTest "metadatas/tests/jdbc" "metadata.json" "jdbc.log" "success.log"
 runNegativeTest "metadatas/tests/ohs" "metadata.json" "ohs.log" "failure.log"
+runNegativeTest "metadatas/tests/shell-dynamic" "metadata.json" "ohs.log" "failure.log"
 runNegativeTest "metadatas/tests/negative" "metadata.json" "negative.log" "failure.log"
 runAllTest "metadatas/tests/all/"
 
