@@ -1,7 +1,6 @@
 import os
 import platform
 import subprocess
-
 from Property import Property
 
 
@@ -14,7 +13,10 @@ def getProperties(resource, extrapolated_properties, files):
         commandOutput = runShellCommand(command)
         if commandOutput is not None:
             lines = commandOutput.split('\n')
-            commandOutput = lines[len(lines)-1]
+            for i,line in enumerate(lines):
+                if(line.strip() == resource.username+'@'+resource.hostname+'\'s password:'):
+                    break
+            commandOutput = lines[i+1:]
         else:
             commandOutput = [None]
         properties.append(Property(property, commandOutput))
