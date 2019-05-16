@@ -13,7 +13,8 @@ def getProperties(resource, extrapolated_properties, files):
             command = 'sh ./scripts/runSSHCommand.sh ' + resource.hostname + ' ' + resource.username + ' ' + resource.password + ' "' + command + '"'
         commandOutput = runShellCommand(command)
         if commandOutput is not None:
-            commandOutput = commandOutput.split('\n')[2:]
+            lines = commandOutput.split('\n')
+            commandOutput = lines[len(lines)-1]
         else:
             commandOutput = [None]
         properties.append(Property(property, commandOutput))
