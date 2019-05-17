@@ -4,7 +4,8 @@ NOTES:
    '..' - go to any depth and fetch the item/s named the following word
    Example: IfModule..mpm_worker_module..ServerLimit
    So in 'IfModule' go to its children/grandchildren/great-grandchildren/etc, till 'mpm_worker_module' is found.
-2. Using the 'jsonpath_rw_ext' parser, causes it to return only elements that are found, unlike custom JSON parser that adds 'None' if particular object in array does not have property.
+2. Using the 'jsonpath_rw_ext' parser, causes it to return only elements that are found, unlike custom JSON parser that adds 'None'
+   if particular object in array does not have property.
    This should not affect unless a property can have multiple values.
 3. The dynamic block produces a list of values.
            * Each value from this list is used to evaluate a source and corresponding property value.
@@ -12,6 +13,9 @@ NOTES:
            * So based on the ordering of the dynamic block values, source and target properties are computed and compared.
            * So LIMITATION is extrapolation resulting in size(n) source properties, should also result in similar extrapolation
              on the target as well.
+4. Now dynamic map can store dict type object and used to extrapolate('property', 'file', 'hostname', 'username',
+   'password' elements in metadata) by attributes of each object. Note that if the attribute is list type then it will
+   iterate over each of the list objects and get the corresponding values, so effectively flattening the list.
 
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
