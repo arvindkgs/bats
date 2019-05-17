@@ -6,25 +6,25 @@
   "tests": [
     {
       "name": "JVM Args Test",
+      "dynamic": [
+        {
+          "key": "clusterObj",
+          "file": "metadatas/tests/jvm/source.json",
+          "type": "JSON",
+          "property": "$..wlsClusters[*]"
+        }
+      ],
       "checks": [
         {
           "name": "Xms Check",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
           "source": {
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].Xms",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
             "file": "metadatas/tests/jvm/source.json",
             "type": "JSON"
           },
           "target": {
-            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
             "file": "metadatas/tests/jvm/target.properties",
             "type": "PROPERTY",
             "format": "-Xms{}?"
@@ -33,115 +33,75 @@
         {
           "name": "Xmx Check",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
           "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xmx",
             "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].Xmx"
+            "type": "JSON"
           },
           "target": {
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
             "file": "metadatas/tests/jvm/target.properties",
             "type": "PROPERTY",
-            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xmx{}?"
           }
         },
         {
           "name": "Xss Check",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
           "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].XssInKb",
             "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].XssInKb"
+            "type": "JSON"
           },
           "target": {
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
             "file": "metadatas/tests/jvm/target.properties",
             "type": "PROPERTY",
-            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xss{}?"
           }
         },
         {
           "name": "XX:NewRatio Check",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
           "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:NewRatio'",
             "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:NewRatio'"
+            "type": "JSON"
           },
           "target": {
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/jvm/target.properties",
             "type": "PROPERTY",
-            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:NewRatio={}"
           }
         },
         {
           "name": "ParallelGCThreads Check",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
           "source": {
             "file": "metadatas/tests/jvm/source.json",
             "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:ParallelGCThreads'"
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:ParallelGCThreads'"
           },
           "target": {
             "file": "metadatas/tests/jvm/target.properties",
             "type": "PROPERTY",
-            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
         {
           "name": "XX:MaxPermSize check",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
           "source": {
             "file": "metadatas/tests/jvm/source.json",
             "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:MaxPermSize'"
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:MaxPermSize'"
           },
           "target": {
             "file": "metadatas/tests/jvm/target.properties",
             "type": "PROPERTY",
-            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:MaxPermSize={}?"
           }
         }

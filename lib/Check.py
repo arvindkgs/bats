@@ -17,7 +17,7 @@ def evaluateCheck(check, testName, dynamicProperties):
         target = ResourceBuilder.build(property=check['target'], testName=testName,
                                        checkName=checkName)
         targetProperty = target.getProperties(dynamicMap=dynamicProperties)
-        if sourceProperty is not None and targetProperty is not None:
+        if sourceProperty is not None and targetProperty is not None and any(sourceProperty) and any(targetProperty):
             if len(sourceProperty) == len(targetProperty):
                 for i, source_property in enumerate(sourceProperty):
                     compare = source_property.compare(targetProperty[i])

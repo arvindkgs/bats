@@ -7,19 +7,20 @@ from Property import Property
 def getProperties(resource, extrapolated_properties, files):
     properties = []
     for property in extrapolated_properties:
-        command = property
-        if resource.hostname and resource.username and resource.password:
-            command = 'sh ./scripts/runSSHCommand.sh ' + resource.hostname + ' ' + resource.username + ' ' + resource.password + ' "' + command + '"'
-        commandOutput = runShellCommand(command)
-        if commandOutput is not None:
-            lines = commandOutput.split('\n')
-            for i,line in enumerate(lines):
-                if(line.strip() == resource.username+'@'+resource.hostname+'\'s password:'):
-                    break
-            commandOutput = lines[i+1:]
-        else:
-            commandOutput = [None]
-        properties.append(Property(property, commandOutput))
+        if property:
+            command = property
+            if resource.hostname and resource.username and resource.password:
+                command = 'sh ./scripts/runSSHCommand.sh ' + resource.hostname + ' ' + resource.username + ' ' + resource.password + ' "' + command + '"'
+            commandOutput = runShellCommand(command)
+            if commandOutput is not None:
+                lines = commandOutput.split('\n')
+                for i, line in enumerate(lines):
+                    if (line.strip() == resource.username + '@' + resource.hostname + '\'s password:'):
+                        break
+                commandOutput = lines[i + 1:]
+            else:
+                commandOutput = [None]
+            properties.append(Property(property, commandOutput))
     return properties
 
 

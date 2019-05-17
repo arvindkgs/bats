@@ -23,30 +23,31 @@ def getProperties(resource, extrapolated_properties, files):
             if dataStr is not None:
                 jsStr = json.loads(dataStr)
             for property in extrapolated_properties:
-                try:
-                    parser = jp.parse(property)
-                    values = None
-                    if jsStr is not None:
-                        for match in parser.find(jsStr):
-                            if match.value is not None:
-                                if values is None:
-                                    values = []
-                                values.append(match.value)
-                    if values is None:
-                        comparelog.print_error_log(msg="No property: '" + str(property) + "' found.",
+                if property:
+                    try:
+                        parser = jp.parse(property)
+                        values = None
+                        if jsStr is not None:
+                            for match in parser.find(jsStr):
+                                if match.value is not None:
+                                    if values is None:
+                                        values = []
+                                    values.append(match.value)
+                        if values is None:
+                            comparelog.print_error_log(msg="No property: '" + str(property) + "' found.",
+                                                       args={'fnName': resource.testName,
+                                                             'type': comparelog.MISSING_PROPERTY,
+                                                             'source': resource.file,
+                                                             'checkName': resource.checkName})
+
+                        properties.append(Property(str(property), values))
+                    except Exception as e:
+                        print e
+                        comparelog.print_error_log(msg="Parser error, check jsonpath for property '" + str(property),
                                                    args={'fnName': resource.testName,
-                                                         'type': comparelog.MISSING_PROPERTY,
+                                                         'type': comparelog.SYNTAX_ERROR,
                                                          'source': resource.file,
                                                          'checkName': resource.checkName})
-
-                    properties.append(Property(str(property), values))
-                except Exception as e:
-                    print e
-                    comparelog.print_error_log(msg="Parser error, check jsonpath for property '" + str(property),
-                                               args={'fnName': resource.testName,
-                                                     'type': comparelog.SYNTAX_ERROR,
-                                                     'source': resource.file,
-                                                     'checkName': resource.checkName})
         except ValueError:
             comparelog.print_error(msg="Invalid json file '" + resource.file + "'",
                                    args={'fnName': resource.testName,

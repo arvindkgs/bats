@@ -85,8 +85,11 @@ class Resource(object):
             dynamic_pattern = Constants.RegularExpression.findIndexExpression
             if dynamicMap is not None and len(dynamicMap) > 0:
                 for m in re.finditer(dynamic_pattern, propertyStr):
-                    if m.group(1) in dynamicMap:
-                        values = dynamicMap[m.group(1)]
+                    dynamickey = m.group(1)
+                    if dynamickey is not None and '.' in dynamickey:
+                        dynamickey = dynamickey.split('.')[0]
+                    if dynamickey in dynamicMap:
+                        values = self.fetchValueFromDynamicMap(m.group(1), dynamicMap)
                         newproperties = []
                         if values is not None and any(values):
                             for property in properties:
@@ -148,3 +151,33 @@ class Resource(object):
                     suffix = replacedStr
             pattern = '.*' + prefix + '([^ ]+)' + '(?=' + suffix + '\\b)' + '.*'
         return pattern
+
+    def fetchValueFromDynamicMap(self, key, dynamicMap):
+        retValue = None
+        if key is not None and dynamicMap is not None:
+            dynamickey = key
+            if '.' in key:
+                dynamickey = key.split('.')[0]
+            if dynamickey in dynamicMap:
+                values = dynamicMap[dynamickey]
+                if not isinstance(values, list):
+                    values = [values]
+                if dynamickey != key:
+                    dynamickeyattributes = key.split('.')[1:]
+                    for attribute in dynamickeyattributes:
+                        newvalues = []
+                        for i, value in enumerate(values):
+                            if value:
+                                if attribute in value:
+                                    newvalues.append(value.get(attribute))
+                                else:
+                                    comparelog.print_error_log(
+                                        msg="No key: '" + str(
+                                            attribute) + "' in object: " + dynamickey + " for dynamic key: '" + str(
+                                            key) + '"',
+                                        args={'fnName': self.testName,
+                                              'type': comparelog.MISSING_DYNAMIC_VALUE,
+                                              'source': self.file, 'checkName': self.checkName})
+                        values = newvalues
+                retValue = values
+        return retValue

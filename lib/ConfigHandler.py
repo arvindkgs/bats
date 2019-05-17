@@ -29,12 +29,13 @@ def getProperties(resource, extrapolated_properties, files):
                         if dataStr is not None:
                             confDict = loader.loads(dataStr)
                         for property in extrapolated_properties:
-                            parser = jp.parse(property)
-                            values = []
-                            if confDict is not None:
-                                for match in parser.find(confDict):
-                                    values.append(match.value)
-                            properties.append(Property(str(property), values))
+                            if property:
+                                parser = jp.parse(property)
+                                values = []
+                                if confDict is not None:
+                                    for match in parser.find(confDict):
+                                        values.append(match.value)
+                                properties.append(Property(str(property), values))
                 except ValueError:
                     comparelog.print_error(msg="Invalid conf file '" + resource.file + "'",
                                            args={'fnName': resource.testName,

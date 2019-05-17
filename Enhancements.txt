@@ -6,51 +6,51 @@ NOTES:
    So in 'IfModule' go to its children/grandchildren/great-grandchildren/etc, till 'mpm_worker_module' is found.
 2. Using the 'jsonpath_rw_ext' parser, causes it to return only elements that are found, unlike custom JSON parser that adds 'None' if particular object in array does not have property.
    This should not affect unless a property can have multiple values.
-
-To-Do
------------------------------------------------------------------------------------------------------------------------------------------
-1. Add SHELL type
-2. Use REGEX for parsing format text.
-3. Add STATIC type and
-    3.1 Speed up dynamic matching for wlsCluster.[clusterName = ${1}].Xmx,
-    3.2 Currently dynamic components gets a list of size(n) wlsCluster names as - topology.wlsClusters.[].clusterName -> ['AdminServer', 'bip_cluster' ...] and replaces and extrapolates
-        source property - topology.wlsClusters.[clusterName = ${1}].Xms to size(n) properties and compare these size(n) target properties.
-    3.3 This fetching size(n) dynamic values from JSON and again fetching size(n) corresponding properties from same JSON slowes the tool.
-    3.4 Instead get dynamic wlsCluster objects as [{'name': 'AdminServer', 'Xmx': 12, 'Xms': 13}, {'name': 'bip_cluster', 'Xmx': 12, 'Xms': 13}]
-        and use this in the comparision as
-        {
-          "name": "Dynamic Object comparision",
-          "dynamic": [
-            {
-              "file": "metadatas/tests/source.json",
-              "type": "JSON",
-              "property": "topology.wlsClusters.[]"
-            }
-          ],
-          "source": {
-            "name": "${1.name}",
-            "type": "STATIC",
-            "property": "${1.Xmx}"
-          },
-          "target": {
-            "file": "metadatas/tests/target.properties",
-            "type": "PROPERTY",
-            "property": "fusion.FADomain.${1.name}.default.minmaxmemory.main",
-            "format": "-Xms{}?"
-          }
-          Here the source block produces size(n) list of (key,value) properties, key - name, value - evaluated property.
-          with size(n) list of (key,value) properties from target block.
-
-          IMPORTANT:
-           * The dynamic block produces a list of values.
+3. The dynamic block produces a list of values.
            * Each value from this list is used to evaluate a source and corresponding property value.
            * These values are then compared.
            * So based on the ordering of the dynamic block values, source and target properties are computed and compared.
            * So LIMITATION is extrapolation resulting in size(n) source properties, should also result in similar extrapolation
              on the target as well.
 
+To-Do
+-----------------------------------------------------------------------------------------------------------------------------------------
+1. Use REGEX for parsing format text.
+2. Add STATIC type
+
+
 Done
 ---------------------------------------------------------------------------------------------------------------------------------------
 1. Use POJO for storing property instead of tuple to avoid array of values when using extend.
 2. Add name to dynamic property instead of referring to it using index.
-
+3. Add SHELL type.
+4. Speed up dynamic matching by storing global dynamic map,
+    4.1 Previously compare fetches same dynamic values from JSON for each check.
+    4.2 Now dynamic map can store objects in map in global scope and reuse for each check.
+       "tests": [{
+           "dynamic": [
+            {
+              "key": "clusterObj",
+              "file": "metadatas/tests/jvm/source.json",
+              "type": "JSON",
+              "property": "$..wlsClusters[*]"
+            }
+          ],
+          "checks": [
+            {
+              "name": "Xms Check",
+              "type": "COMPARE",
+              "source": {
+                "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
+                "file": "metadatas/tests/jvm/source.json",
+                "type": "JSON"
+              },
+              "target": {
+                "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+                "file": "metadatas/tests/jvm/target.properties",
+                "type": "PROPERTY",
+                "format": "-Xms{}?"
+              }
+            }
+          ]
+       }]

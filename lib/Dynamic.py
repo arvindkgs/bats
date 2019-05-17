@@ -14,6 +14,9 @@ def addDynamicProperties(check, dynamicProperties, testName='Global'):
             dynamicProperties[key] = []
             if isinstance(value, list):
                 for item in value:
-                    dynamicProperties[key].extend(item.value)
+                    if isinstance(item.value, list):
+                        dynamicProperties[key].extend(item.value)
+                    else:
+                        dynamicProperties[key].append(item.value)
             elif value is not None:
                 dynamicProperties[key] = [value]
