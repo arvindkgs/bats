@@ -10,13 +10,20 @@ def addDynamicProperties(check, dynamicProperties, testName='Global'):
             dynamicProperty = ResourceBuilder.build(property=dynamic, testName=testName,
                                                     checkName=checkName)
             key = str(i + 1) if dynamicProperty.getKey() is None else dynamicProperty.getKey()
-            value = dynamicProperty.getProperties(dynamicProperties)
-            dynamicProperties[key] = []
-            if isinstance(value, list):
-                for item in value:
-                    if isinstance(item.value, list):
-                        dynamicProperties[key].extend(item.value)
-                    else:
-                        dynamicProperties[key].append(item.value)
-            elif value is not None:
-                dynamicProperties[key] = [value]
+            if key not in dynamicProperties:
+                value = dynamicProperty.getProperties(dynamicProperties)
+                dynamicProperties[key] = []
+                if isinstance(value, list):
+                    for item in value:
+                        if isinstance(item.value, list):
+                            dynamicProperties[key].extend(item.value)
+                        else:
+                            dynamicProperties[key].append(item.value)
+                elif value is not None:
+                    dynamicProperties[key] = [value]
+
+def addCommandLineArgs(args, dynamicProperties):
+    if args:
+        for argument in args:
+            key, value = argument.split('=')
+            dynamicProperties[key]=value

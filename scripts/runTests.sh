@@ -5,7 +5,7 @@ runPositiveTest() {
     metadatafile=$2
     generatedlog=$3
     expectedlog=$4
-    python bin/validation_suite.py $path/$metadatafile
+    python bin/validation_suite.py --metadata $path/$metadatafile
     if [ $? -eq 0 ]; then
         diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
@@ -23,7 +23,7 @@ runNegativeTest() {
     metadatafile=$2
     generatedlog=$3
     expectedlog=$4
-    python bin/validation_suite.py $path/$metadatafile
+    python bin/validation_suite.py --metadata $path/$metadatafile
     if [ $? -ne 0 ]; then
         diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
@@ -60,5 +60,6 @@ runPositiveTest "metadatas/tests/jdbc" "metadata.json" "jdbc.log" "success.log"
 runNegativeTest "metadatas/tests/ohs" "metadata.json" "ohs.log" "failure.log"
 runNegativeTest "metadatas/tests/shell-dynamic" "metadata.json" "ohs.log" "failure.log"
 runNegativeTest "metadatas/tests/negative" "metadata.json" "negative.log" "failure.log"
-runAllTest "metadatas/tests/all/"
+runNegativeTest "metadatas/tests/individual" "metadata.json" "individual.log" "failure.log"
+runNegativeTest "metadatas/tests/dynamic" "metadata.json" "dynamic.log" "failure.log"
 

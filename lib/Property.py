@@ -1,7 +1,8 @@
 class Property(object):
-    MATCH = "0"
-    NO_MATCH = "1"
-    ERROR = "-1"
+    MATCH = "0" # length and value matches
+    NO_MATCH = "1" # length matches, but values do not match
+    ERROR = "-1" # length do not match
+    IGNORE = "2" # length matches but source value = [] and target value = [], i.e empty array
 
     def __init__(self, name, value):
         self.name = name
@@ -12,14 +13,16 @@ class Property(object):
 
     def compare(self, target):
         if self.value is not None and target is not None and target.value is not None:
-            if len(self.value) == len(
-                    target.value):
+            if len(self.value) == len(target.value):
+                result = True
                 for j in range(0, len(self.value)):
-                    if self.value[j] is not None and target.value[j] is not None:
-                        if str(self.value[j]) != str(target.value[j]):
-                            return Property.NO_MATCH
-                        else:
-                            return Property.MATCH
+                    result = result and str(self.value[j]) == str(target.value[j])
+                if result and len(self.value) > 0:
+                    return Property.MATCH
+                elif result:
+                    return Property.IGNORE
+                else:
+                    return Property.NO_MATCH
             else:
                 return Property.ERROR
         else:

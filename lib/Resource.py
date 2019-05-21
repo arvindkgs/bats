@@ -56,10 +56,12 @@ class Resource(object):
             if regex_format is not None:
                 for i, property in enumerate(properties):
                     if property is not None and property.value is not None:
-                        values = []
+                        values = None
                         for val in property.value:
                             m = re.match(regex_format, val)
                             if m:
+                                if values is None:
+                                    values = []
                                 values.append(m.group(1))
                             else:
                                 comparelog.print_error_log(

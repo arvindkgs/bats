@@ -1,5 +1,6 @@
 import json
 import sys
+import argparse
 
 if __name__ == "__main__" and __package__ is None:
     from sys import path
@@ -18,12 +19,13 @@ __author__ = "Arvind Kumar GS(arvind.kumar.gs@oracle.com)"
 class CompareProperties(object):
     metadata = ""
 
-    def __init__(self, metadataFile):
-        self.metadata = metadataFile
+    def __init__(self, args):
+        self.metadata = args.metadataFile
+        self.dynamic = args.dynamic
+        self.failon = args.failon
         ShellHandler.runShellCommand("if [-d tmp]; then rm -rf tmp; fi; mkdir tmp")
 
     def validate(self):
-        # read metadata.json
         passed = True
         try:
             with open(self.metadata, 'r') as json_file:
@@ -47,9 +49,10 @@ class CompareProperties(object):
                 for test in config['tests']:
                     testName = test['name']
                     dynamicProperties = {}
+                    Dynamic.addCommandLineArgs(self.dynamic, dynamicProperties)
                     Dynamic.addDynamicProperties(test, dynamicProperties)
                     for check in test['checks']:
-                        checkPassed = Check.evaluateCheck(check, testName, dynamicProperties)
+                        checkPassed = Check.evaluateCheck(check, testName, dynamicProperties, failon=self.failon)
                         passed = passed and checkPassed
 
         except IOError:
@@ -65,19 +68,20 @@ class CompareProperties(object):
 
 
 if __name__ == "__main__":
-    global metadata_file
-    if len(sys.argv) > 1:
-        if CompareProperties(sys.argv[1]).validate():
-            comparelog.print_info(msg="--------------------------------", args={})
-            comparelog.print_info("Validation Successful.")
-            comparelog.print_info("--------------------------------")
+    parser = argparse.ArgumentParser(description="Compares (static and dynamic) resources defined in the metadata.json")
+    parser.add_argument('--metadata', default='metadata.json', dest='metadataFile', required=True, type=str,
+                        help="(Required) Metadata file which defines resources that should be compared")
+    parser.add_argument('--failon', required=False, dest="failon",
+                        help="Fail Validation when this type of message is encountered", type=str, action="append")
+    parser.add_argument('-D', required=False, dest="dynamic", help="Dynamic values to be passed", action="append")
+    args = parser.parse_args()
+    if CompareProperties(args).validate():
+        comparelog.print_info(msg="--------------------------------", args={})
+        comparelog.print_info("Validation Successful.")
+        comparelog.print_info("--------------------------------")
 
-        else:
-            comparelog.print_info(msg="--------------------------------", args={})
-            comparelog.print_info("Validation Failed.")
-            comparelog.print_info("--------------------------------")
-            sys.exit(1)
     else:
-        print "Missing Metadata.json argument."
-        print "Usage: validation_suite.py <metadata.json>"
+        comparelog.print_info(msg="--------------------------------", args={})
+        comparelog.print_info("Validation Failed.")
+        comparelog.print_info("--------------------------------")
         sys.exit(1)

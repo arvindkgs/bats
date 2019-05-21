@@ -4,7 +4,7 @@ from lib import comparelog
 from lib.Dynamic import addDynamicProperties
 
 
-def evaluateCheck(check, testName, dynamicProperties):
+def evaluateCheck(check, testName, dynamicProperties, failon):
     checkType = check['type']
     # get dynamic variables if any
     checkName = check['name'] if 'name' in check else None
@@ -17,7 +17,7 @@ def evaluateCheck(check, testName, dynamicProperties):
         target = ResourceBuilder.build(property=check['target'], testName=testName,
                                        checkName=checkName)
         targetProperty = target.getProperties(dynamicMap=dynamicProperties)
-        if sourceProperty is not None and targetProperty is not None and any(sourceProperty) and any(targetProperty):
+        if sourceProperty is not None and targetProperty is not None:
             if len(sourceProperty) == len(targetProperty):
                 for i, source_property in enumerate(sourceProperty):
                     compare = source_property.compare(targetProperty[i])
@@ -31,20 +31,25 @@ def evaluateCheck(check, testName, dynamicProperties):
                                               args={'fnName': testName, 'type': checkType,
                                                     'checkName': checkName})
                         passed = passed and False
+                    elif compare == Property.ERROR:
+                        comparelog.print_info(
+                            "Values mismatch. Source: " + str(source_property) + ", Target: " + str(targetProperty[i]),
+                            args={'fnName': testName, 'type': comparelog.VALUE_MISMATCH,
+                                  'checkName': checkName})
+                        if failon and comparelog.VALUE_MISMATCH in failon:
+                            passed = passed and False
             else:
                 comparelog.print_info(
-                    msg="Mismatch in number of properties in Source: (File: '" + source.file + "', Property: '" + str(
-                        source.property) + "') and  Target: (File: '" + target.file + "', Property: '" + str(
-                        target.property) + "')",
-                    args={'fnName': testName, 'type': checkType,
+                    msg="Properties mismatch. Source: " + str(source) + ", Target: " + str(
+                        target),
+                    args={'fnName': testName, 'type': comparelog.VALUE_MISMATCH,
                           'checkName': checkName})
-                passed = False
-        else:
-            passed = False
+                if failon and comparelog.VALUE_MISMATCH in failon:
+                    passed = passed and False
     else:
         comparelog.print_error_log(
             msg="Unsupported check type '" + checkType + "'. Only 'COMPARE' and 'SUCCESS' is supported.", args={
-                'fnName': testName, 'checkName': checkName
+                'fnName': testName, 'checkName': checkName, 'type': comparelog.SYNTAX_ERROR
             })
-        passed = False
+        # passed = False
     return passed
