@@ -22,8 +22,9 @@ def addDynamicProperties(check, dynamicProperties, testName='Global'):
                 elif value is not None:
                     dynamicProperties[key] = [value]
 
+
 def addCommandLineArgs(args, dynamicProperties):
     if args:
         for argument in args:
             key, value = argument.split('=')
-            dynamicProperties[key]=value
+            dynamicProperties[key] = value

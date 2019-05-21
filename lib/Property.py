@@ -1,8 +1,8 @@
 class Property(object):
-    MATCH = "0" # length and value matches
-    NO_MATCH = "1" # length matches, but values do not match
-    ERROR = "-1" # length do not match
-    IGNORE = "2" # length matches but source value = [] and target value = [], i.e empty array
+    MATCH = "0"  # length and value matches
+    NO_MATCH = "1"  # length matches, but values do not match
+    ERROR = "-1"  # length do not match
+    IGNORE = "2"  # length matches but source value = [] and target value = [], i.e empty array
 
     def __init__(self, name, value):
         self.name = name
