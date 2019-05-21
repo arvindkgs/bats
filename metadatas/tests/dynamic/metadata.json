@@ -1,0 +1,105 @@
+{
+  "name": "Scaleout Automation Checks",
+  "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
+  "logFileName": "metadatas/tests/dynamic/dynamic.log",
+  "options": "test",
+  "tests": [
+    {
+      "name": "JVM ARGS test",
+      "checks": [
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "$.topology.wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].Xms"
+          },
+          "target": {
+            "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "$.topology.wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].Xmx"
+          },
+          "target": {
+            "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "$.topology.wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].XssInKb"
+          },
+          "target": {
+            "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+              "type": "JSON",
+              "property": "$.topology.wlsClusters[*].clusterName"
+            }
+          ],
+          "source": {
+            "file": "metadatas/tests/dynamic/SDI_HOST_properties.json",
+            "type": "JSON",
+            "property": "$.topology.wlsClusters[?(@.clusterName=${clusterName})].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        }
+      ]
+    }
+  ]
+}

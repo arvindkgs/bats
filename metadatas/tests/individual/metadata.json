@@ -1,0 +1,673 @@
+{
+  "name": "Scaleout Automation Checks",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "logFileName": "metadatas/tests/individual/individual.log",
+  "options": "test",
+  "tests": [
+    {
+      "name": "JVM ARGS test",
+      "checks": [
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bi_cluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xms check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xms",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bi_cluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xmx check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xmx",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bi_cluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "--Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XssInKb",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].XssInKb",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bi_cluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.bi_cluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=AdminServer)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.AdminServer.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.SharedServicesCluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.UICluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.ServiceCluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.MWCluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.ESS_SOACluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.SingletonCluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.SupplyPlanningEngineCluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.SEMSearchCluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsClusters[?(@.clusterName=bip_cluster)].'XX:ParallelGCThreads'",
+            "file": "metadatas/tests/individual/SDI_HOST_properties.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.bip_cluster.Linux-x86_64.memoryargs",
+            "file": "metadatas/tests/individual/fusionapps_start_params.properties",
+            "type": "PROPERTY",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        }
+      ]
+    }
+  ]
+}
