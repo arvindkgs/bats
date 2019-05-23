@@ -3,14 +3,14 @@ from Property import Property
 from os import path
 
 
-def getProperties(resource, extrapolated_properties, files):
+def getProperties(resource, extrapolated_properties, file):
     properties = []
-    for fileobj in files:
-        if path.isfile(fileobj):
+    if file:
+        if path.isfile(file):
             for property in extrapolated_properties:
                 if property:
                     propFrmFile = ShellHandler.runShellCommand(
-                        'grep \'^\\s*\'"' + property + '"\'=\' ./"' + fileobj + '"|cut -d\'=\' -f2-')
+                        'grep \'^\\s*\'"' + property + '"\'=\' ./"' + file + '"|cut -d\'=\' -f2-')
                     if propFrmFile is None:
                         comparelog.print_error_log(msg="No property: " + property,
                                                    args={'fnName': resource.testName,
@@ -22,5 +22,5 @@ def getProperties(resource, extrapolated_properties, files):
         else:
             comparelog.print_error(msg="File not found.",
                                    args={'fnName': resource.testName, 'type': comparelog.FILE_NOT_FOUND,
-                                         'source': fileobj, 'checkName': resource.checkName})
+                                         'source': file, 'checkName': resource.checkName})
     return properties

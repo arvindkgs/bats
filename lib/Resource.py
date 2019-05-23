@@ -40,39 +40,42 @@ class Resource(object):
             for i, file in enumerate(files):
                 if file:
                     # print "HOSTNAME:"+hostname+", USERNAME:"+username+", PASSWORD:"+password+", file:"+file
-                    files[i] = ShellHandler.getRemoteFile(hostname, username, password, file)
-        properties = self.extractProperties(self, extrapolated_properties, files)
-        if self.format is not None and properties is not None and properties != [None] * len(properties):
-            # extract data using self.format
-            # meta-chars: {}, ?
-            # {} -> return value. {2:} -> return 2 characters
-            # ? -> single character
-            # Future enhancement : {:4} -> n-4 characters
-            # Example:
-            # Format='-Xms{}?'
-            # Data='-Xms512m -Xmx8192m -Xss102400k'
-            # Extract=512
-            regex_format = self.getRegexPatternFormat()
-            if regex_format is not None:
-                for i, property in enumerate(properties):
-                    if property is not None and property.value is not None:
-                        values = None
-                        for val in property.value:
-                            m = re.match(regex_format, val)
-                            if m:
-                                if values is None:
-                                    values = []
-                                values.append(m.group(1))
-                            else:
-                                comparelog.print_error_log(
-                                    msg="No pattern '" + self.format + "' in " + property.name,
-                                    args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
-                                          'source': self.file,
-                                          'checkName': self.checkName})
-                                # values.append(None)
-                        property.value = values
-
-        return properties
+                    files[i] = ShellHandler.getRemoteFile(hostname, username, password, file, self)
+        propertyTupleList = []
+        if files:
+            for file in files:
+                properties = self.extractProperties(self, extrapolated_properties, file)
+                if self.format is not None and properties is not None and properties != [None] * len(properties):
+                    # extract data using self.format
+                    # meta-chars: {}, ?
+                    # {} -> return value. {2:} -> return 2 characters
+                    # ? -> single character
+                    # Future enhancement : {:4} -> n-4 characters
+                    # Example:
+                    # Format='-Xms{}?'
+                    # Data='-Xms512m -Xmx8192m -Xss102400k'
+                    # Extract=512
+                    regex_format = self.getRegexPatternFormat()
+                    if regex_format is not None:
+                        for i, property in enumerate(properties):
+                            if property is not None and property.value is not None:
+                                values = None
+                                for val in property.value:
+                                    m = re.match(regex_format, val)
+                                    if m:
+                                        if values is None:
+                                            values = []
+                                        values.append(m.group(1))
+                                    else:
+                                        comparelog.print_error_log(
+                                            msg="No pattern '" + self.format + "' in " + property.name,
+                                            args={'fnName': self.testName, 'type': comparelog.MISSING_PROPERTY,
+                                                  'source': self.file,
+                                                  'checkName': self.checkName})
+                                        # values.append(None)
+                                property.value = values
+                propertyTupleList.append((file, properties))
+        return propertyTupleList
 
     def toString(self):
         return 'Type: ' + str(self.type) + ', Resource: ' + str(self.file) + ', Property: ' + str(

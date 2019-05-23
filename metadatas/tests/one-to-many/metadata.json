@@ -1,12 +1,17 @@
 {
   "name": "jvm Checks",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
-  "logFileName": "metadatas/tests/jvm/jvm.log",
+  "logFileName": "metadatas/tests/one-to-many/jvm.log",
   "options": "test",
   "tests": [
     {
       "name": "JVM Args Test",
       "dynamic": [
+        {
+          "key": "domain_folder",
+          "type": "SHELL",
+          "property": "ls -d ./metadatas/tests/one-to-many/*/"
+        },
         {
           "key": "clusterObj",
           "file": "metadatas/tests/jvm/source.json",
@@ -18,14 +23,15 @@
         {
           "name": "Xms Check",
           "type": "COMPARE",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
-            "file": "metadatas/tests/jvm/source.json",
+            "file": "metadatas/tests/one-to-many/source.json",
             "type": "JSON"
           },
           "target": {
             "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
-            "file": "metadatas/tests/jvm/target.properties",
+            "file": "${domain_folder}/target.properties",
             "type": "PROPERTY",
             "format": "-Xms{}?"
           }
@@ -33,6 +39,7 @@
         {
           "name": "Xmx Check",
           "type": "COMPARE",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xmx",
             "file": "metadatas/tests/jvm/source.json",
@@ -40,7 +47,7 @@
           },
           "target": {
             "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
-            "file": "metadatas/tests/jvm/target.properties",
+            "file": "${domain_folder}/target.properties",
             "type": "PROPERTY",
             "format": "-Xmx{}?"
           }
@@ -48,6 +55,7 @@
         {
           "name": "Xss Check",
           "type": "COMPARE",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].XssInKb",
             "file": "metadatas/tests/jvm/source.json",
@@ -55,7 +63,7 @@
           },
           "target": {
             "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
-            "file": "metadatas/tests/jvm/target.properties",
+            "file": "${domain_folder}/target.properties",
             "type": "PROPERTY",
             "format": "-Xss{}?"
           }
@@ -63,6 +71,7 @@
         {
           "name": "XX:NewRatio Check",
           "type": "COMPARE",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:NewRatio'",
             "file": "metadatas/tests/jvm/source.json",
@@ -70,7 +79,7 @@
           },
           "target": {
             "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
-            "file": "metadatas/tests/jvm/target.properties",
+            "file": "${domain_folder}/target.properties",
             "type": "PROPERTY",
             "format": "-XX:NewRatio={}"
           }
@@ -78,13 +87,14 @@
         {
           "name": "ParallelGCThreads Check",
           "type": "COMPARE",
+          "cardinality": "one-to-many",
           "source": {
             "file": "metadatas/tests/jvm/source.json",
             "type": "JSON",
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:ParallelGCThreads'"
           },
           "target": {
-            "file": "metadatas/tests/jvm/target.properties",
+            "file": "${domain_folder}/target.properties",
             "type": "PROPERTY",
             "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:ParallelGCThreads={}"
@@ -93,13 +103,14 @@
         {
           "name": "XX:MaxPermSize check",
           "type": "COMPARE",
+          "cardinality": "one-to-many",
           "source": {
             "file": "metadatas/tests/jvm/source.json",
             "type": "JSON",
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:MaxPermSize'"
           },
           "target": {
-            "file": "metadatas/tests/jvm/target.properties",
+            "file": "${domain_folder}/target.properties",
             "type": "PROPERTY",
             "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:MaxPermSize={}?"

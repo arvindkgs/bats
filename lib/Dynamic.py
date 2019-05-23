@@ -11,16 +11,19 @@ def addDynamicProperties(check, dynamicProperties, testName='Global'):
                                                     checkName=checkName)
             key = str(i + 1) if dynamicProperty.getKey() is None else dynamicProperty.getKey()
             if key not in dynamicProperties:
-                value = dynamicProperty.getProperties(dynamicProperties)
+                propertiesTupleList = dynamicProperty.getProperties(dynamicProperties)
                 dynamicProperties[key] = []
-                if isinstance(value, list):
-                    for item in value:
-                        if isinstance(item.value, list):
-                            dynamicProperties[key].extend(item.value)
-                        else:
-                            dynamicProperties[key].append(item.value)
-                elif value is not None:
-                    dynamicProperties[key] = [value]
+                if propertiesTupleList:
+                    for propertiesTuple in propertiesTupleList:
+                        value = propertiesTuple[1]
+                        if isinstance(value, list):
+                            for item in value:
+                                if isinstance(item.value, list):
+                                    dynamicProperties[key].extend(item.value)
+                                else:
+                                    dynamicProperties[key].append(item.value)
+                        elif value is not None:
+                            dynamicProperties[key] = [value]
 
 
 def addCommandLineArgs(args, dynamicProperties):

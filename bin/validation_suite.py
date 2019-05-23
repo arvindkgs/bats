@@ -8,7 +8,8 @@ if __name__ == "__main__" and __package__ is None:
 
     path.append(dir(path[0]))
 
-from lib import *
+from lib import ShellHandler, comparelog, Dynamic
+from lib.Check import Check
 
 """
 Tool to run post resizing or scaleout (or any other process) validation checks
@@ -52,13 +53,13 @@ class CompareProperties(object):
                     Dynamic.addCommandLineArgs(self.dynamic, dynamicProperties)
                     Dynamic.addDynamicProperties(test, dynamicProperties)
                     for check in test['checks']:
-                        checkPassed = Check.evaluateCheck(check, testName, dynamicProperties, failon=self.failon)
+                        checkPassed = Check(check, testName, dynamicProperties, failon=self.failon).evaluateCheck()
                         passed = passed and checkPassed
 
         except IOError:
             comparelog.print_error(msg="Metadata file '" + self.metadata + "' not found.")
             sys.exit(1)
-        except ValueError:
+        except ValueError as e:
             comparelog.print_error(msg="Error parsing metadata file '" + self.metadata + "'.")
             sys.exit(1)
         return passed

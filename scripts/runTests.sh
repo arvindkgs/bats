@@ -62,4 +62,5 @@ runNegativeTest "metadatas/tests/shell-dynamic" "metadata.json" "ohs.log" "failu
 runNegativeTest "metadatas/tests/negative" "metadata.json" "negative.log" "failure.log"
 runNegativeTest "metadatas/tests/individual" "metadata.json" "individual.log" "failure.log"
 runNegativeTest "metadatas/tests/dynamic" "metadata.json" "dynamic.log" "failure.log"
+runPositiveTest "metadatas/tests/one-to-many" "metadata.json" "jvm.log" "success.log"
 
