@@ -2,18 +2,10 @@ import logging
 import os
 
 formatter = None
-MISSING_PROPERTY = "MISSING_PROPERTY"
-SHELL_COMMAND_ERROR = "SHELL_COMMAND_ERROR"
-SYNTAX_ERROR = "SYNTAX_ERROR"
-COMPARE = "COMPARE"
-INFO = "MESSAGE"
-MISSING_DYNAMIC_VALUE = "MISSING_DYNAMIC_VALUE"
-FILE_NOT_FOUND = "FILE_NOT_FOUND"
-VALUE_MISMATCH = "VALUE_MISMATCH"
 
 name = "compare-properties"
 
-logOnly = False
+test = False
 
 
 class OptionalArgsFormatter(logging.Formatter, object):
@@ -44,9 +36,9 @@ getLogger().setLevel(logging.DEBUG)
 
 # create formatter
 formatter = OptionalArgsFormatter(
-    '[[%(levelname)s]\t[%(funcName)s]\t[%(checkName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
-    {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]',
-     'checkName': '\t[%(checkName)s]'})
+    '[[%(levelname)s]\t[%(testName)s]\t[%(checkName)s]\t[%(cardinality)s]\t[%(targetItem)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
+    {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'testName': '\t[%(testName)s]',
+     'checkName': '\t[%(checkName)s]', 'cardinality': '\t[%(cardinality)s]', 'targetItem': '\t[%(targetItem)s]'})
 
 
 # add formatter
@@ -57,17 +49,10 @@ formatter = OptionalArgsFormatter(
 
 
 def setOptions(options):
-    global logOnly
+    global test
     for option in options.split(','):
-        if option == 'logonly':
-            logOnly = True
         if option == 'test':
-            logOnly = True
-            for handler in getLogger().handlers:
-                handler.setFormatter(OptionalArgsFormatter(
-                    '[[%(funcName)s]\t[%(checkName)s]\t[%(type)s]\t[%(source)s]]\t%(message)s',
-                    {'source': '\t[%(source)s]', 'type': '\t[%(type)s]', 'fnName': '\t[%(funcName)s]',
-                     'checkName': '\t[%(checkName)s]'}))
+            test = True
 
 
 logFileSet = False
@@ -105,48 +90,32 @@ def setLogFileName(logFileName='automation.log'):
 
 
 # Method to print Error log (prints to log and console)
-def print_error(msg, args={}):
+def print_error(msg, args={}, console=True):
     setLogFileName()
     file_name = os.path.basename(__file__)
-    fnName = args['fnName'] if 'fnName' in args else None
+    fnName = args['testName'] if 'testName' in args else None
+    if 'cardinality' in args and args['cardinality'] == 'one-to-one' and 'targetItem' in args:
+        args['targetItem'] = None
+        args['cardinality'] = None
     record = getLogger().makeRecord(name, logging.ERROR, file_name, None, msg=msg, args=None,
                                     exc_info=None,
                                     func=fnName, extra=args)
     getLogger().handle(record)
-    if not logOnly:
+    if not test and console:
         print(formatter.format(record))
-
-
-# Method to print Error log (prints to log and console)
-def print_error_log(msg, args={}):
-    setLogFileName()
-    file_name = os.path.basename(__file__)
-    fnName = args['fnName'] if 'fnName' in args else None
-    record = getLogger().makeRecord(name, logging.ERROR, file_name, None, msg=msg, args=None,
-                                    exc_info=None,
-                                    func=fnName, extra=args)
-    getLogger().handle(record)
 
 
 # Method to print Info to both log and console
-def print_info(msg, args={}):
-    global logOnly
+def print_info(msg, args={}, console=True):
+    global test
     setLogFileName()
     file_name = os.path.basename(__file__)
-    fnName = args['fnName'] if 'fnName' in args else None
+    fnName = args['testName'] if 'testName' in args else None
+    if 'cardinality' in args and args['cardinality'] == 'one-to-one' and 'targetItem' in args:
+        args['targetItem'] = None
+        args['cardinality'] = None
     record = getLogger().makeRecord(name, logging.INFO, file_name, None, msg=msg, args=None, exc_info=None,
                                     func=fnName, extra=args)
     getLogger().handle(record)
-    if not logOnly:
+    if not test and console:
         print(formatter.format(record))
-
-
-# Method to print Info to log
-def print_info_log(msg, args={}):
-    setLogFileName()
-    file_name = os.path.basename(__file__)
-    fnName = args['fnName'] if 'fnName' in args else None
-    record = getLogger().makeRecord(name, logging.INFO, file_name, None, msg=msg, args=None,
-                                    exc_info=None,
-                                    func=fnName, extra=args)
-    getLogger().handle(record)

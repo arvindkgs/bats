@@ -3,30 +3,17 @@
 [[INFO]]	--------------------------------
 [[INFO]	[JVM test]	[Value mismatch]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
 [[ERROR]	[JVM test]	[No Property]	[MISSING_PROPERTY]	[metadatas/tests/negative/source.json]]	No property: '$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx' found.
-[[INFO]	[JVM test]	[No Property]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName='xyz')].Xmx(None), Target: fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
 [[ERROR]	[JVM test]	[No Property]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No property: fusion.FADomain.AdminServer.default.minmaxmemory.xyz
-[[INFO]	[JVM test]	[No Property]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx([2700]), Target: fusion.FADomain.AdminServer.default.minmaxmemory.xyz(None)
 [[ERROR]	[JVM test]	[No Format found]	[MISSING_PROPERTY]	[metadatas/tests/negative/source.json]]	No property: '$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx' found.
-[[ERROR]	[JVM test]	[No Format found]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern 'xyz{}?' in fusion.FADomain.AdminServer.default.minmaxmemory.main
-[[INFO]	[JVM test]	[No Format found]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName='xyz')].Xmx(None), Target: fusion.FADomain.AdminServer.default.minmaxmemory.main(None)
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.UICluster.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.ServiceCluster.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.MWCluster.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.AdminServer.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.SingletonCluster.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main
-[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No pattern '-XX:MaxPermSize={}?' in fusion.FADomain.bip_cluster.default.minmaxmemory.main
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=UICluster)].'XX:MaxPermSize'([5172]), Target: fusion.FADomain.UICluster.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=ServiceCluster)].'XX:MaxPermSize'([3072]), Target: fusion.FADomain.ServiceCluster.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=MWCluster)].'XX:MaxPermSize'([3172]), Target: fusion.FADomain.MWCluster.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:MaxPermSize'([3172]), Target: fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=AdminServer)].'XX:MaxPermSize'([3072]), Target: fusion.FADomain.AdminServer.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=SingletonCluster)].'XX:MaxPermSize'([3072]), Target: fusion.FADomain.SingletonCluster.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:MaxPermSize'([3072]), Target: fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:MaxPermSize'([3072]), Target: fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main(None)
-[[INFO]	[JVM test]	[Dynamic mismatch]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=bip_cluster)].'XX:MaxPermSize'([3072]), Target: fusion.FADomain.bip_cluster.default.minmaxmemory.main(None)
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.UICluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.ServiceCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.MWCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.AdminServer.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.SingletonCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main
+[[ERROR]	[JVM test]	[Dynamic mismatch]	[MISSING_FORMAT]	[metadatas/tests/negative/target.properties]]	No format '-XX:MaxPermSize={}?' in fusion.FADomain.bip_cluster.default.minmaxmemory.main
 [[INFO]]	--------------------------------
 [[INFO]]	Validation Failed.
 [[INFO]]	--------------------------------

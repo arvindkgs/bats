@@ -1,26 +1,30 @@
-from lib import comparelog, ShellHandler
-from Property import Property
 from os import path
+from Error import Error
+from Property import Property
+from Resource import Item
+import ShellHandler
 
 
-def getProperties(resource, extrapolated_properties, file):
-    properties = []
-    if file:
-        if path.isfile(file):
-            for property in extrapolated_properties:
-                if property:
-                    propFrmFile = ShellHandler.runShellCommand(
-                        'grep \'^\\s*\'"' + property + '"\'=\' ./"' + file + '"|cut -d\'=\' -f2-')
-                    if propFrmFile is None:
-                        comparelog.print_error_log(msg="No property: " + property,
-                                                   args={'fnName': resource.testName,
-                                                         'type': comparelog.MISSING_PROPERTY,
-                                                         'source': resource.file, 'checkName': resource.checkName})
-                        properties.append(Property(property, None))
-                    else:
-                        properties.append(Property(property, [propFrmFile]))
-        else:
-            comparelog.print_error(msg="File not found.",
-                                   args={'fnName': resource.testName, 'type': comparelog.FILE_NOT_FOUND,
-                                         'source': file, 'checkName': resource.checkName})
-    return properties
+class PropertiesHandler(object):
+
+    def getResourceItem(self, extrapolated_properties, *args):
+        error = None
+        properties = None
+        file = args[0]
+        if file:
+            if path.isfile(file):
+                for property in extrapolated_properties:
+                    if property:
+                        propFrmFile = ShellHandler.runShellCommand(
+                            'grep \'^\\s*\'"' + property + '"\'=\' ./"' + file + '"|cut -d\'=\' -f2-')
+                        if not properties:
+                            properties = []
+                        if propFrmFile is None or propFrmFile.error:
+                            properties.append(Property(property, None, Error(type=Error.MISSING_PROPERTY,
+                                                                             message="No property: " + property)))
+                        else:
+                            properties.append(Property(property, [propFrmFile.output]))
+            else:
+                error = Error(Error.FILE_NOT_FOUND, "File not found")
+
+        return Item(file, properties, error)

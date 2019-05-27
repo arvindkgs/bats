@@ -7,14 +7,11 @@
 [[INFO]	[JDBC tuning]	[Max capacity]	[COMPARE]]	$.topology.wlsTunings[?(@.applicationName=fmwDB&@.attributeName=MaxCapacity)].value([u'100']) == jdbc-data-source.jdbc-connection-pool-params.max-capacity(['100'])
 [[INFO]	[JDBC tuning]	[Max capacity]	[COMPARE]]	$.topology.wlsTunings[?(@.applicationName=ApplicationDBBI&@.attributeName=MaxCapacity)].value([u'205']) == jdbc-data-source.jdbc-connection-pool-params.max-capacity(['205'])
 [[INFO]	[JDBC tuning]	[Max capacity]	[COMPARE]]	$.topology.wlsTunings[?(@.applicationName=bip_datasource&@.attributeName=MaxCapacity)].value([u'200']) == jdbc-data-source.jdbc-connection-pool-params.max-capacity(['200'])
+[[INFO]	[JDBC tuning]	[Min capacity]	[COMPARE]]	$.topology.wlsTunings[?(@.applicationName=ApplicationDB&@.attributeName=MinCapacity)].value([u'4']) == jdbc-data-source.jdbc-connection-pool-params.min-capacity(['4'])
 [[ERROR]	[JDBC tuning]	[Min capacity]	[MISSING_PROPERTY]	[metadatas/tests/jdbc/source.json]]	No property: '$.topology.wlsTunings[?(@.applicationName=ApplicationDBBatch&@.attributeName=MinCapacity)].value' found.
 [[ERROR]	[JDBC tuning]	[Min capacity]	[MISSING_PROPERTY]	[metadatas/tests/jdbc/source.json]]	No property: '$.topology.wlsTunings[?(@.applicationName=ApplicationServiceDB&@.attributeName=MinCapacity)].value' found.
-[[ERROR]	[JDBC tuning]	[Min capacity]	[MISSING_PROPERTY]	[metadatas/tests/jdbc/source.json]]	No property: '$.topology.wlsTunings[?(@.applicationName=ApplicationDBBI&@.attributeName=MinCapacity)].value' found.
-[[INFO]	[JDBC tuning]	[Min capacity]	[COMPARE]]	$.topology.wlsTunings[?(@.applicationName=ApplicationDB&@.attributeName=MinCapacity)].value([u'4']) == jdbc-data-source.jdbc-connection-pool-params.min-capacity(['4'])
-[[INFO]	[JDBC tuning]	[Min capacity]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsTunings[?(@.applicationName=ApplicationDBBatch&@.attributeName=MinCapacity)].value(None), Target: jdbc-data-source.jdbc-connection-pool-params.min-capacity(['2'])
-[[INFO]	[JDBC tuning]	[Min capacity]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsTunings[?(@.applicationName=ApplicationServiceDB&@.attributeName=MinCapacity)].value(None), Target: jdbc-data-source.jdbc-connection-pool-params.min-capacity(['0'])
 [[INFO]	[JDBC tuning]	[Min capacity]	[COMPARE]]	$.topology.wlsTunings[?(@.applicationName=fmwDB&@.attributeName=MinCapacity)].value([u'2']) == jdbc-data-source.jdbc-connection-pool-params.min-capacity(['2'])
-[[INFO]	[JDBC tuning]	[Min capacity]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsTunings[?(@.applicationName=ApplicationDBBI&@.attributeName=MinCapacity)].value(None), Target: jdbc-data-source.jdbc-connection-pool-params.min-capacity(['1'])
+[[ERROR]	[JDBC tuning]	[Min capacity]	[MISSING_PROPERTY]	[metadatas/tests/jdbc/source.json]]	No property: '$.topology.wlsTunings[?(@.applicationName=ApplicationDBBI&@.attributeName=MinCapacity)].value' found.
 [[INFO]	[JDBC tuning]	[Min capacity]	[COMPARE]]	$.topology.wlsTunings[?(@.applicationName=bip_datasource&@.attributeName=MinCapacity)].value([u'1']) == jdbc-data-source.jdbc-connection-pool-params.min-capacity(['1'])
 [[INFO]]	--------------------------------
 [[INFO]]	Validation Successful.

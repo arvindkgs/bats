@@ -2,33 +2,53 @@ import os
 import platform
 import subprocess
 from Property import Property
-from lib import comparelog
+import Resource
+from Error import Error
 
 
-def getProperties(resource, extrapolated_properties, file):
-    properties = []
-    for property in extrapolated_properties:
-        if property:
-            command = property
-            if resource.hostname and resource.username and resource.password:
-                command = 'sh ./scripts/runSSHCommand.sh ' + resource.hostname + ' ' + resource.username + ' ' + resource.password + ' "' + command + '"'
-            commandOutput = runShellCommand(command, resource)
-            if commandOutput is not None:
-                lines = commandOutput.split('\n')
-                i = -1
-                if resource.hostname and resource.username and resource.password:
-                    for i, line in enumerate(lines):
-                        if (line.strip() == resource.username + '@' + resource.hostname + '\'s password:'):
-                            break
-                commandOutput = lines[i + 1:]
-            else:
-                commandOutput = [None]
-            properties.append(Property(property, commandOutput))
-    return properties
+class ShellOutput:
+    def __init__(self, output, error=None):
+        self.output = output
+        self.error = error
 
 
-def runShellCommand(command, resource=None):
+class ShellHandler(object):
+
+    def getResourceItem(self, extrapolated_properties, *args):
+        properties = None
+        error = None
+        password = username = hostname = None
+        if args and len(args) == 3:
+            hostname = args[0]
+            username = args[1]
+            password = args[2]
+        for property in extrapolated_properties:
+            if property:
+                command = property
+                if hostname and username and password:
+                    command = 'sh ./scripts/runSSHCommand.sh ' + hostname + ' ' + username + ' ' + password + ' "' + command + '"'
+                shellOutput = runShellCommand(command)
+                commandOutput = shellOutput.output
+                error = shellOutput.error
+                if commandOutput is not None:
+                    lines = commandOutput.split('\n')
+                    i = -1
+                    if hostname and username and password:
+                        for i, line in enumerate(lines):
+                            if (line.strip() == username + '@' + hostname + '\'s password:'):
+                                break
+                    commandOutput = lines[i + 1:]
+                else:
+                    commandOutput = [None]
+                if not properties:
+                    properties = []
+                properties.append(Property(property, commandOutput, error))
+        return Resource.Item("SHELL", properties, error)
+
+
+def runShellCommand(command):
     returnVal = None
+    error = None
     if platform.system() == 'Windows':
         programfiles = ('PROGRAMW6432' if platform.architecture()[0] == '32bit'
                         else 'PROGRAMFILES')
@@ -40,6 +60,12 @@ def runShellCommand(command, resource=None):
         if process.returncode == 0:
             if stdout.decode('ascii').strip() != "":
                 returnVal = stdout.decode('ascii').strip()
+            else:
+                error = Error(type=Error.SHELL_COMMAND_ERROR,
+                              message="Shell command returned empty string.")
+        else:
+            error = Error(type=Error.SHELL_COMMAND_ERROR,
+                          message="Shell command failed with error: '" + stderr.strip() + "'")
     else:
         process = subprocess.Popen(
             [command], stdout=subprocess.PIPE,
@@ -48,23 +74,19 @@ def runShellCommand(command, resource=None):
         if process.returncode == 0:
             if stdout.decode('ascii').strip() != "":
                 returnVal = stdout.decode('ascii').strip()
-        else:
-            if resource:
-                comparelog.print_error(msg="Shell command failed with error: '" + stderr.strip() + "'",
-                                   args={'fnName': resource.testName, 'type': comparelog.SHELL_COMMAND_ERROR,
-                                         'source': command, 'checkName': resource.checkName})
             else:
-                comparelog.print_error(msg="Shell command failed with error: '" + stderr.strip() + "'",
-                                       args={'type': comparelog.SHELL_COMMAND_ERROR,
-                                             'source': command})
-    return returnVal
+                error = Error(type=Error.SHELL_COMMAND_ERROR,
+                              message="Shell command returned empty string.")
+        else:
+            error = Error(type=Error.SHELL_COMMAND_ERROR,
+                          message="Shell command failed with error: '" + stderr.strip() + "'")
+    return ShellOutput(returnVal, error)
 
 
-def getRemoteFile(hostname, username, password, path, resource=None):
+def getRemoteFile(hostname, username, password, path):
     filename = hostname + "_" + path
     filename = "./tmp/" + filename.replace("/", "_")
     if not os.path.isfile(filename):
         runShellCommand(
-            'sh ./scripts/runSCPCommand.sh ' + hostname + ' ' + username + ' ' + password + ' ' + path + ' ' + filename,
-            resource)
+            'sh ./scripts/runSCPCommand.sh ' + hostname + ' ' + username + ' ' + password + ' ' + path + ' ' + filename)
     return filename

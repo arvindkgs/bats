@@ -2,9 +2,7 @@
 [[INFO]]	Scaleout Automation Checks
 [[INFO]]	--------------------------------
 [[ERROR]	[JVM ARGS test]	[Xms check]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.bi_cluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xms check]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=bi_cluster)].Xms([1024]), Target: fusion.FADomain.bi_cluster.default.minmaxmemory.main(None)
 [[ERROR]	[JVM ARGS test]	[Xms check]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xms check]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].Xms([256]), Target: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main(None)
 [[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=UICluster)].Xms([2014]) == fusion.FADomain.UICluster.default.minmaxmemory.main([u'2014'])
 [[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xms([2211]) != fusion.FADomain.ServiceCluster.default.minmaxmemory.main([u'2200'])
 [[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xms([2911]) != fusion.FADomain.MWCluster.default.minmaxmemory.main([u'2800'])
@@ -15,9 +13,7 @@
 [[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xms([256]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'256'])
 [[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xms([1024]) != fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'1026'])
 [[ERROR]	[JVM ARGS test]	[Xmx check]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.bi_cluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xmx check]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=bi_cluster)].Xmx([10240]), Target: fusion.FADomain.bi_cluster.default.minmaxmemory.main(None)
 [[ERROR]	[JVM ARGS test]	[Xmx check]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xmx check]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].Xmx([8192]), Target: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main(None)
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=UICluster)].Xmx([13388]) != fusion.FADomain.UICluster.default.minmaxmemory.main([u'10240'])
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xmx([12299]) != fusion.FADomain.ServiceCluster.default.minmaxmemory.main([u'10240'])
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xmx([7899]) != fusion.FADomain.MWCluster.default.minmaxmemory.main([u'4096'])
@@ -28,13 +24,9 @@
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx([8192]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'8192'])
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xmx([10240]) != fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'7168'])
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/SDI_HOST_properties.json]]	No property: '$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb' found.
-[[INFO]	[JVM ARGS test]	[XssInKb]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb(None), Target: fusion.FADomain.ServiceCluster.default.minmaxmemory.main([u'4096'])
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.bi_cluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[XssInKb]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=bi_cluster)].XssInKb([4096]), Target: fusion.FADomain.bi_cluster.default.minmaxmemory.main(None)
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[XssInKb]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].XssInKb([4096]), Target: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main(None)
-[[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No pattern '-Xss{}?' in fusion.FADomain.UICluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[XssInKb]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=UICluster)].XssInKb([4096]), Target: fusion.FADomain.UICluster.default.minmaxmemory.main(None)
+[[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_FORMAT]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No format '-Xss{}?' in fusion.FADomain.UICluster.default.minmaxmemory.main
 [[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].XssInKb([4096]) == fusion.FADomain.MWCluster.default.minmaxmemory.main([u'4096'])
 [[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].XssInKb([4096]) == fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main([u'4096'])
 [[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=AdminServer)].XssInKb([4096]) == fusion.FADomain.AdminServer.default.minmaxmemory.main([u'4096'])
@@ -43,11 +35,8 @@
 [[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb([4096]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'4096'])
 [[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=bip_cluster)].XssInKb([4096]) == fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'4096'])
 [[ERROR]	[JVM ARGS test]	[ParallelGCThreads check]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.bi_cluster.Linux-x86_64.memoryargs
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=bi_cluster)].'XX:ParallelGCThreads'([12]), Target: fusion.bi_cluster.Linux-x86_64.memoryargs(None)
 [[ERROR]	[JVM ARGS test]	[ParallelGCThreads check]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.AdminServer.Linux-x86_64.memoryargs
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=AdminServer)].'XX:ParallelGCThreads'([4]), Target: fusion.AdminServer.Linux-x86_64.memoryargs(None)
 [[ERROR]	[JVM ARGS test]	[ParallelGCThreads check]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.SharedServicesCluster.Linux-x86_64.memoryargs
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[VALUE_MISMATCH]]	Values mismatch. Source: $.topology.wlsClusters[?(@.clusterName=SharedServicesCluster)].'XX:ParallelGCThreads'([12]), Target: fusion.SharedServicesCluster.Linux-x86_64.memoryargs(None)
 [[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'([15]) != fusion.UICluster.Linux-x86_64.memoryargs([u'10'])
 [[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'([12]) != fusion.ServiceCluster.Linux-x86_64.memoryargs([u'10'])
 [[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'([8]) != fusion.MWCluster.Linux-x86_64.memoryargs([u'12'])

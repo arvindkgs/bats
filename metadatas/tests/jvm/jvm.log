@@ -28,25 +28,15 @@
 [[INFO]	[JVM Args Test]	[Xss Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].XssInKb([102400]) == fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'102400'])
 [[INFO]	[JVM Args Test]	[Xss Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb([1024]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'1024'])
 [[INFO]	[JVM Args Test]	[Xss Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=bip_cluster)].XssInKb([4096]) == fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=UICluster)].'XX:NewRatio'([7]) == fusion.UICluster.Linux-x86_64.memoryargs([u'7'])
+[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:NewRatio'([3]) == fusion.ServiceCluster.Linux-x86_64.memoryargs([u'3'])
 [[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/source.json]]	No property: '$..wlsClusters[?(@.clusterName=MWCluster)].'XX:NewRatio'' found.
+[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:NewRatio'([3]) == fusion.ESS_SOACluster.Linux-x86_64.memoryargs([u'3'])
+[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=AdminServer)].'XX:NewRatio'([7]) == fusion.AdminServer.Linux-x86_64.memoryargs([u'7'])
 [[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/source.json]]	No property: '$..wlsClusters[?(@.clusterName=SingletonCluster)].'XX:NewRatio'' found.
 [[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/source.json]]	No property: '$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:NewRatio'' found.
 [[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/source.json]]	No property: '$..wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:NewRatio'' found.
 [[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/source.json]]	No property: '$..wlsClusters[?(@.clusterName=bip_cluster)].'XX:NewRatio'' found.
-[[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/target.properties]]	No pattern '-XX:NewRatio={}' in fusion.MWCluster.Linux-x86_64.memoryargs
-[[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/target.properties]]	No pattern '-XX:NewRatio={}' in fusion.SingletonCluster.Linux-x86_64.memoryargs
-[[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/target.properties]]	No pattern '-XX:NewRatio={}' in fusion.SupplyPlanningEngineCluster.Linux-x86_64.memoryargs
-[[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/target.properties]]	No pattern '-XX:NewRatio={}' in fusion.SEMSearchCluster.Linux-x86_64.memoryargs
-[[ERROR]	[JVM Args Test]	[XX:NewRatio Check]	[MISSING_PROPERTY]	[metadatas/tests/jvm/target.properties]]	No pattern '-XX:NewRatio={}' in fusion.bip_cluster.Linux-x86_64.memoryargs
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=UICluster)].'XX:NewRatio'([7]) == fusion.UICluster.Linux-x86_64.memoryargs([u'7'])
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:NewRatio'([3]) == fusion.ServiceCluster.Linux-x86_64.memoryargs([u'3'])
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[VALUE_MISMATCH]]	Values mismatch. Source: $..wlsClusters[?(@.clusterName=MWCluster)].'XX:NewRatio'(None), Target: fusion.MWCluster.Linux-x86_64.memoryargs(None)
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:NewRatio'([3]) == fusion.ESS_SOACluster.Linux-x86_64.memoryargs([u'3'])
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=AdminServer)].'XX:NewRatio'([7]) == fusion.AdminServer.Linux-x86_64.memoryargs([u'7'])
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[VALUE_MISMATCH]]	Values mismatch. Source: $..wlsClusters[?(@.clusterName=SingletonCluster)].'XX:NewRatio'(None), Target: fusion.SingletonCluster.Linux-x86_64.memoryargs(None)
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[VALUE_MISMATCH]]	Values mismatch. Source: $..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:NewRatio'(None), Target: fusion.SupplyPlanningEngineCluster.Linux-x86_64.memoryargs(None)
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[VALUE_MISMATCH]]	Values mismatch. Source: $..wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:NewRatio'(None), Target: fusion.SEMSearchCluster.Linux-x86_64.memoryargs(None)
-[[INFO]	[JVM Args Test]	[XX:NewRatio Check]	[VALUE_MISMATCH]]	Values mismatch. Source: $..wlsClusters[?(@.clusterName=bip_cluster)].'XX:NewRatio'(None), Target: fusion.bip_cluster.Linux-x86_64.memoryargs(None)
 [[INFO]	[JVM Args Test]	[ParallelGCThreads Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'([10]) == fusion.UICluster.Linux-x86_64.memoryargs([u'10'])
 [[INFO]	[JVM Args Test]	[ParallelGCThreads Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'([10]) == fusion.ServiceCluster.Linux-x86_64.memoryargs([u'10'])
 [[INFO]	[JVM Args Test]	[ParallelGCThreads Check]	[COMPARE]]	$..wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'([8]) == fusion.MWCluster.Linux-x86_64.memoryargs([u'8'])
