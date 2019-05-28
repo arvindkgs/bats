@@ -16,12 +16,13 @@ class PropertiesHandler(object):
                 for property in extrapolated_properties:
                     if property:
                         propFrmFile = ShellHandler.runShellCommand(
-                            'grep \'^\\s*\'"' + property + '"\'=\' ./"' + file + '"|cut -d\'=\' -f2-')
+                            'grep \'^\\s*\'"' + property + '"\'=\' "' + file + '"|cut -d\'=\' -f2-')
                         if not properties:
                             properties = []
                         if propFrmFile is None or propFrmFile.error:
+                            errorMessage = "No property: " + property if propFrmFile.error.type == Error.MISSING_PROPERTY else propFrmFile.error.message
                             properties.append(Property(property, None, Error(type=Error.MISSING_PROPERTY,
-                                                                             message="No property: " + property)))
+                                                                             message=errorMessage)))
                         else:
                             properties.append(Property(property, [propFrmFile.output]))
             else:

@@ -49,26 +49,26 @@ class Check:
                                                 msg="Number of source properties from (" + source.file + ") != Number of target properties from (" + target.file + ")",
                                                 args={"testName": self.testName,
                                                       "type": Error.VALUE_MISMATCH,
-                                                      "checkName": self.checkName},
-                                                console=not passed)
+                                                      "checkName": self.checkName})
                                             break
                                     elif targetItem.error:
+                                        printToConsole = False
                                         if self.failon and targetItem.error.type in self.failon:
                                             passed = False
+                                            printToConsole = True
                                         comparelog.print_error(msg=targetItem.error.message,
                                                                args={"testName": self.testName,
                                                                      "type": targetItem.error.type,
                                                                      "checkName": self.checkName,
                                                                      "source": targetItem.file},
-                                                               console=not passed)
+                                                               console=printToConsole)
                                     else:
                                         passed = False
                                         comparelog.print_error(msg="No target properties.",
                                                                args={"testName": self.testName,
                                                                      "type": Error.VALUE_MISMATCH,
                                                                      "checkName": self.checkName,
-                                                                     "source": targetItem.file},
-                                                               console=not passed)
+                                                                     "source": targetItem.file})
                             else:
                                 passed = False
                                 comparelog.print_error(
@@ -76,20 +76,20 @@ class Check:
                                     args={"testName": self.testName,
                                           "type": Error.VALUE_MISMATCH,
                                           "checkName": self.checkName,
-                                          "source": target.file},
-                                    console=not passed
-                                )
+                                          "source": target.file})
                         elif cardinality == 'one-to-many':
                             for targetItem in targetItems:
                                 if targetItem.error:
+                                    printToConsole = False
                                     if self.failon and targetItem.error.type in self.failon:
                                         passed = False
+                                        printToConsole = True
                                     comparelog.print_error(msg=targetItem.error.message,
                                                            args={"testName": self.testName,
                                                                  "type": targetItem.error.type,
                                                                  "checkName": self.checkName,
                                                                  "source": targetItem.file},
-                                                           console=not passed)
+                                                           console=printToConsole)
                                 else:
                                     passed = passed and self.compareItem(sourceItem, targetItem, True)
                     else:
@@ -99,23 +99,25 @@ class Check:
                             args={"testName": self.testName,
                                   "type": Error.VALUE_MISMATCH,
                                   "checkName": self.checkName,
-                                  "source": source.file},
-                            console=not passed
-                        )
+                                  "source": source.file})
                 elif source.error:
+                    printToConsole = False
                     if self.failon and source.error.type in self.failon:
                         passed = False
+                        printToConsole = True
                     comparelog.print_error(msg=source.error.message,
                                            args={'testName': self.testName, 'type': source.error.type,
                                                  "checkName": self.checkName, "source": source.file},
-                                           console=not passed)
+                                           console=printToConsole)
                 else:
+                    printToConsole = False
                     if self.failon and target.error.type in self.failon:
                         passed = False
+                        printToConsole = True
                     comparelog.print_error(msg=target.error.message,
                                            args={'testName': self.testName, 'type': target.error.type,
                                                  "checkName": self.checkName, "source": target.file},
-                                           console=not passed)
+                                           console=printToConsole)
             elif not source:
                 passed = False
                 comparelog.print_error(
@@ -123,8 +125,7 @@ class Check:
                         'type'] + "' . Available types: JSON, PROPERTY, CONF, XML, SHELL",
                     args={"testName": self.testName,
                           "type": comparelog.SYNTAX_ERROR,
-                          "checkName": self.checkName},
-                    console=not passed)
+                          "checkName": self.checkName})
             elif not target:
                 passed = False
                 comparelog.print_error(
@@ -132,25 +133,23 @@ class Check:
                         'type'] + "' . Available types: JSON, PROPERTY, CONF, XML, SHELL",
                     args={"testName": self.testName,
                           "type": comparelog.SYNTAX_ERROR,
-                          "checkName": self.checkName},
-                    console=not passed)
+                          "checkName": self.checkName})
 
         else:
             passed = False
             comparelog.print_error(
                 msg="Unsupported check type '" + self.checkType + "'. Only 'COMPARE' and 'SUCCESS' is supported.",
-                args={
-                    'testName': self.testName, 'checkName': self.checkName, 'type': comparelog.SYNTAX_ERROR
-                },
-                console=not passed)
+                args={"testName": self.testName, "checkName": self.checkName, "type": comparelog.SYNTAX_ERROR})
         return passed
 
     def compareItem(self, source, target, onetomany=False):
         passed = True
         cardinality = "one-to-one" if not onetomany else "one-to-many"
         if source.error:
+            printToConsole = False
             if self.failon and source.error.type in self.failon:
                 passed = False
+                printToConsole = True
             comparelog.print_error(
                 msg=source.error.message,
                 args={"testName": self.testName,
@@ -159,10 +158,12 @@ class Check:
                       "targetItem": target.file,
                       "type": source.error.type,
                       "source": source.file},
-                console=not passed)
+                console=printToConsole)
         elif target.error:
+            printToConsole = False
             if self.failon and target.error.type in self.failon:
                 passed = False
+                printToConsole = True
             comparelog.print_error(
                 msg=target.error.message,
                 args={"testName": self.testName,
@@ -171,7 +172,7 @@ class Check:
                       "targetItem": target.file,
                       "type": target.error.type,
                       "source": target.file},
-                console=not passed)
+                console=printToConsole)
         elif len(source.properties) != len(target.properties):
             passed = False
             comparelog.print_error(
@@ -180,8 +181,7 @@ class Check:
                       "checkName": self.checkName,
                       "cardinality": cardinality,
                       "targetItem": target.file,
-                      "type": Error.VALUE_MISMATCH},
-                console=not passed)
+                      "type": Error.VALUE_MISMATCH})
         elif not any(source.properties):
             passed = False
             comparelog.print_error(
@@ -191,8 +191,7 @@ class Check:
                       "cardinality": cardinality,
                       "targetItem": target.file,
                       "type": Error.VALUE_MISMATCH,
-                      "source": source.file},
-                console=not passed)
+                      "source": source.file})
         elif not any(target.properties):
             passed = False
             comparelog.print_error(
@@ -202,14 +201,15 @@ class Check:
                       "cardinality": cardinality,
                       "targetItem": target.file,
                       "type": Error.VALUE_MISMATCH,
-                      "source": target.file},
-                console=not passed)
+                      "source": target.file})
         else:
             for i, source_property in enumerate(source.properties):
                 target_property = target.properties[i]
                 if source_property.error:
+                    printToConsole = False
                     if self.failon and source_property.error.type in self.failon:
                         passed = False
+                        printToConsole = True
                     comparelog.print_error(
                         msg=source_property.error.message,
                         args={
@@ -219,10 +219,12 @@ class Check:
                             "targetItem": target.file,
                             "type": source_property.error.type,
                             "source": source.file},
-                        console=not passed)
+                        console=printToConsole)
                 elif target_property.error:
+                    printToConsole = False
                     if self.failon and target_property.error.type in self.failon:
                         passed = False
+                        printToConsole = True
                     comparelog.print_error(
                         msg=target_property.error.message,
                         args={"testName": self.testName,
@@ -231,12 +233,12 @@ class Check:
                               "targetItem": target.file,
                               "type": target_property.error.type,
                               "source": target.file},
-                        console=not passed)
+                        console=printToConsole)
                 else:
                     compare = source_property.compare(target_property)
                     if compare == Property.MATCH:
                         comparelog.print_info(
-                            msg=str(source_property) + " == " + str(target_property),
+                            msg="PASSED : " + str(source_property) + " == " + str(target_property),
                             args={"testName": self.testName,
                                   "checkName": self.checkName,
                                   "cardinality": cardinality,
@@ -245,7 +247,7 @@ class Check:
                             console=False)
                     elif compare == Property.NO_MATCH:
                         comparelog.print_info(
-                            msg=str(source_property) + " != " + str(target_property),
+                            msg="FAILED : " + str(source_property) + " != " + str(target_property),
                             args={"testName": self.testName,
                                   "checkName": self.checkName,
                                   "cardinality": cardinality,

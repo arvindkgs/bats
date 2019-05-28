@@ -1,7 +1,7 @@
 [[INFO]]	--------------------------------
 [[INFO]]	Negative Checks
 [[INFO]]	--------------------------------
-[[INFO]	[JVM test]	[Value mismatch]	[COMPARE]]	$.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
+[[INFO]	[JVM test]	[Value mismatch]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
 [[ERROR]	[JVM test]	[No Property]	[MISSING_PROPERTY]	[metadatas/tests/negative/source.json]]	No property: '$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx' found.
 [[ERROR]	[JVM test]	[No Property]	[MISSING_PROPERTY]	[metadatas/tests/negative/target.properties]]	No property: fusion.FADomain.AdminServer.default.minmaxmemory.xyz
 [[ERROR]	[JVM test]	[No Format found]	[MISSING_PROPERTY]	[metadatas/tests/negative/source.json]]	No property: '$.topology.wlsClusters[?(@.clusterName='xyz')].Xmx' found.

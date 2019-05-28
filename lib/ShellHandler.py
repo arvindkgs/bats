@@ -61,11 +61,11 @@ def runShellCommand(command):
             if stdout.decode('ascii').strip() != "":
                 returnVal = stdout.decode('ascii').strip()
             else:
-                error = Error(type=Error.SHELL_COMMAND_ERROR,
-                              message="Shell command returned empty string.")
+                error = Error(type=Error.MISSING_PROPERTY,
+                              message="No output for shell command: " + command)
         else:
             error = Error(type=Error.SHELL_COMMAND_ERROR,
-                          message="Shell command failed with error: '" + stderr.strip() + "'")
+                          message="Shell command '" + command + "' failed with error: " + stderr.strip())
     else:
         process = subprocess.Popen(
             [command], stdout=subprocess.PIPE,
@@ -75,11 +75,11 @@ def runShellCommand(command):
             if stdout.decode('ascii').strip() != "":
                 returnVal = stdout.decode('ascii').strip()
             else:
-                error = Error(type=Error.SHELL_COMMAND_ERROR,
-                              message="Shell command returned empty string.")
+                error = Error(type=Error.MISSING_PROPERTY,
+                              message="No output for shell command: " + command)
         else:
             error = Error(type=Error.SHELL_COMMAND_ERROR,
-                          message="Shell command failed with error: '" + stderr.strip() + "'")
+                          message="Shell command '" + command + "' failed with error: " + stderr.strip())
     return ShellOutput(returnVal, error)
 
 

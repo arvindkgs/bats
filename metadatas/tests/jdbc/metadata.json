@@ -6,24 +6,24 @@
   "tests": [
     {
       "name": "JDBC tuning",
+      "dynamic": [
+        {
+          "key": "applicationName",
+          "file": "metadatas/tests/jdbc/source.json",
+          "type": "JSON",
+          "property": "$.topology.wlsTunings[?(@.attributeName=MaxCapacity&@.applicationName~'^((?!-rac.).)*$')].applicationName"
+        },
+        {
+          "key": "jdbcfileName",
+          "file": "metadatas/tests/jdbc/config.xml",
+          "type": "XML",
+          "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
+        }
+      ],
       "checks": [
         {
           "name": "Max capacity",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "applicationName",
-              "file": "metadatas/tests/jdbc/source.json",
-              "type": "JSON",
-              "property": "$.topology.wlsTunings[?(@.attributeName=MaxCapacity&@.applicationName~'^((?!-rac.).)*$')].applicationName"
-            },
-            {
-              "key": "jdbcfileName",
-              "file": "metadatas/tests/jdbc/config.xml",
-              "type": "XML",
-              "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
-            }
-          ],
           "source": {
             "file": "metadatas/tests/jdbc/source.json",
             "type": "JSON",
@@ -38,27 +38,13 @@
         {
           "name": "Min capacity",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "applicationName",
-              "file": "metadatas/tests/jdbc/source.json",
-              "type": "JSON",
-              "property": "$.topology.wlsTunings[?(@.attributeName=MaxCapacity&@.applicationName~'^((?!-rac.).)*$')].applicationName"
-            },
-            {
-              "key": "fileName",
-              "file": "metadatas/tests/jdbc/config.xml",
-              "type": "XML",
-              "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
-            }
-          ],
           "source": {
             "file": "metadatas/tests/jdbc/source.json",
             "type": "JSON",
             "property": "$.topology.wlsTunings[?(@.applicationName=${applicationName}&@.attributeName=MinCapacity)].value"
           },
           "target": {
-            "file": "metadatas/tests/${fileName}",
+            "file": "metadatas/tests/${jdbcfileName}",
             "type": "XML",
             "property": "jdbc-data-source.jdbc-connection-pool-params.min-capacity"
           }

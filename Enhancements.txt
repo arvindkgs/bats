@@ -20,7 +20,60 @@ NOTES:
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
 1. Use REGEX for parsing format text.
-2. Add STATIC type
+2. Add STATIC type.
+3. Currently each dynamic property is computed as list of values with file attribute of the dynamic component being a single file.
+   * PROBLEM: However if the file attribute of the dynamic component is itself extrapolated to multiple files, then how to handle?
+   * SOLUTION *
+       * REFACTOR: Store each dynamic property as list of properties instead of list of values, so it can be a 2x2 where property is
+            corresponding to a file.
+       * CONSTRUCT: use the 'foreach' construct in the '${}' to make the list to be grouped on the property, versus the default which expands
+            to a single list.
+       * IMPACT:
+            Consider following 'check':
+            {
+              "name": "Max capacity",
+              "type": "COMPARE",
+              "source": {
+                "file": "metadatas/tests/jdbc/source.json",
+                "type": "JSON",
+                "property": "$.topology.wlsTunings[?(@.applicationName=${applicationName}&@.attributeName=MaxCapacity)].value"
+              },
+              "target": {
+                "file": "metadatas/tests/${jdbcfileName}",
+                "type": "XML",
+                "property": "jdbc-data-source.jdbc-connection-pool-params.max-capacity"
+              }
+            }
+            The 'target' has a 'file' attribute that is extrapolated to a list (above check is 'one-to-one' default) and each source item
+            is compared to a target item.
+            Now if : "file": "metadatas/tests/${jdbcfileName}" -> "file": "metadatas/tests/${foreach:jdbcfileName}"
+            This means that each property of the dynamic property ${jdbcfileName}, is grouped by the dynamic property file,
+            and the 'file' will give a list of properties grouped by the same dynamic property file.
+            Now if cardinality of check is 'one-to-one', the all values inside all properties will be flattened to single list and source values
+            are compared to all target values, but if it is 'one-to-many' then source values is compared to the value list of each property
+            of the file attribute separately.
+   OR
+   * SOLUTION * This feels better, this can also potentially remove 'cardinality' construct *
+   Introduce 'for' construct as,
+   "checks": [{
+        name: "JDBC Check"
+        for: {
+            each: "folder", //Add temporarily to dynamic map
+            in: {
+                "property": "ls /domain",
+                "type": "SHELL"
+            }
+            do: {
+                "dynamic": [{
+                    "key": "config-file"
+                    "property": "ls ${folder}/config.xml"
+                    "type": "SHELL"
+                }],
+                "source": {}
+                "target": { "file": "${config-file}"}
+            }
+        } //Remove the each variable from dynamic map
+   }]
 
 
 Done
