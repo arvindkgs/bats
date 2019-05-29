@@ -63,4 +63,5 @@ runNegativeTest "metadatas/tests/negative" "metadata.json" "negative.log" "failu
 runNegativeTest "metadatas/tests/individual" "metadata.json" "individual.log" "failure.log"
 runNegativeTest "metadatas/tests/dynamic" "metadata.json" "dynamic.log" "failure.log"
 runPositiveTest "metadatas/tests/one-to-many" "metadata.json" "jvm.log" "success.log"
+runNegativeTest "metadatas/tests/elasticsearch" "metadata.json" "elasticsearch.log" "failure.log"
 

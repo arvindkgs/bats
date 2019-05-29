@@ -8,7 +8,7 @@ from lib.Error import Error
 
 class Type(object):
     JSON = "JSON"
-    PROPERTY = "PROPERTY"
+    PROPERTIES = "PROPERTIES"
     XML = "XML"
     SHELL = "SHELL"
     STATIC = "STATIC"
@@ -196,10 +196,10 @@ class Resource(object):
                         # print "Found ?, pos: "+str(i)
                         replacedStr = patternStr[:i] + '[^ ]' + patternStr[i + 1:]
                 if (patternStr == prefix):
-                    prefix = replacedStr
+                    prefix = '.*' + replacedStr if prefix else ''
                 else:
                     suffix = replacedStr
-            pattern = '.*' + prefix + '([^ ]+)' + '(?=' + suffix + '\\b)' + '.*'
+            pattern = prefix + '([^ ]+)' + '(?=' + suffix + '\\b)' + '.*'
         return pattern
 
     def fetchValueFromDynamicMap(self, key, dynamicMap):

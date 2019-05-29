@@ -1,7 +1,7 @@
 {
   "name": "Scaleout Automation Checks",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
-  "logFileName": "metadatas/tests/individual/individual.log",
+  "log": "metadatas/tests/individual/individual.log",
   "options": "test",
   "tests": [
     {
@@ -18,7 +18,7 @@
           "target": {
             "property": "fusion.FADomain.bi_cluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -33,7 +33,7 @@
           "target": {
             "property": "fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -48,7 +48,7 @@
           "target": {
             "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -63,7 +63,7 @@
           "target": {
             "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -78,7 +78,7 @@
           "target": {
             "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -93,7 +93,7 @@
           "target": {
             "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -108,7 +108,7 @@
           "target": {
             "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -123,7 +123,7 @@
           "target": {
             "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -138,7 +138,7 @@
           "target": {
             "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -153,7 +153,7 @@
           "target": {
             "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -168,7 +168,7 @@
           "target": {
             "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -183,7 +183,7 @@
           "target": {
             "property": "fusion.FADomain.bi_cluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -198,7 +198,7 @@
           "target": {
             "property": "fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -213,7 +213,7 @@
           "target": {
             "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -228,7 +228,7 @@
           "target": {
             "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -243,7 +243,7 @@
           "target": {
             "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -258,7 +258,7 @@
           "target": {
             "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -273,7 +273,7 @@
           "target": {
             "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -288,7 +288,7 @@
           "target": {
             "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -303,7 +303,7 @@
           "target": {
             "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -318,7 +318,7 @@
           "target": {
             "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -333,7 +333,7 @@
           "target": {
             "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -348,7 +348,7 @@
           "target": {
             "property": "fusion.FADomain.ServiceCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -363,7 +363,7 @@
           "target": {
             "property": "fusion.FADomain.bi_cluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "--Xss{}?"
           }
         },
@@ -378,7 +378,7 @@
           "target": {
             "property": "fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -393,7 +393,7 @@
           "target": {
             "property": "fusion.FADomain.UICluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -408,7 +408,7 @@
           "target": {
             "property": "fusion.FADomain.MWCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -423,7 +423,7 @@
           "target": {
             "property": "fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -438,7 +438,7 @@
           "target": {
             "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -453,7 +453,7 @@
           "target": {
             "property": "fusion.FADomain.SingletonCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -468,7 +468,7 @@
           "target": {
             "property": "fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -483,7 +483,7 @@
           "target": {
             "property": "fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -498,7 +498,7 @@
           "target": {
             "property": "fusion.FADomain.bip_cluster.default.minmaxmemory.main",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -513,7 +513,7 @@
           "target": {
             "property": "fusion.bi_cluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -528,7 +528,7 @@
           "target": {
             "property": "fusion.AdminServer.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -543,7 +543,7 @@
           "target": {
             "property": "fusion.SharedServicesCluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -558,7 +558,7 @@
           "target": {
             "property": "fusion.UICluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -573,7 +573,7 @@
           "target": {
             "property": "fusion.ServiceCluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -588,7 +588,7 @@
           "target": {
             "property": "fusion.MWCluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -603,7 +603,7 @@
           "target": {
             "property": "fusion.ESS_SOACluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -618,7 +618,7 @@
           "target": {
             "property": "fusion.SingletonCluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -633,7 +633,7 @@
           "target": {
             "property": "fusion.SupplyPlanningEngineCluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -648,7 +648,7 @@
           "target": {
             "property": "fusion.SEMSearchCluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         },
@@ -663,7 +663,7 @@
           "target": {
             "property": "fusion.bip_cluster.Linux-x86_64.memoryargs",
             "file": "metadatas/tests/individual/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:ParallelGCThreads={}"
           }
         }

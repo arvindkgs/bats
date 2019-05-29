@@ -1,0 +1,8 @@
+[[INFO]]	--------------------------------
+[[INFO]]	Elastic Search Validation
+[[INFO]]	--------------------------------
+[[INFO]	[Elastic Search Test]	[Elastic Search 'NUMBER_OF_NODES' check]	[COMPARE]]	PASSED : $.topology.vmHosts[?(@.hostType=opt1)].elasticSearchNodes([1]) == NUMBER_OF_NODES([u'1'])
+[[INFO]	[Elastic Search Test]	[Elastic Search 'ES_HEAP_VALUE' check]	[COMPARE]]	FAILED : $.topology.vmHosts[?(@.hostType=opt1)].['max.heap']([u'6048']) != ES_HEAP_VALUE([u'1536'])
+[[INFO]]	--------------------------------
+[[INFO]]	Validation Failed.
+[[INFO]]	--------------------------------

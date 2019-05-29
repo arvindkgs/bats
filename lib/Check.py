@@ -130,7 +130,7 @@ class Check:
                 passed = False
                 comparelog.print_error(
                     msg="No target type available '" + self.check['target'][
-                        'type'] + "' . Available types: JSON, PROPERTY, CONF, XML, SHELL",
+                        'type'] + "' . Available types: JSON, PROPERTIES, CONF, XML, SHELL",
                     args={"testName": self.testName,
                           "type": comparelog.SYNTAX_ERROR,
                           "checkName": self.checkName})

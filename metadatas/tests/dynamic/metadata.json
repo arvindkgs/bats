@@ -1,7 +1,7 @@
 {
   "name": "Scaleout Automation Checks",
   "description": "This demonstrates dynamic value comparision. The dynamic value is computed and stored. This produces a list which is passed to the source and target. Each of them in turn produces a list(source-list, target-list) which is then compared. Resulting in n checks for n size list.",
-  "logFileName": "metadatas/tests/dynamic/dynamic.log",
+  "log": "metadatas/tests/dynamic/dynamic.log",
   "options": "test",
   "tests": [
     {
@@ -25,7 +25,7 @@
           },
           "target": {
             "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xms{}?"
           }
@@ -48,7 +48,7 @@
           },
           "target": {
             "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xmx{}?"
           }
@@ -71,7 +71,7 @@
           },
           "target": {
             "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
             "format": "-Xss{}?"
           }
@@ -94,7 +94,7 @@
           },
           "target": {
             "file": "metadatas/tests/dynamic/fusionapps_start_params.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:ParallelGCThreads={}"
           }

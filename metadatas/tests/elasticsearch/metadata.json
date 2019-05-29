@@ -1,0 +1,43 @@
+{
+  "name": "Elastic Search Validation",
+  "description": "Validate elastic search as part of Resizing Validation",
+  "log": "metadatas/tests/elasticsearch/elasticsearch.log",
+  "options": "test",
+  "tests": [
+    {
+      "name": "Elastic Search Test",
+      "checks": [
+        {
+          "name": "Elastic Search 'NUMBER_OF_NODES' check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=opt1)].elasticSearchNodes",
+            "file": "metadatas/tests/elasticsearch/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "NUMBER_OF_NODES",
+            "file": "metadatas/tests/elasticsearch/elasticsearch.properties",
+            "type": "PROPERTIES"
+          }
+        },
+        {
+          "name": "Elastic Search 'ES_HEAP_VALUE' check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=opt1)].['max.heap']",
+            "file": "metadatas/tests/elasticsearch/source.json",
+            "type": "JSON",
+            "format": "{}?"
+          },
+          "target": {
+            "property": "ES_HEAP_VALUE",
+            "file": "metadatas/tests/elasticsearch/elasticsearch.properties",
+            "type": "PROPERTIES",
+            "format": "{}?"
+          }
+        }
+      ]
+    }
+  ]
+}

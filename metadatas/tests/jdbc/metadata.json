@@ -1,7 +1,7 @@
 {
   "name": "JDBC Automation Checks",
   "description": "Demonstrates XML and JSON comparision, as well as dynamic computation of the files to check",
-  "logFileName": "metadatas/tests/jdbc/jdbc.log",
+  "log": "metadatas/tests/jdbc/jdbc.log",
   "options": "test",
   "tests": [
     {

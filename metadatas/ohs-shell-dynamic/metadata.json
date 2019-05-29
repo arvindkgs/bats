@@ -1,7 +1,7 @@
 {
   "name": "OHS Checks",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
-  "logFileName": "metadatas/ohs-shell-dynamic/ohs.log",
+  "log": "metadatas/ohs-shell-dynamic/ohs.log",
   "options": "test",
   "tests": [
     {

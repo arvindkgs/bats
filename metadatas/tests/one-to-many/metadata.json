@@ -1,7 +1,7 @@
 {
   "name": "jvm Checks",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
-  "logFileName": "metadatas/tests/one-to-many/jvm.log",
+  "log": "metadatas/tests/one-to-many/jvm.log",
   "options": "test",
   "tests": [
     {
@@ -32,7 +32,7 @@
           "target": {
             "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
             "file": "${domain_folder}/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
         },
@@ -48,7 +48,7 @@
           "target": {
             "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
             "file": "${domain_folder}/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -64,7 +64,7 @@
           "target": {
             "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
             "file": "${domain_folder}/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xss{}?"
           }
         },
@@ -80,7 +80,7 @@
           "target": {
             "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "file": "${domain_folder}/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-XX:NewRatio={}"
           }
         },
@@ -95,7 +95,7 @@
           },
           "target": {
             "file": "${domain_folder}/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:ParallelGCThreads={}"
           }
@@ -111,7 +111,7 @@
           },
           "target": {
             "file": "${domain_folder}/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
             "format": "-XX:MaxPermSize={}?"
           }

@@ -58,13 +58,13 @@ def setOptions(options):
 logFileSet = False
 
 
-def setLogFileName(logFileName='automation.log'):
+def setLogFileName(log='automation.log'):
     global fh
     global logFileSet
     if not logFileSet:
         try:
             logFileSet = True
-            fh = logging.FileHandler(logFileName, 'w')
+            fh = logging.FileHandler(log, 'w')
             fh.setLevel(logging.DEBUG)
 
             # add formatter
@@ -74,7 +74,7 @@ def setLogFileName(logFileName='automation.log'):
             getLogger().addHandler(fh)
         except IOError:
             record = getLogger().makeRecord(name, logging.ERROR, os.path.basename(__file__), None,
-                                            msg="Path to logFileName '" + logFileName + "' incorrect. Creating default log 'automation.log'",
+                                            msg="Path to log '" + log + "' incorrect. Creating default log 'automation.log'",
                                             args=None, exc_info=None,
                                             func="ERROR", extra={})
             getLogger().handle(record)

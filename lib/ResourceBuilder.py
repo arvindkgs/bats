@@ -11,7 +11,7 @@ def build(property, testName, checkName, dynamicProperties):
         return Resource(property, testName, checkName, JsonHandler(), dynamicProperties)
     elif property['type'] == Type.XML:
         return Resource(property, testName, checkName, XmlHandler(), dynamicProperties)
-    elif property['type'] == Type.PROPERTY:
+    elif property['type'] == Type.PROPERTIES:
         return Resource(property, testName, checkName, PropertiesHandler(), dynamicProperties)
     elif property['type'] == Type.CONFIG:
         return Resource(property, testName, checkName, ConfigHandler(), dynamicProperties)

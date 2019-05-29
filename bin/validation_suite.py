@@ -34,9 +34,9 @@ class CompareProperties(object):
                 # get options
                 if 'options' in config:
                     comparelog.setOptions(config['options'])
-                # check for logFileName
-                if 'logFileName' in config and config['logFileName'] != '':
-                    comparelog.setLogFileName(config['logFileName'])
+                # check for log
+                if 'log' in config and config['log'] != '':
+                    comparelog.setLogFileName(config['log'])
                 # check for description
                 if 'name' in config:
                     comparelog.print_info(msg="--------------------------------", args={})

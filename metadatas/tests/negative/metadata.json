@@ -2,7 +2,7 @@
   "name": "Negative Checks",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
   "options": "test",
-  "logFileName": "metadatas/tests/negative/negative.log",
+  "log": "metadatas/tests/negative/negative.log",
   "tests": [
     {
       "name": "JVM test",
@@ -18,7 +18,7 @@
           "target": {
             "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
             "file": "metadatas/tests/negative/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -33,7 +33,7 @@
           "target": {
             "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
             "file": "metadatas/tests/negative/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -48,7 +48,7 @@
           "target": {
             "property": "fusion.FADomain.AdminServer.default.minmaxmemory.xyz",
             "file": "metadatas/tests/negative/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "-Xmx{}?"
           }
         },
@@ -63,7 +63,7 @@
           "target": {
             "property": "fusion.FADomain.AdminServer.default.minmaxmemory.main",
             "file": "metadatas/tests/negative/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "format": "xyz{}?"
           }
         },
@@ -84,7 +84,7 @@
           },
           "target": {
             "file": "metadatas/tests/negative/target.properties",
-            "type": "PROPERTY",
+            "type": "PROPERTIES",
             "property": "fusion.FADomain.${1}.default.minmaxmemory.main",
             "format": "-XX:MaxPermSize={}?"
           }
