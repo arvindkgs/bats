@@ -51,7 +51,7 @@ class CompareProperties(object):
                     testName = test['name']
                     dynamicProperties = {}
                     Dynamic.addCommandLineArgs(self.dynamic, dynamicProperties)
-                    Dynamic.addDynamicProperties(test, dynamicProperties)
+                    passed = passed and Dynamic.addDynamicProperties(test, dynamicProperties, failon=self.failon)
                     for check in test['checks']:
                         checkPassed = Check(check, testName, dynamicProperties, failon=self.failon).evaluateCheck()
                         passed = passed and checkPassed
@@ -72,8 +72,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compares (static and dynamic) resources defined in the metadata.json")
     parser.add_argument('--metadata', default='metadata.json', dest='metadataFile', required=True, type=str,
                         help="(Required) Metadata file which defines resources that should be compared")
-    parser.add_argument('--failon', required=False, dest="failon",
-                        help="Fail Validation when this type of message is encountered", type=str, action="append")
+    parser.add_argument('--failon', required=False, dest="failon", nargs="+",
+                        help="Fail Validation when this type of message is encountered", type=str)
     parser.add_argument('-D', required=False, dest="dynamic", help="Dynamic values to be passed", action="append")
     args = parser.parse_args()
     if CompareProperties(args).validate():

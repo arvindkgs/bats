@@ -1,0 +1,395 @@
+{
+  "name": "Resizing Validation on FA Host",
+  "description": "Resizing Validation on FA Host that includes JVM, JDBC, OHS, and Elastic search checks",
+  "log": "all.log",
+  "tests": [
+    {
+      "name": "JVM Args Test",
+      "dynamic": [
+        {
+          "key": "domain_folder",
+          "type": "SHELL",
+          "property": "ls -d /u01/APPLTOP/instance/domains/*/"
+        },
+        {
+          "key": "clusterObj",
+          "file": "metadatas/tests/jvm/source.json",
+          "type": "JSON",
+          "property": "$..wlsClusters[*]"
+        }
+      ],
+      "checks": [
+        {
+          "name": "Xms Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
+            "file": "metadatas/tests/one-to-many/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "file": "${domain_folder}FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "format": "-Xms{}?"
+          }
+        },
+        {
+          "name": "Xmx Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xmx",
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "file": "${domain_folder}FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xss Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].XssInKb",
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "file": "${domain_folder}FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XX:NewRatio Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:NewRatio'",
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
+            "file": "${domain_folder}FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "format": "-XX:NewRatio={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "${domain_folder}FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "XX:MaxPermSize check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "file": "metadatas/tests/jvm/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:MaxPermSize'"
+          },
+          "target": {
+            "file": "${domain_folder}FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:MaxPermSize={}?"
+          }
+        }
+      ]
+    },
+    {
+      "name": "JDBC tuning",
+      "dynamic": [
+        {
+          "key": "applicationName",
+          "file": "metadatas/tests/jdbc/source.json",
+          "type": "JSON",
+          "property": "$.topology.wlsTunings[?(@.attributeName=MaxCapacity&@.applicationName~'^((?!-rac.).)*$')].applicationName"
+        },
+        {
+          "key": "jdbcfileName",
+          "file": "/u01/APPLTOP/instance/domains/fa.oracleoutsourcing.com/FADomain/config/config.xml",
+          "type": "XML",
+          "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
+        }
+      ],
+      "checks": [
+        {
+          "name": "Max capacity",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/jdbc/source.json",
+            "type": "JSON",
+            "property": "$.topology.wlsTunings[?(@.applicationName=${applicationName}&@.attributeName=MaxCapacity)].value"
+          },
+          "target": {
+            "file": "/u01/APPLTOP/instance/domains/fa.oracleoutsourcing.com/FADomain/config/${jdbcfileName}",
+            "type": "XML",
+            "property": "jdbc-data-source.jdbc-connection-pool-params.max-capacity"
+          }
+        },
+        {
+          "name": "Min capacity",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/jdbc/source.json",
+            "type": "JSON",
+            "property": "$.topology.wlsTunings[?(@.applicationName=${applicationName}&@.attributeName=MinCapacity)].value"
+          },
+          "target": {
+            "file": "/u01/APPLTOP/instance/domains/fa.oracleoutsourcing.com/FADomain/config/${jdbcfileName}",
+            "type": "XML",
+            "property": "jdbc-data-source.jdbc-connection-pool-params.min-capacity"
+          }
+        }
+      ]
+    },
+    {
+      "name": "OHS Test",
+      "checks": [
+        {
+          "name": "KeepAliveTimeout Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.KeepAliveTimeout",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.KeepAliveTimeout",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ThreadLimit Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadLimit",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ThreadLimit",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ServerLimit Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ServerLimit",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ServerLimit",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "StartServers Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.StartServers",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..StartServers",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxClients Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxClients",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxClients",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MinSpareThreads Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MinSpareThreads",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MinSpareThreads",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxSpareThreads Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxSpareThreads",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxSpareThreads",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ThreadsPerChild Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadsPerChild",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ThreadsPerChild",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxRequestsPerChild Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxRequestsPerChild",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxRequestsPerChild",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "AcceptMutex Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.AcceptMutex",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..AcceptMutex",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "WLSocketTimeoutSecs Check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..WLSocketTimeoutSecs",
+            "hostname": "${ohs-hostname}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/mod_wl_ohs.conf",
+            "type": "CONF"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Elastic Search Test",
+      "checks": [
+        {
+          "name": "Elastic Search 'NUMBER_OF_NODES' check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=opt1)].elasticSearchNodes",
+            "file": "metadatas/tests/elasticsearch/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "NUMBER_OF_NODES",
+            "file": "/u01/APPLTOP/instance/elasticsearch/elasticsearch.properties",
+            "type": "PROPERTIES"
+          }
+        },
+        {
+          "name": "Elastic Search 'ES_HEAP_VALUE' check",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=opt1)].['max.heap']",
+            "file": "metadatas/tests/elasticsearch/source.json",
+            "type": "JSON",
+            "format": "{}?"
+          },
+          "target": {
+            "property": "ES_HEAP_VALUE",
+            "file": "/u01/APPLTOP/instance/elasticsearch/elasticsearch.properties",
+            "type": "PROPERTIES",
+            "format": "{}?"
+          }
+        }
+      ]
+    }
+  ]
+}

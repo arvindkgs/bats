@@ -1,0 +1,2327 @@
+{
+  "name": "Comparing 'override.json' with 'current-pod-size.json'",
+  "description": "target pod size json is merged with the values from override json. So compare each property in override json with values in target pod size json",
+  "tests": [
+    {
+      "name": "Compare postFactoryInfo",
+      "checks": [
+        {
+          "name": "Check postFactoryVersion",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.postFactoryInfo.postFactoryVersion",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.postFactoryInfo.postFactoryVersion",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Compare Topology VMHosts",
+      "dynamic": [
+        {
+          "key": "hostType",
+          "property": "$.topology.vmHosts[*].hostType",
+          "type": "JSON",
+          "file": "metadatas/tests/current-pod-size/source.json"
+        }
+      ],
+      "checks": [
+        {
+          "name": "vmName",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].vmName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].vmName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "memory",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].memory",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].memory",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "max.memory",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].['max.memory']",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].['max.memory']",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "cpus",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].cpus",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].cpus",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "swap.size",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].['swap.size']",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.vmHosts[?(@.hostType=${hostType})].['swap.size']",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Compare extensionInstances",
+      "checks": [
+        {
+          "name": "extensionInstances min",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.extensionInstances.min",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionInstances.min",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "extensionInstances max",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.extensionInstances.max",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionInstances.max",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "extensionDefinition",
+      "checks": [
+        {
+          "name": "auxVM cpus",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.extensionDefinition.auxVM.cpus",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.auxVM.cpus",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "auxVM memory",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.extensionDefinition.auxVM.memory",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.auxVM.memory",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "auxVM scaleoutManagedServers domainName",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "property": "$.topology.extensionDefinition.auxVM.scaleoutManagedServers[*].clusterName",
+              "type": "JSON",
+              "file": "metadatas/tests/current-pod-size/source.json"
+            }
+          ],
+          "source": {
+            "property": "$.topology.extensionDefinition.auxVM.scaleoutManagedServers[?(@.clusterName=${clusterName})].domainName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.auxVM.scaleoutManagedServers[?(@.clusterName=${clusterName})].domainName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "auxVM scaleoutManagedServers numScaleoutServers",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterName",
+              "property": "$.topology.extensionDefinition.auxVM.scaleoutManagedServers[*].clusterName",
+              "type": "JSON",
+              "file": "metadatas/tests/current-pod-size/source.json"
+            }
+          ],
+          "source": {
+            "property": "$.topology.extensionDefinition.auxVM.scaleoutManagedServers[?(@.clusterName=${clusterName})].numScaleoutServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.auxVM.scaleoutManagedServers[?(@.clusterName=${clusterName})].numScaleoutServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "blr cpus",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.extensionDefinition.blr.cpus",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.blr.cpus",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "blr memory",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.extensionDefinition.blr.memory",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.blr.memory",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "blr scaleoutManagedServers domainName",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterNameBlr",
+              "property": "$.topology.extensionDefinition.blr.scaleoutManagedServers[*].clusterName",
+              "type": "JSON",
+              "file": "metadatas/tests/current-pod-size/source.json"
+            }
+          ],
+          "source": {
+            "property": "$.topology.extensionDefinition.blr.scaleoutManagedServers[?(@.clusterName=${clusterNameBlr})].domainName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.blr.scaleoutManagedServers[?(@.clusterName=${clusterNameBlr})].domainName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "blr scaleoutManagedServers numScaleoutServers",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.extensionDefinition.blr.scaleoutManagedServers[?(@.clusterName=${clusterNameBlr})].numScaleoutServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.extensionDefinition.blr.scaleoutManagedServers[?(@.clusterName=${clusterNameBlr})].numScaleoutServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "scaleoutManagedServers",
+      "checks": [
+        {
+          "name": "domainName",
+          "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "clusterNameScaleout",
+              "property": "$.topology.scaleoutManagedServers[*].clusterName",
+              "type": "JSON",
+              "file": "metadatas/tests/current-pod-size/source.json"
+            }
+          ],
+          "source": {
+            "property": "$.topology.scaleoutManagedServers[?(@.clusterName=${clusterNameScaleout})].domainName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.scaleoutManagedServers[?(@.clusterName=${clusterNameScaleout})].domainName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "targetMachineName",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.scaleoutManagedServers[?(@.clusterName=${clusterNameScaleout})].targetMachineName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.scaleoutManagedServers[?(@.clusterName=${clusterNameScaleout})].targetMachineName",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "numScaleoutServers",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.scaleoutManagedServers[?(@.clusterName=${clusterNameScaleout})].numScaleoutServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.scaleoutManagedServers[?(@.clusterName=${clusterNameScaleout})].numScaleoutServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "wlsClusters",
+      "checks": [
+        {
+          "name": "UICluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "UICluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "UICluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "UICluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "UICluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "UICluster XX:NewRatio",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "UICluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "UICluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=UICluster)].numberOfServersInClusterAddress"
+          }
+        },
+        {
+          "name": "ServiceCluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ServiceCluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ServiceCluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ServiceCluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ServiceCluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ServiceCluster XX:NewRatio",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ServiceCluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "ServiceCluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ServiceCluster)].numberOfServersInClusterAddress"
+          }
+        },
+        {
+          "name": "MWCluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "MWCluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "MWCluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "MWCluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "MWCluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "MWCluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "MWCluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=MWCluster)].numberOfServersInClusterAddress"
+          }
+        },
+        
+        
+        {
+          "name": "ESS_SOACluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ESS_SOACluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ESS_SOACluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ESS_SOACluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ESS_SOACluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ESS_SOACluster XX:NewRatio",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "ESS_SOACluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "ESS_SOACluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=ESS_SOACluster)].numberOfServersInClusterAddress"
+          }
+        },
+        {
+          "name": "AdminServer domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "AdminServer Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "AdminServer Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "AdminServer Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "AdminServer XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "AdminServer XX:NewRatio",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].'XX:NewRatio'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "AdminServer ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=AdminServer)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "SingletonCluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SingletonCluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SingletonCluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SingletonCluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SingletonCluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SingletonCluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "SingletonCluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SingletonCluster)].numberOfServersInClusterAddress"
+          }
+        },
+        {
+          "name": "SupplyPlanningEngineCluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SupplyPlanningEngineCluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SupplyPlanningEngineCluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SupplyPlanningEngineCluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SupplyPlanningEngineCluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SupplyPlanningEngineCluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "SupplyPlanningEngineCluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].numberOfServersInClusterAddress"
+          }
+        },
+        
+        
+        
+        {
+          "name": "SEMSearchCluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SEMSearchCluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SEMSearchCluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SEMSearchCluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SEMSearchCluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "SEMSearchCluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "SEMSearchCluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=SEMSearchCluster)].numberOfServersInClusterAddress"
+          }
+        },
+        {
+          "name": "bip_cluster domain",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].domainName",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "bip_cluster Xms",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].Xms",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "bip_cluster Xmx",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].Xmx",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "bip_cluster Xss",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].XssInKb",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "bip_cluster XX:MaxPermSize",
+          "type": "COMPARE",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].'XX:MaxPermSize'",
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON"
+          }
+        },
+        {
+          "name": "bip_cluster ParallelGCThreads",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].'XX:ParallelGCThreads'"
+          }
+        },
+        {
+          "name": "bip_cluster numberOfServersInClusterAddress",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/current-pod-size/source.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].numberOfServersInClusterAddress"
+          },
+          "target": {
+            "file": "metadatas/tests/current-pod-size/target.json",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=bip_cluster)].numberOfServersInClusterAddress"
+          }
+        }
+      ]
+    },
+    {
+      "name": "wlsTunings",
+      "checks": [
+        {
+          "name": "FADomain JDBCDriverParams EDNSource oracle.jdbc.ReadTimeout",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=EDNSource&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=EDNSource&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCDriverParams SOADataSource oracle.jdbc.ReadTimeout",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=SOADataSource&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=SOADataSource&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCDriverParams SOALocalTxDataSource oracle.jdbc.ReadTimeout",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=SOALocalTxDataSource&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=SOALocalTxDataSource&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCDriverParams fmwDB oracle.jdbc.ReadTimeout",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=fmwDB&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=fmwDB&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCDriverParams mds-soa oracle.jdbc.ReadTimeout",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=mds-soa&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCDriverParams&@.applicationName=mds-soa&@.attributeName='oracle.jdbc.ReadTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource ApplicationDB MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource ApplicationDBBatch MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDBBatch&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDBBatch&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource ApplicationServiceDB MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationServiceDB&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationServiceDB&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource fmwDB MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource ApplicationDBBI MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDBBI&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDBBI&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource bip_datasource MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=bip_datasource&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=bip_datasource&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'ApplicationDB-rac*' MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationDB-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationDB-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'ApplicationDBBatch-rac*' MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationDBBatch-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationDBBatch-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'ApplicationServiceDB-rac*' MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationServiceDB-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationServiceDB-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'fmwDB-rac*' MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='fmwDB-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='fmwDB-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'ApplicationDBBI-rac*' MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationDBBI-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='ApplicationDBBI-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'bip_datasource-rac*' MaxCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource-rac*'&@.attributeName='MaxCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource ApplicationDB MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource ApplicationDB-rac1 MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB-rac1&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB-rac1&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource ApplicationDB-rac2 MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB-rac2&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=ApplicationDB-rac2&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource fmwDB MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource fmwDB-rac1 MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB-rac1&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB-rac1&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource fmwDB-rac2 MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB-rac2&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName=fmwDB-rac2&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-ESS_MDS_DS' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-ESS_MDS_DS-rac1' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-ESS_MDS_DS-rac2' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'OraSDPMDataSource' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='OraSDPMDataSource'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='OraSDPMDataSource'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'OraSDPMDataSource-rac1' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='OraSDPMDataSource-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='OraSDPMDataSource-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'OraSDPMDataSource-rac2' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='OraSDPMDataSource-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='OraSDPMDataSource-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-soa' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-soa-rac1' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-soa-rac2' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'SOADataSource' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='SOADataSource'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='SOADataSource'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'SOADataSource-rac1' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='SOADataSource-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='SOADataSource-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'SOADataSource-rac2' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='SOADataSource-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='SOADataSource-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'bip_datasource' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'bip_datasource-rac1' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource-rac1'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'bip_datasource-rac2' MinCapacity",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='bip_datasource-rac2'&@.attributeName='MinCapacity')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-ESS_MDS_DS' AlgorithmType",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS'&@.attributeName='AlgorithmType')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS'&@.attributeName='AlgorithmType')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-ESS_MDS_DS' DataSourceList",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS'&@.attributeName='DataSourceList')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-ESS_MDS_DS'&@.attributeName='DataSourceList')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-soa' AlgorithmType",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa'&@.attributeName='AlgorithmType')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa'&@.attributeName='AlgorithmType')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain JDBCSystemResource 'mds-soa' DataSourceList",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa'&@.attributeName='DataSourceList')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=JDBCSystemResource&@.applicationName='mds-soa'&@.attributeName='DataSourceList')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'AdminServer' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='AdminServer'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='AdminServer'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'SupplyPlanningEngineServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SupplyPlanningEngineServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SupplyPlanningEngineServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'ServiceServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='ServiceServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='ServiceServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'SEMSearchServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SEMSearchServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SEMSearchServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'SingletonServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SingletonServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SingletonServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'SharedServicesServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SharedServicesServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SharedServicesServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'SharedServicesServer_HA' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SharedServicesServer_HA'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='SharedServicesServer_HA'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'MWServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='MWServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='MWServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'UIServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='UIServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='UIServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'bi_server1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bi_server1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bi_server1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'bip_server1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bip_server1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bip_server1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'bi_serverHA' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bi_serverHA'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bi_serverHA'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'bip_serverHA' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bip_serverHA'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='bip_serverHA'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ServerResource 'ESS_SOAServer_1' SelfTuningThreadPoolSizeMin",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='ESS_SOAServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ServerResource&@.applicationName='ESS_SOAServer_1'&@.attributeName='SelfTuningThreadPoolSizeMin')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "FADomain ClusterResource 'UICluster' IdlePeriodsUntilTimeout",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ClusterResource&@.applicationName='UICluster'&@.attributeName='IdlePeriodsUntilTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.wlsTunings[?(@.domainName=FADomain&@.resourceName=ClusterResource&@.applicationName='UICluster'&@.attributeName='IdlePeriodsUntilTimeout')].value",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ohs tunings",
+      "checks": [
+        {
+          "name": "KeepAliveTimeout",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.KeepAliveTimeout",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.KeepAliveTimeout",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "ThreadLimit",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadLimit",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.ThreadLimit",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "ServerLimit",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ServerLimit",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.ServerLimit",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "StartServers",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.StartServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.StartServers",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "MaxClients",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxClients",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.MaxClients",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "MinSpareThreads",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MinSpareThreads",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.MinSpareThreads",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "MaxSpareThreads",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxSpareThreads",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.MaxSpareThreads",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "ThreadsPerChild",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadsPerChild",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.ThreadsPerChild",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "MaxRequestsPerChild",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxRequestsPerChild",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.MaxRequestsPerChild",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "AcceptMutex",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.AcceptMutex",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.AcceptMutex",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "WLSocketTimeoutSecs",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "haEnabled",
+      "checks": [
+        {
+          "name": "production",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.haEnabled.production",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.haEnabled.production",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "stage",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.haEnabled.stage",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.haEnabled.stage",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "dbSizing",
+      "checks": [
+        {
+          "name": "production fa vcores",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.dbSizing.production.dbs.fa.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.dbSizing.production.dbs.fa.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "production oid vcores",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.dbSizing.production.dbs.oid.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.dbSizing.production.dbs.oid.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "stage fa vcores",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.dbSizing.stage.dbs.fa.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.dbSizing.stage.dbs.fa.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        },
+        {
+          "name": "oid vcores",
+          "type": "COMPARE",
+          "source": {
+            "property": "$.topology.dbSizing.stage.dbs.oid.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/source.json"
+          },
+          "target": {
+            "property": "$.topology.dbSizing.stage.dbs.oid.vcores",
+            "type": "JSON",
+            "file": "metadatas/tests/current-pod-size/target.json"
+          }
+        }
+      ]
+    }
+  ]
+}

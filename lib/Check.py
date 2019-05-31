@@ -16,8 +16,7 @@ class Check:
         self.dynamicProperties = dynamicProperties
 
     def evaluateCheck(self):
-        passed = True
-        addDynamicProperties(self.check, self.dynamicProperties, self.testName)
+        passed = addDynamicProperties(self.check, self.dynamicProperties, self.testName, self.failon)
         if self.checkType == 'COMPARE':
             source = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
                                            checkName=self.checkName, dynamicProperties=self.dynamicProperties)
@@ -134,7 +133,6 @@ class Check:
                     args={"testName": self.testName,
                           "type": comparelog.SYNTAX_ERROR,
                           "checkName": self.checkName})
-
         else:
             passed = False
             comparelog.print_error(
@@ -262,6 +260,6 @@ class Check:
                                   "checkName": self.checkName,
                                   "cardinality": cardinality,
                                   "targetItem": target.file,
-                                  "type": comparelog.VALUE_MISMATCH})
+                                  "type": Error.VALUE_MISMATCH})
                         passed = False
         return passed

@@ -36,8 +36,8 @@ class Resource(object):
         self.checkName = checkName
         self.handler = handler
         self.dynamicMap = dynamicProperties
-        self.items = self.fetch()
         self.error = None
+        self.items = self.fetch()
 
     def fetch(self):
         extrapolatedProp = self.extrapolate(self.dynamicMap, self.property)
