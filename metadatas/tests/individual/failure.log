@@ -23,7 +23,7 @@
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xmx([16384]) != fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'8192'])
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx([8192]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'8192'])
 [[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xmx([10240]) != fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'7168'])
-[[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/SDI_HOST_properties.json]]	No property: '$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb' found.
+[[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/SDI_HOST_properties.json]]	No property: $.topology.wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.bi_cluster.default.minmaxmemory.main
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No property: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_FORMAT]	[metadatas/tests/individual/fusionapps_start_params.properties]]	No format '-Xss{}?' in fusion.FADomain.UICluster.default.minmaxmemory.main

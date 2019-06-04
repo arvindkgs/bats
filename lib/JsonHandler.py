@@ -15,39 +15,60 @@ class JsonHandler(object):
             with open(file, 'r') as conf_file:
                 dataStr = conf_file.read()
                 try:
-                    jsStr = None
+                    jsObj = None
                     if dataStr is not None:
-                        jsStr = json.loads(dataStr)
-                    for property in extrapolated_properties:
-                        if property:
-                            try:
-                                parser = jp.parse(property)
+                        jsObj = json.loads(dataStr)
+                    if not any(extrapolated_properties):
+                        properties = self.generateProperties(jsObj)
+                    else:
+                        for property in extrapolated_properties:
+                            if property:
                                 values = None
-                                if jsStr is not None:
-                                    for match in parser.find(jsStr):
-                                        if match.value is not None:
-                                            if values is None:
-                                                values = []
-                                            values.append(match.value)
-                                if not properties:
-                                    properties = []
-                                if values is None:
-                                    properties.append(Property(str(property), values, Error(type=Error.MISSING_PROPERTY,
-                                                                                            message="No property: '" + str(
-                                                                                                property) + "' found.")))
-                                else:
-                                    properties.append(Property(str(property), values))
-                            except Exception as e:
-                                print e
-                                properties.append(Property(str(property), values, Error(type=Error.SYNTAX_ERROR,
-                                                                                        message="Parser error, check jsonpath for property '" + str(
-                                                                                            property))))
+                                try:
+                                    parser = jp.parse(property)
+                                    if jsObj is not None:
+                                        for match in parser.find(jsObj):
+                                            if match.value is not None:
+                                                if values is None:
+                                                    values = []
+                                                values.append(match.value)
+                                    if not properties:
+                                        properties = []
+                                    if values is None:
+                                        properties.append(
+                                            Property(str(property), values, Error(type=Error.MISSING_PROPERTY,
+                                                                                  message="No property: " + str(
+                                                                                      property))))
+                                    else:
+                                        properties.append(Property(str(property), values))
+                                except Exception as e:
+                                    print e
+                                    if not properties:
+                                        properties = []
+                                    properties.append(Property(str(property), values, Error(type=Error.SYNTAX_ERROR,
+                                                                                            message="Parser error, check jsonpath for property '" + str(
+                                                                                                property))))
                 except Error:
                     error = Error(type=Error.PARSER_ERROR, message="Invalid json file '" + file + "'")
         except IOError as e:
             print e
             error = Error(Error.FILE_NOT_FOUND, "File not found")
         return Item(file, properties, error)
+
+    def generateProperties(self, jsObj):
+        properties = []
+        self.visitDict(properties=properties, prefix="$", dictionary=jsObj)
+        return properties
+
+    def visitDict(self, properties, prefix, dictionary):
+        if isinstance(dictionary, dict):
+            for key in dictionary:
+                self.visitDict(properties, prefix + ".'" + key + "'", dictionary[key])
+        elif isinstance(dictionary, list):
+            for i, item in enumerate(dictionary):
+                self.visitDict(properties, prefix + "[" + str(i) + "]", item)
+        else:
+            properties.append(Property(prefix, [dictionary]))
 
     # def getPropertiesExtrapolation(resource, extrapolated_properties, files):
     #     properties = []

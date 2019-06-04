@@ -1,6 +1,7 @@
 {
   "generalInfo": {
     "name": "s",
+    "schemaVersion": "1.0",
     "description": "small"
   },
   "postFactoryInfo": {

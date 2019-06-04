@@ -35,8 +35,8 @@ class ConfigHandler(object):
                                     if values is None:
                                         properties.append(
                                             Property(str(property), values, Error(type=Error.MISSING_PROPERTY,
-                                                                                  message="No property: '" + str(
-                                                                                      property) + "' found.")))
+                                                                                  message="No property: " + str(
+                                                                                      property))))
                                     else:
                                         properties.append(Property(str(property), values))
                     except Error:

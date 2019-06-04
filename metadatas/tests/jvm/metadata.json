@@ -17,7 +17,6 @@
       "checks": [
         {
           "name": "Xms Check",
-          "type": "COMPARE",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
             "file": "metadatas/tests/jvm/source.json",
@@ -32,7 +31,6 @@
         },
         {
           "name": "Xmx Check",
-          "type": "COMPARE",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xmx",
             "file": "metadatas/tests/jvm/source.json",
@@ -47,7 +45,6 @@
         },
         {
           "name": "Xss Check",
-          "type": "COMPARE",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].XssInKb",
             "file": "metadatas/tests/jvm/source.json",
@@ -62,7 +59,6 @@
         },
         {
           "name": "XX:NewRatio Check",
-          "type": "COMPARE",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:NewRatio'",
             "file": "metadatas/tests/jvm/source.json",
@@ -77,7 +73,6 @@
         },
         {
           "name": "ParallelGCThreads Check",
-          "type": "COMPARE",
           "source": {
             "file": "metadatas/tests/jvm/source.json",
             "type": "JSON",
@@ -92,7 +87,6 @@
         },
         {
           "name": "XX:MaxPermSize check",
-          "type": "COMPARE",
           "source": {
             "file": "metadatas/tests/jvm/source.json",
             "type": "JSON",

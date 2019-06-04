@@ -18,15 +18,21 @@ class Property(object):
     def compare(self, target):
         if self.value is not None and target is not None and isinstance(target, Property) and target.value is not None:
             if len(self.value) == len(target.value):
-                result = True
+                equal = True
                 for j in range(0, len(self.value)):
-                    result = result and str(self.value[j]) == str(target.value[j])
-                if result and len(self.value) > 0:
-                    return Property.MATCH
-                elif result:
-                    return Property.IGNORE
+                    if isinstance(self.value[j], dict):
+                        equal = equal and self.value[j] == target.value[j]
+                    elif isinstance(self.value[j], list):
+                        equal = equal and self.value[j] == target.value[j]
+                    else:
+                        equal = equal and str(self.value[j]) == str(target.value[j])
+                if len(self.value) > 0:
+                    if equal:
+                        return Property.MATCH
+                    else:
+                        return Property.NO_MATCH
                 else:
-                    return Property.NO_MATCH
+                    return Property.IGNORE
             else:
                 return Property.ERROR
         else:

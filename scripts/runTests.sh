@@ -5,7 +5,7 @@ runPositiveTest() {
     metadatafile=$2
     generatedlog=$3
     expectedlog=$4
-    python bin/validation_suite.py --metadata $path/$metadatafile
+    python bin/validation_suite.py metadata $path/$metadatafile
     if [ $? -eq 0 ]; then
         diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
@@ -23,7 +23,7 @@ runNegativeTest() {
     metadatafile=$2
     generatedlog=$3
     expectedlog=$4
-    python bin/validation_suite.py --metadata $path/$metadatafile
+    python bin/validation_suite.py metadata $path/$metadatafile
     if [ $? -ne 0 ]; then
         diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
@@ -39,7 +39,7 @@ runNegativeTest() {
 runAllTest(){
     python bin/validation_suite.py metadatas/tests/all/individual.json
     if [ $? -ne 0 ]; then
-        python bin/validation_suite.py metadatas/tests/all/dynamic.json
+        python bin/validation_suite.py metadata metadatas/tests/all/dynamic.json
         if [ $? -ne 0 ]; then
             diff metadatas/tests/all/individual.log metadatas/tests/all/dynamic.log > /dev/null
             if [ $? -eq 0 ]; then
@@ -64,4 +64,4 @@ runNegativeTest "metadatas/tests/individual" "metadata.json" "individual.log" "f
 runNegativeTest "metadatas/tests/dynamic" "metadata.json" "dynamic.log" "failure.log"
 runPositiveTest "metadatas/tests/one-to-many" "metadata.json" "jvm.log" "success.log"
 runNegativeTest "metadatas/tests/elasticsearch" "metadata.json" "elasticsearch.log" "failure.log"
-
+runPositiveTest "metadatas/tests/current-pod-size" "metadata.json" "podsize.log" "success.log"

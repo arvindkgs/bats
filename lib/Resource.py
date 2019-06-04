@@ -40,11 +40,14 @@ class Resource(object):
         self.items = self.fetch()
 
     def fetch(self):
-        extrapolatedProp = self.extrapolate(self.dynamicMap, self.property)
-        extrapolated_properties = extrapolatedProp.value
-        if extrapolatedProp.error:
-            self.error = extrapolatedProp.error
-            return None
+        if isinstance(self.property, list):
+            extrapolated_properties = self.property
+        else:
+            extrapolatedProp = self.extrapolate(self.dynamicMap, self.property)
+            extrapolated_properties = extrapolatedProp.value
+            if extrapolatedProp.error:
+                self.error = extrapolatedProp.error
+                return None
         fileProp = self.extrapolate(self.dynamicMap, self.file)
         if fileProp.error:
             self.error = fileProp.error

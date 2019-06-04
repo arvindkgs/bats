@@ -7,17 +7,18 @@ from lib.Error import Error
 
 
 class Check:
+
     def __init__(self, check, testName, dynamicProperties, failon):
         self.check = check
         self.checkName = check['name']
-        self.checkType = check['type']
+        self.checkType = check['type'] if 'type' in check else "COMPARE"
         self.testName = testName
         self.failon = failon
         self.dynamicProperties = dynamicProperties
 
     def evaluateCheck(self):
         passed = addDynamicProperties(self.check, self.dynamicProperties, self.testName, self.failon)
-        if self.checkType == 'COMPARE':
+        if Check.Type.getType(self) == Check.Type.COMPARE_PROPERTY:
             source = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
                                            checkName=self.checkName, dynamicProperties=self.dynamicProperties)
             target = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
@@ -133,6 +134,27 @@ class Check:
                     args={"testName": self.testName,
                           "type": comparelog.SYNTAX_ERROR,
                           "checkName": self.checkName})
+        elif Check.Type.getType(self) == Check.Type.COMPARE_FILES:
+            source = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
+                                           checkName=self.checkName, dynamicProperties=self.dynamicProperties)
+            target = self.check['target']
+            if any(source.items):
+                targetProperties = []
+                if source.items[0].properties:
+                    for property in source.items[0].properties:
+                        targetProperties.append(property.name)
+                target['property'] = targetProperties
+                target = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
+                                               checkName=self.checkName, dynamicProperties=self.dynamicProperties)
+                passed = passed and self.compareItem(source.items[0], target.items[0])
+            else:
+                passed = False
+                comparelog.print_error(
+                    msg="No source items retrieved.",
+                    args={"testName": self.testName,
+                          "type": Error.VALUE_MISMATCH,
+                          "checkName": self.checkName,
+                          "source": source.file})
         else:
             passed = False
             comparelog.print_error(
@@ -263,3 +285,18 @@ class Check:
                                   "type": Error.VALUE_MISMATCH})
                         passed = False
         return passed
+
+    class Type:
+        COMPARE_PROPERTY = "COMPARE_PROPERTY"
+        COMPARE_FILES = "COMPARE_FILES"
+
+        @classmethod
+        def getType(self, checkObj):
+            retType = None
+            if checkObj.checkType == 'COMPARE' and 'source' in checkObj.check and 'property' in checkObj.check[
+                'source'] and 'target' in checkObj.check and 'property' in checkObj.check['target']:
+                retType = Check.Type.COMPARE_PROPERTY
+            elif checkObj.checkType == 'COMPARE' and 'source' in checkObj.check and 'property' not in checkObj.check[
+                'source'] and 'target' in checkObj.check and 'property' not in checkObj.check['target']:
+                retType = Check.Type.COMPARE_FILES
+            return retType
