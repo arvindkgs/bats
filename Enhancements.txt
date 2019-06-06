@@ -19,9 +19,13 @@ NOTES:
 
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
-1. Use REGEX for parsing format text.
-2. Add STATIC type.
-3. Currently each dynamic property is computed as list of values with file attribute of the dynamic component being a single file.
+1. Build project as module that can easily be distributed as tar/whl and installed using PIP
+2. Create subcommands 'extract' for extracting the value given the property and file.
+3. Convert tests to use the Resource objects instead of using the logs, so logs can have timestamp and run time.
+3. Build as whl so it can be installed using PIP.
+4. Use REGEX for parsing format text.
+5. Add STATIC type.
+6. Currently each dynamic property is computed as list of values with file attribute of the dynamic component being a single file.
    * PROBLEM: However if the file attribute of the dynamic component is itself extrapolated to multiple files, then how to handle?
    * SOLUTION *
        * REFACTOR: Store each dynamic property as list of properties instead of list of values, so it can be a 2x2 where property is
@@ -111,3 +115,4 @@ Done
             }
           ]
        }]
+5. Modified ShellHandler to execute ssh/scp commands on fly rather than invoking a .sh file, which requires the .sh file to have execute permission

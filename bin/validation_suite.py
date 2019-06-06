@@ -23,9 +23,12 @@ class CompareProperties(object):
     def __init__(self, args):
         self.action = args.action
         self.metadata = args.metadataFile if self.action == "metadata" else None
-        self.source = args.source if self.action == "compare" else None
-        self.target = args.target if self.action == "compare" else None
-        self.type = args.type if self.action == "compare" else None
+        self.srcFile = args.srcFile if self.action == "compare" else None
+        self.srcType = args.srcType if self.action == "compare" else None
+        self.srcProperty = args.srcProperty if self.action == "compare" else None
+        self.trgFile = args.trgFile if self.action == "compare" else None
+        self.trgType= args.trgType if self.action == "compare" else None
+        self.trgProperty = args.trgProperty if self.action == "compare" else None
         self.dynamic = args.dynamic
         self.failon = args.failon
         ShellHandler.runShellCommand("if [-d tmp]; then rm -rf tmp; fi; mkdir tmp")
@@ -43,9 +46,9 @@ class CompareProperties(object):
                 comparelog.print_error(msg="Error parsing metadata file '" + self.metadata + "'.")
                 sys.exit(1)
         elif self.action == "compare":
-            check = dict(name="json compare", type="COMPARE", source=dict(type="JSON", file=self.source),
-                         target=dict(type="JSON", file=self.target))
-            config = dict(name="Comparing source(" + self.source + ") with target(" + self.target + ")",
+            check = dict(name="json compare", type="COMPARE", source=dict(type="JSON", file=self.srcFile),
+                         target=dict(type="JSON", file=self.trgFile))
+            config = dict(name="Comparing source(" + self.srcFile + ") with target(" + self.trgFile + ")",
                           tests=[dict(name="File Comparision", checks=[check])])
         else:
             comparelog.print_error(msg="Only 'metadata' and 'compare' are allowed actions.")
@@ -99,10 +102,25 @@ if __name__ == "__main__":
     parser_metadata.add_argument('metadataFile', default='metadata.json', type=str,
                                  help="(Required) Metadata file which defines resources that should be compared")
     parser_compare = subparsers.add_parser("compare", help="Compares source and target file", parents=[parent_parser])
-    parser_compare.add_argument('--source', required=True, dest="source", help="Source Resource")
-    parser_compare.add_argument('--target', required=True, dest="target", help="Target Resource")
-    parser_compare.add_argument('--type', required=True, dest="type", help="Source and Target type")
+    parser_compare.add_argument('--srcFile', required=True, dest="srcFile", help="Source File")
+    parser_compare.add_argument('--srcType', required=True, dest="srcType", help="Source type")
+    parser_compare.add_argument('--srcProperty', required=False, dest="srcProperty", help="Source property")
+    parser_compare.add_argument('--trgFile', required=True, dest="trgFile", help="Target File")
+    parser_compare.add_argument('--trgType', required=True, dest="trgType", help="Target type")
+    parser_compare.add_argument('--trgProperty', required=False, dest="trgProperty", help="Target property")
     args = parser.parse_args()
+
+    if args.action == "compare" and not args.srcProperty and args.trgProperty:
+        comparelog.print_error(msg="If target property is given, source property is necessary")
+        sys.exit(1)
+
+    if args.action == "compare" and args.srcProperty and not args.trgProperty:
+        comparelog.print_error(msg="If source property is given, target property is necessary")
+        sys.exit(1)
+
+    if args.action == "compare" and not args.srcProperty and not args.trgProperty and args.srcType != args.trgType:
+        comparelog.print_error(msg="If properties are not specified, type should match.")
+        sys.exit(1)
 
     if CompareProperties(args).validate():
         comparelog.print_info(msg="--------------------------------", args={})

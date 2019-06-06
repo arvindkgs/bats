@@ -13,7 +13,8 @@ class ShellOutput:
 
 
 class ShellHandler(object):
-
+    sshcommand = "expect -c \"spawn ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {}@{} {}; expect password: {{ send {}\\r }}; set timeout 500; expect eof;\"| tr -d \"\\r\""
+    scpcommand = "expect -c \"spawn scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {}@{}:{} {}; expect password: {{ send {}\\r }}; set timeout 500; expect eof;\"| tr -d \"\\r\""
     def getResourceItem(self, extrapolated_properties, *args):
         properties = None
         error = None
@@ -26,7 +27,7 @@ class ShellHandler(object):
             if property:
                 command = property
                 if hostname and username and password:
-                    command = 'sh ./scripts/runSSHCommand.sh ' + hostname + ' ' + username + ' ' + password + ' "' + command + '"'
+                    command = self.sshcommand.format(username, hostname, command, password)
                 shellOutput = runShellCommand(command)
                 commandOutput = shellOutput.output
                 error = shellOutput.error
@@ -87,6 +88,5 @@ def getRemoteFile(hostname, username, password, path):
     filename = hostname + "_" + path
     filename = "./tmp/" + filename.replace("/", "_")
     if not os.path.isfile(filename):
-        runShellCommand(
-            'sh ./scripts/runSCPCommand.sh ' + hostname + ' ' + username + ' ' + password + ' ' + path + ' ' + filename)
+        runShellCommand(ShellHandler.scpcommand.format(username,hostname,path,filename,password))
     return filename
