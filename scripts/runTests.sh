@@ -5,7 +5,7 @@ runPositiveTest() {
     metadatafile=$2
     generatedlog=$3
     expectedlog=$4
-    python bin/validation_suite.py metadata $path/$metadatafile
+    python -m bats metadata $path/$metadatafile
     if [ $? -eq 0 ]; then
         diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
@@ -23,7 +23,7 @@ runNegativeTest() {
     metadatafile=$2
     generatedlog=$3
     expectedlog=$4
-    python bin/validation_suite.py metadata $path/$metadatafile
+    python -m bats metadata $path/$metadatafile
     if [ $? -ne 0 ]; then
         diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then
@@ -37,9 +37,9 @@ runNegativeTest() {
 }
 
 runAllTest(){
-    python bin/validation_suite.py metadatas/tests/all/individual.json
+    python -m bats metadatas/tests/all/individual.json
     if [ $? -ne 0 ]; then
-        python bin/validation_suite.py metadata metadatas/tests/all/dynamic.json
+        python -m bats metadata metadatas/tests/all/dynamic.json
         if [ $? -ne 0 ]; then
             diff metadatas/tests/all/individual.log metadatas/tests/all/dynamic.log > /dev/null
             if [ $? -eq 0 ]; then
@@ -55,6 +55,10 @@ runAllTest(){
     fi
 }
 
+python -c "import bats"
+if [ $? -ne 0 ]; then
+    sh scripts/setup.sh
+fi
 runPositiveTest "metadatas/tests/jvm" "metadata.json" "jvm.log" "success.log"
 runPositiveTest "metadatas/tests/jdbc" "metadata.json" "jdbc.log" "success.log"
 runNegativeTest "metadatas/tests/ohs" "metadata.json" "ohs.log" "failure.log"

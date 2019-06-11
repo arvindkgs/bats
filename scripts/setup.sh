@@ -16,11 +16,12 @@ if [ ! -d "dependencies" ]; then
 fi
 
 
-install "dependencies/py_modules/six-1.12.0.tar.gz" "six"
-install "dependencies/py_modules/pbr-5.2.0.tar.gz" "pbr"
-install "dependencies/py_modules/decorator-4.4.0.tar.gz" "decorator"
-install "dependencies/py_modules/ply-3.11.tar.gz" "ply"
-install "dependencies/py_modules/apacheconfig-0.2.8.tar.gz" "apacheconfig"
-install "dependencies/py_modules/jsonpath-rw-1.4.0.tar.gz" "jsonpath-rw"
-install "dependencies/py_modules/jsonpath-rw-ext-1.2.0.tar.gz" "jsonpath-rw-ext"
-install "dependencies/py_modules/argparse-1.4.0.tar.gz" "argparse"
+install "dependencies/six-1.12.0.tar.gz" "six"
+install "dependencies/pbr-5.2.0.tar.gz" "pbr"
+install "dependencies/decorator-4.4.0.tar.gz" "decorator"
+install "dependencies/ply-3.11.tar.gz" "ply"
+install "dependencies/apacheconfig-0.2.8.tar.gz" "apacheconfig"
+install "dependencies/jsonpath-rw-1.4.0.tar.gz" "jsonpath_rw"
+install "dependencies/jsonpath-rw-ext-1.2.0.tar.gz" "jsonpath_rw_ext"
+install "dependencies/argparse-1.4.0.tar.gz" "argparse"
+install "dependencies/basic-acceptance-test-suite-0.0.1.tar.gz" "bats"
