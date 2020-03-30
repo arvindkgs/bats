@@ -672,14 +672,14 @@
       }
     ],
     "ohsTunings": {
-      "KeepAliveTimeout": 91,
-      "ThreadLimit": 290,
-      "ServerLimit": 10,
+      "KeepAliveTimeout": 61,
+      "ThreadLimit": 250,
+      "ServerLimit": 4,
       "StartServers": 2,
       "MaxClients": 2900,
-      "MinSpareThreads": 200,
-      "MaxSpareThreads": 800,
-      "ThreadsPerChild": 290,
+      "MinSpareThreads": 100,
+      "MaxSpareThreads": 400,
+      "ThreadsPerChild": 250,
       "MaxRequestsPerChild": 10000,
       "AcceptMutex": "fcntl",
       "WLSocketTimeoutSecs": 15
