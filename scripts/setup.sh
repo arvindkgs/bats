@@ -7,7 +7,12 @@ install() {
     module=$2
     python -c "import $module"
     if [ $? == 1 ]; then
-        pushd . &&  if [ -d "temp" ]; then rm -Rf temp; fi && mkdir temp && tar zxf $1 -C temp && cd temp && cd * && python setup.py install --user && popd && rm -rf temp
+        if [[ "$module" == "bats" && ! -f "dependencies/basic-acceptance-test-suite-0.0.1.tar.gz" && -f "build.sh" ]]; then
+          sh ./build.sh
+        elif [[ "$module" == "bats" && ! -f "dependencies/basic-acceptance-test-suite-0.0.1.tar.gz"  &&  -f "../build.sh" ]]; then
+            cd .. && buid.sh
+        fi
+        pushd . &&  if [ -d "temp" ]; then rm -Rf temp; fi && mkdir temp && tar zxf $1 -C temp && cd temp && cd * && python setup.py install && popd && rm -rf temp
     fi
 }
 
