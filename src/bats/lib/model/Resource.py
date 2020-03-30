@@ -1,10 +1,6 @@
-import re
 from os import path
 from ..Constants import *
-from Property import Property
 from ..handler.ShellHandler import *
-from ..Error import Error
-from Item import Item
 
 
 class Resource(object):
@@ -53,19 +49,21 @@ class Resource(object):
             self.error = passwordProp.error
             return None
         password = passwordProp.value[0]
+        origFiles = []
         if hostname and username and password and files and any(files):
+            origFiles = files[:]
             for i, file in enumerate(files):
                 if file:
                     files[i] = getRemoteFile(hostname, username, password, file)
         resourceItems = None
         if files and any(files):
-            for file in files:
+            for i, file in enumerate(files):
                 if not resourceItems:
                     resourceItems = []
                 if file and path.isfile(file):
                     resourceItems.append(self.handler.getResourceItem(extrapolated_properties, file))
                 else:
-                    resourceItems.append(Item(file, None, Error(Error.FILE_NOT_FOUND, "File not found")))
+                    resourceItems.append(Item(origFiles[i], None, Error(Error.FILE_NOT_FOUND, "File not found")))
         elif self.type == Type.SHELL:
             if not resourceItems:
                 resourceItems = []
