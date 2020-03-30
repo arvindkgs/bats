@@ -23,7 +23,7 @@ runNegativeTest() {
     metadatafile=$2
     generatedlog=$3
     expectedlog=$4
-    python -m bats metadata $path/$metadatafile
+    python -m bats metadata $path/$metadatafile --failon FILE_NOT_FOUND
     if [ $? -ne 0 ]; then
         diff $path/$generatedlog $path/$expectedlog > /dev/null
         if [ $? -eq 0 ]; then

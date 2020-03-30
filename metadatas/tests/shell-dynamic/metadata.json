@@ -9,7 +9,7 @@
       "dynamic": [
         {
           "key": "ohs-hostname",
-          "hostname": "slc07mkk.us.oracle.com",
+          "hostname": "slc14vsr.us.oracle.com",
           "username": "oracle",
           "password": "Welcome1",
           "property": "grep '.*ohs.*' /etc/hosts | cut -d' ' -f1",
@@ -17,7 +17,7 @@
         },
         {
           "key": "ohs-home",
-          "hostname": "slc07mkk.us.oracle.com",
+          "hostname": "slc14vsr.us.oracle.com",
           "username": "oracle",
           "password": "Welcome1",
           "property": "grep '.*ohs.*' /etc/hosts | cut -d' ' -f2",

@@ -63,7 +63,7 @@ class Resource(object):
                 if file and path.isfile(file):
                     resourceItems.append(self.handler.getResourceItem(extrapolated_properties, file))
                 elif i < len(origFiles):
-                    resourceItems.append(Item(origFiles[i], None, Error(Error.FILE_NOT_FOUND, "File not found")))
+                    resourceItems.append(Item(hostname+":"+origFiles[i], None, Error(Error.FILE_NOT_FOUND, "File not found")))
                 elif file:
                     resourceItems.append(Item(file, None, Error(Error.FILE_NOT_FOUND, "File not found")))
         elif self.type == Type.SHELL:
