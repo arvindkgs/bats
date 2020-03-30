@@ -1,0 +1,17 @@
+[[INFO]]	--------------------------------
+[[INFO]]	OHS Checks
+[[INFO]]	--------------------------------
+[[INFO]	[OHS Test]	[KeepAliveTimeout Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.KeepAliveTimeout([61]) == $.KeepAliveTimeout(['61'])
+[[INFO]	[OHS Test]	[ThreadLimit Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.ThreadLimit([250]) == $.IfModule..mpm_worker_module..ThreadLimit(['250'])
+[[INFO]	[OHS Test]	[ServerLimit Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.ServerLimit([4]) == $.IfModule..mpm_worker_module..ServerLimit(['4'])
+[[INFO]	[OHS Test]	[StartServers Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.StartServers([2]) == $.IfModule..mpm_worker_module..StartServers(['2'])
+[[INFO]	[OHS Test]	[MaxClients Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MaxClients([2900]) == $.IfModule..mpm_worker_module..MaxClients(['2900'])
+[[INFO]	[OHS Test]	[MinSpareThreads Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MinSpareThreads([100]) == $.IfModule..mpm_worker_module..MinSpareThreads(['100'])
+[[INFO]	[OHS Test]	[MaxSpareThreads Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MaxSpareThreads([400]) == $.IfModule..mpm_worker_module..MaxSpareThreads(['400'])
+[[INFO]	[OHS Test]	[ThreadsPerChild Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.ThreadsPerChild([250]) == $.IfModule..mpm_worker_module..ThreadsPerChild(['250'])
+[[INFO]	[OHS Test]	[MaxRequestsPerChild Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MaxRequestsPerChild([10000]) == $.IfModule..mpm_worker_module..MaxRequestsPerChild(['10000'])
+[[INFO]	[OHS Test]	[AcceptMutex Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.AcceptMutex([u'fcntl']) == $.IfModule..mpm_worker_module..AcceptMutex(['fcntl'])
+[[INFO]	[OHS Test]	[WLSocketTimeoutSecs Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.WLSocketTimeoutSecs([15]) == $.IfModule..WLSocketTimeoutSecs(['15'])
+[[INFO]]	--------------------------------
+[[INFO]]	Validation Successful.
+[[INFO]]	--------------------------------
