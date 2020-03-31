@@ -1,4 +1,0 @@
-[[INFO]]	--------------------------------
-[[INFO]]	Negative Checks
-[[INFO]]	--------------------------------
-[[INFO]	[JVM test]	[Value mismatch]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName='AdminServer')].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
