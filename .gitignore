@@ -8,8 +8,8 @@ metadatas/tests/individual/individual.log
 metadatas/tests/one-to-many/jvm.log
 metadatas/tests/shell-dynamic/ohs.log
 metadatas/tests/negative/negative.log
-.idea/modules.xml
 venv/
 build/
 src/basic_acceptance_test_suite.egg-info
 dependencies/basic-acceptance-test-suite-0.0.1.tar.gz
+lib/
