@@ -1,0 +1,57 @@
+{
+  "name": "Resizing Validation",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "log": "resizing.log",
+  "dynamic": [
+        {
+          "key": "fa-hostname",
+          "type": "SHELL",
+          "property": "echo \"$(hostname |  cut -d'-' -f1)-fa1\""
+        }
+  ],
+  "tests": [
+    {
+      "name": "JVM Args Test",
+      "dynamic": [        
+        {
+          "key": "ip",
+          "type": "SHELL",
+	  "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f1"
+        },
+        {
+          "key": "domain_folders",
+          "type": "SHELL",
+	  "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f2"
+        },
+        {
+          "key": "clusterObj",
+          "file": "source.json",
+          "type": "JSON",
+          "property": "$..wlsClusters[*]"
+        }
+      ],
+      "checks": [
+        {
+          "name": "Xms Check",
+          "type": "COMPARE",
+	  "cardinality": "one-to-many",
+          "source": {
+            "file": "source.json",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
+            "type": "JSON"
+          },
+          "target": {
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/domains/${domain_folders}/FADomain/config/fusionapps_start_params.properties",
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "type": "PROPERTIES",
+            "format": "-Xms{}?"
+          }
+        }
+      ]
+    }
+  ]
+}
