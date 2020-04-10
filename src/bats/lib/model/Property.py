@@ -16,7 +16,7 @@ class Property(object):
         if self.value is not None and target is not None and isinstance(target, Property) and target.value is not None:
             if len(self.value) == len(target.value):
                 equal = True
-                for j in range(0, len(self.value)):
+                for j in range(len(self.value)):
                     if isinstance(self.value[j], dict):
                         equal = equal and self.value[j] == target.value[j]
                     elif isinstance(self.value[j], list):

@@ -1,178 +1,91 @@
 {
   "name": "Resizing Validation",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
-  "logFileName": "metadatas/resizing/resizing.log",
+  "log": "metadatas/resizing/resizing.log",
+  "dynamic": [
+    {
+      "key": "fa-hostname",
+      "type": "SHELL",
+      "property": "echo \"$(hostname |  cut -d'-' -f1)-fa1\""
+    }
+  ],
   "tests": [
     {
       "name": "JVM Args Test",
+      "dynamic": [
+        {
+          "key": "ip",
+          "type": "SHELL",
+          "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f1"
+        },
+        {
+          "key": "domain_folders",
+          "type": "SHELL",
+	      "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f2"
+        },
+        {
+          "key": "clusterObj",
+          "file": "metadatas/tests/jvm/source.json",
+          "type": "JSON",
+          "property": "$..wlsClusters[*]"
+        }
+      ],
       "checks": [
         {
           "name": "Xms Check",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
+          "cardinality": "one-to-many",
           "source": {
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].Xms",
-            "file": "metadatas/tests/jvm/source.json",
+            "file": "metadatas/tests/one-to-many/source.json",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
             "type": "JSON"
           },
           "target": {
-            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
-            "file": "metadatas/tests/jvm/target.properties",
-            "type": "PROPERTY",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/domains/${domain_folders}/FADomain/config/fusionapps_start_params.properties",
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "type": "PROPERTIES",
             "format": "-Xms{}?"
-          }
-        },
-        {
-          "name": "Xmx Check",
-          "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
-          "source": {
-            "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].Xmx"
-          },
-          "target": {
-            "file": "metadatas/tests/jvm/target.properties",
-            "type": "PROPERTY",
-            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
-            "format": "-Xmx{}?"
-          }
-        },
-        {
-          "name": "Xss Check",
-          "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
-          "source": {
-            "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].XssInKb"
-          },
-          "target": {
-            "file": "metadatas/tests/jvm/target.properties",
-            "type": "PROPERTY",
-            "property": "fusion.FADomain.${clusterName}.default.minmaxmemory.main",
-            "format": "-Xss{}?"
-          }
-        },
-        {
-          "name": "XX:NewRatio Check",
-          "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
-          "source": {
-            "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:NewRatio'"
-          },
-          "target": {
-            "file": "metadatas/tests/jvm/target.properties",
-            "type": "PROPERTY",
-            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
-            "format": "-XX:NewRatio={}"
-          }
-        },
-        {
-          "name": "ParallelGCThreads Check",
-          "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
-          "source": {
-            "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:ParallelGCThreads'"
-          },
-          "target": {
-            "file": "metadatas/tests/jvm/target.properties",
-            "type": "PROPERTY",
-            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
-            "format": "-XX:ParallelGCThreads={}"
-          }
-        },
-        {
-          "name": "XX:MaxPermSize check",
-          "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "clusterName",
-              "file": "metadatas/tests/jvm/source.json",
-              "type": "JSON",
-              "property": "$..wlsClusters[*].clusterName"
-            }
-          ],
-          "source": {
-            "file": "metadatas/tests/jvm/source.json",
-            "type": "JSON",
-            "property": "$..wlsClusters[?(@.clusterName=${clusterName})].'XX:MaxPermSize'"
-          },
-          "target": {
-            "file": "metadatas/tests/jvm/target.properties",
-            "type": "PROPERTY",
-            "property": "fusion.${clusterName}.Linux-x86_64.memoryargs",
-            "format": "-XX:MaxPermSize={}?"
           }
         }
       ]
     },
     {
       "name": "JDBC tuning",
+      "dynamic": [
+        {
+          "key": "ip",
+          "type": "SHELL",
+          "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f1"
+        },
+        {
+          "key": "applicationName",
+          "file": "metadatas/tests/jdbc/source.json",
+          "type": "JSON",
+          "property": "$.topology.wlsTunings[?(@.attributeName=MaxCapacity&@.applicationName~'^((?!-rac.).)*$')].applicationName"
+        },
+        {
+          "key": "jdbcfileName",
+          "file": "/u01/APPLTOP/instance/domains/fa.oracleoutsourcing.com/FADomain/config/config.xml",
+          "type": "XML",
+          "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
+        }
+      ],
       "checks": [
         {
           "name": "Max capacity",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "applicationName",
-              "file": "metadatas/tests/jdbc/source.json",
-              "type": "JSON",
-              "property": "$.topology.wlsTunings[?(@.attributeName=MaxCapacity&@.applicationName~'^((?!-rac.).)*$')].applicationName"
-            },
-            {
-              "key": "fileName",
-              "file": "metadatas/tests/jdbc/config.xml",
-              "type": "XML",
-              "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
-            }
-          ],
           "source": {
             "file": "metadatas/tests/jdbc/source.json",
             "type": "JSON",
             "property": "$.topology.wlsTunings[?(@.applicationName=${applicationName}&@.attributeName=MaxCapacity)].value"
           },
           "target": {
-            "file": "metadatas/tests/${fileName}",
+            "file": "/u01/APPLTOP/instance/domains/fa.oracleoutsourcing.com/FADomain/config/${jdbcfileName}",
             "type": "XML",
             "property": "jdbc-data-source.jdbc-connection-pool-params.max-capacity"
           }
@@ -180,188 +93,15 @@
         {
           "name": "Min capacity",
           "type": "COMPARE",
-          "dynamic": [
-            {
-              "key": "applicationName",
-              "file": "metadatas/tests/jdbc/source.json",
-              "type": "JSON",
-              "property": "$.topology.wlsTunings[?(@.attributeName=MaxCapacity&@.applicationName~'^((?!-rac.).)*$')].applicationName"
-            },
-            {
-              "key": "fileName",
-              "file": "metadatas/tests/jdbc/config.xml",
-              "type": "XML",
-              "property": "domain.jdbc-system-resource[name == '${applicationName}'].descriptor-file-name"
-            }
-          ],
           "source": {
             "file": "metadatas/tests/jdbc/source.json",
             "type": "JSON",
             "property": "$.topology.wlsTunings[?(@.applicationName=${applicationName}&@.attributeName=MinCapacity)].value"
           },
           "target": {
-            "file": "metadatas/tests/${fileName}",
+            "file": "/u01/APPLTOP/instance/domains/fa.oracleoutsourcing.com/FADomain/config/${jdbcfileName}",
             "type": "XML",
             "property": "jdbc-data-source.jdbc-connection-pool-params.min-capacity"
-          }
-        }
-      ]
-    },
-    {
-      "name": "OHS Test",
-      "checks": [
-        {
-          "name": "KeepAliveTimeout Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.KeepAliveTimeout",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.KeepAliveTimeout",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "ThreadLimit Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.ThreadLimit",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..ThreadLimit",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "ServerLimit Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.ServerLimit",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..ServerLimit",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "StartServers Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.StartServers",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..StartServers",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "MaxClients Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.MaxClients",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..MaxClients",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "MinSpareThreads Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.MinSpareThreads",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..MinSpareThreads",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "MaxSpareThreads Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.MaxSpareThreads",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..MaxSpareThreads",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "ThreadsPerChild Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.ThreadsPerChild",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..ThreadsPerChild",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "MaxRequestsPerChild Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.MaxRequestsPerChild",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..MaxRequestsPerChild",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "AcceptMutex Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.AcceptMutex",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..mpm_worker_module..AcceptMutex",
-            "file": "metadatas/tests/ohs/httpd.conf",
-            "type": "CONF"
-          }
-        },
-        {
-          "name": "WLSocketTimeoutSecs Check",
-          "type": "COMPARE",
-          "source": {
-            "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
-            "file": "metadatas/tests/ohs/source.json",
-            "type": "JSON"
-          },
-          "target": {
-            "property": "$.IfModule..WLSocketTimeoutSecs",
-            "file": "metadatas/tests/ohs/mod_wl_ohs.conf",
-            "type": "CONF"
           }
         }
       ]

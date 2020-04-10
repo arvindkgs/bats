@@ -17,6 +17,7 @@
       "checks": [
         {
           "name": "Xms Check",
+          "description": "This checks Xms value",
           "source": {
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
             "file": "metadatas/tests/jvm/source.json",

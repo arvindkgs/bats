@@ -24,6 +24,13 @@
         {
           "name": "Max capacity",
           "type": "COMPARE",
+          "dynamic": [
+            {
+              "key": "jdbcfileName",
+              "type": "STATIC",
+              "property": ["jdbc/ApplicationDB-8936-jdbc.xml", "jdbc/ApplicationDBBatch-jdbc.xml", "jdbc/ApplicationServiceDB-jdbc.xml", "jdbc/fmwDB-jdbc.xml", "jdbc/ApplicationDBBI-jdbc.xml", "jdbc/bip_datasource-jdbc.xml"]
+            }
+          ],
           "source": {
             "file": "metadatas/tests/jdbc/source.json",
             "type": "JSON",

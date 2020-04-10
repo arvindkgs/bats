@@ -13,8 +13,7 @@ class ShellOutput:
 
 
 class ShellHandler(object):
-    sshcommand = "expect -c \"spawn ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {}@{} {}; expect password: {{ send {}\\r }}; set timeout 500; expect eof;\"| tr -d \"\\r\""
-    scpcommand = "expect -c \"spawn scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {}@{}:{} {}; expect password: {{ send {}\\r }}; set timeout 500; expect eof;\"| tr -d \"\\r\""
+
     def getResourceItem(self, extrapolated_properties, *args):
         properties = None
         error = None
@@ -25,16 +24,13 @@ class ShellHandler(object):
             password = args[2]
         for property in extrapolated_properties:
             if property:
-                command = property
-                if hostname and username and password:
-                    command = self.sshcommand.format(username, hostname, command, password)
-                shellOutput = runShellCommand(command)
+                shellOutput = runShellCommand(get_ssh_command(hostname, username, property, password))
                 commandOutput = shellOutput.output
                 error = shellOutput.error
                 if commandOutput is not None:
                     lines = commandOutput.split('\n')
                     i = -1
-                    if hostname and username and password:
+                    if password:
                         for i, line in enumerate(lines):
                             if (line.strip() == username + '@' + hostname + '\'s password:'):
                                 break
@@ -57,36 +53,59 @@ def runShellCommand(command):
         process = subprocess.Popen(
             [bash_exe, '-c', command],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
-        if process.returncode == 0:
-            if stdout.decode('ascii').strip() != "":
-                returnVal = stdout.decode('ascii').strip()
-            else:
-                error = Error(type=Error.MISSING_PROPERTY,
-                              message="No output for shell command: " + command)
-        else:
-            error = Error(type=Error.SHELL_COMMAND_ERROR,
-                          message="Shell command '" + command + "' failed with error: " + stderr.strip())
     else:
         process = subprocess.Popen(
             [command], stdout=subprocess.PIPE,
             stderr=subprocess.PIPE, shell=True)
-        stdout, stderr = process.communicate()
-        if process.returncode == 0:
-            if stdout.decode('ascii').strip() != "":
-                returnVal = stdout.decode('ascii').strip()
-            else:
-                error = Error(type=Error.MISSING_PROPERTY,
-                              message="No output for shell command: " + command)
+    stdout, stderr = process.communicate()
+    if process.returncode == 0:
+        if stdout.decode('ascii').strip() != "":
+            returnVal = stdout.decode('ascii').strip()
         else:
-            error = Error(type=Error.SHELL_COMMAND_ERROR,
-                          message="Shell command '" + command + "' failed with error: " + stderr.strip())
+            error = Error(type=Error.MISSING_PROPERTY,
+                          message="No output for shell command: " + command)
+    else:
+        error = Error(type=Error.SHELL_COMMAND_ERROR,
+                      message="Shell command '" + command + "' failed with error: " + stderr.strip())
     return ShellOutput(returnVal, error)
+
+
+def get_scp_command(hostname, username, password, path, filename):
+    if hostname:
+        if username:
+            if password:
+                return "expect -c \"spawn scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0}@{1}:{2} " \
+                       "{3}; expect password: {{ send {4}\\r }}; set timeout 50; expect eof;\"| tr -d \"\\r\" ".format(username, hostname, path, filename, password)
+            else:
+                return "scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0}@{1}:{2} {3}".format(username, hostname, path, filename)
+        elif password:
+            return "expect -c \"spawn scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0}:{1} {2}; " \
+                   "expect password: {{ send {3}\\r }}; set timeout 50; expect eof;\"| tr -d \"\\r\" ".format(hostname, path, filename, password)
+        else:
+            return "scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0}:{1} {2}".format(hostname, path, filename)
+
+def get_ssh_command(hostname, username, command, password):
+    if hostname:
+        if username:
+            if password:
+                return "expect -c \"spawn ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0}@{1} {2}; " \
+                 "expect password: {{ send {3}\\r }}; set timeout 50; expect eof;\"| tr -d \"\\r\"".format(username, hostname, command, password)
+            else:
+                return "ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0}@{1} {2}".format(username, hostname, command)
+        elif password:
+            return "expect -c \"spawn ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0} {1}; " \
+                 "expect password: {{ send {2}\\r }}; set timeout 50; expect eof;\"| tr -d \"\\r\"".format(hostname, command, password)
+        else:
+            return "ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no {0} {1}".format(hostname, command)
+    else:
+        return command
 
 
 def getRemoteFile(hostname, username, password, path):
     filename = hostname + "_" + path
     filename = "./tmp/" + filename.replace("/", "_")
     if not os.path.isfile(filename):
-        runShellCommand(ShellHandler.scpcommand.format(username,hostname,path,filename,password))
+        shell_output = runShellCommand(get_scp_command(hostname, username, password, path, filename))
+        if shell_output.error and shell_output.error.type == Error.SHELL_COMMAND_ERROR:
+            raise IOError(shell_output.error.message)
     return filename

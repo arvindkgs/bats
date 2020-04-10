@@ -4,6 +4,7 @@ from ShellHandler import ShellHandler
 from ConfigHandler import ConfigHandler
 from XmlHandler import XmlHandler
 from JsonHandler import JsonHandler
+from StaticHandler import StaticHandler
 
 
 class DataHandler(ABCMeta):
@@ -19,3 +20,4 @@ DataHandler.register(ShellHandler)
 DataHandler.register(ConfigHandler)
 DataHandler.register(XmlHandler)
 DataHandler.register(JsonHandler)
+DataHandler.register(StaticHandler)

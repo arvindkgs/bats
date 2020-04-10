@@ -1,6 +1,7 @@
 import json
 import sys
 import argparse
+from lib.Dynamic import PropertyMap
 
 if __name__ == "__main__" and __package__ is None:
     from sys import path
@@ -69,16 +70,20 @@ class CompareProperties(object):
             comparelog.print_info("--------------------------------")
             comparelog.print_info("Running '" + self.metadata + "'")
             comparelog.print_info("--------------------------------")
-
+        globalProperties = PropertyMap(None)
+        if self.dynamic:
+            for argument in self.dynamic:
+                key, value = argument.split('=')
+                globalProperties[key] = value
+        globalProperties.addDynamicPropertiesFromCheck(config, failon=self.failon)
         for test in config['tests']:
             testName = test['name']
-            dynamicProperties = {}
-            Dynamic.addCommandLineArgs(self.dynamic, dynamicProperties)
-            if not Dynamic.addDynamicProperties(test, dynamicProperties, failon=self.failon):
+            dynamicProperties = PropertyMap(globalProperties)
+            if not dynamicProperties.addDynamicPropertiesFromCheck(test, failon=self.failon):
                 passed = False
             for check in test['checks']:
                 checkPassed = Check(check, testName, dynamicProperties, failon=self.failon).evaluateCheck()
-                passed = passed and checkPassed
+                passed = checkPassed and passed
 
         return passed
 

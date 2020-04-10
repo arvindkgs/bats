@@ -2,17 +2,25 @@
 
 # Script: setup
 # installs python module dependencies
+if [[ $# -gt 0 ]] && [[ $1 == 'dev' ]]; then
+  install_flag=""
+else
+  install_flag="--user"
+fi
 
 install() {
     module=$2
+    if [[ "$module" == "bats" && $install_flag == "" ]]; then
+      python -c "import bats; import shutil; shutil.rmtree(bats.__path__[0])"
+    fi
     python -c "import $module"
-    if [ $? == 1 ]; then
+    if [[ $? == 1 ]]; then
         if [[ "$module" == "bats" && ! -f "dependencies/basic-acceptance-test-suite-0.0.1.tar.gz" && -f "build.sh" ]]; then
           sh ./build.sh
         elif [[ "$module" == "bats" && ! -f "dependencies/basic-acceptance-test-suite-0.0.1.tar.gz"  &&  -f "../build.sh" ]]; then
             cd .. && buid.sh
         fi
-        pushd . &&  if [ -d "temp" ]; then rm -Rf temp; fi && mkdir temp && tar zxf $1 -C temp && cd temp && cd * && python setup.py install --user && popd && rm -rf temp
+        pushd . &&  if [ -d "temp" ]; then rm -Rf temp; fi && mkdir temp && tar zxf $1 -C temp && cd temp && cd * && python setup.py install $install_flag && popd && rm -rf temp
     fi
 }
 

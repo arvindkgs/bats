@@ -1,4 +1,5 @@
 from os import path
+
 from ..Constants import *
 from ..handler.ShellHandler import *
 
@@ -10,13 +11,14 @@ class Resource(object):
         self.hostname = None if "hostname" not in property else property['hostname']
         self.username = None if "username" not in property else property['username']
         self.password = None if "password" not in property else property['password']
+        self.cardinality = None if "cardinality" not in property else property['cardinality']
         self.file = None if "file" not in property else property['file']
         self.format = None if "format" not in property else property['format']
         self.testName = testName
         self.key = None if "key" not in property else property['key']
         self.checkName = checkName
         self.handler = handler
-        self.dynamicMap = dynamicProperties
+        self.dynamicProperties = dynamicProperties
         self.error = None
         self.items = self.fetch()
 
@@ -24,53 +26,80 @@ class Resource(object):
         if isinstance(self.property, list):
             extrapolated_properties = self.property
         else:
-            extrapolatedProp = self.extrapolate(self.dynamicMap, self.property)
+            extrapolatedProp = self.extrapolate(self.property)
             extrapolated_properties = extrapolatedProp.value
             if extrapolatedProp.error:
                 self.error = extrapolatedProp.error
                 return None
-        fileProp = self.extrapolate(self.dynamicMap, self.file)
+        fileProp = self.extrapolate(self.file)
         if fileProp.error:
             self.error = fileProp.error
             return None
         files = fileProp.value
-        hostProp = self.extrapolate(self.dynamicMap, self.hostname)
+        hostProp = self.extrapolate(self.hostname)
         if hostProp.error:
             self.error = hostProp.error
             return None
-        hostname = hostProp.value[0]
-        userProp = self.extrapolate(self.dynamicMap, self.username)
+        hostnames = hostProp.value
+        userProp = self.extrapolate(self.username)
         if userProp.error:
             self.error = userProp.error
             return None
         username = userProp.value[0]
-        passwordProp = self.extrapolate(self.dynamicMap, self.password)
+        passwordProp = self.extrapolate(self.password)
         if passwordProp.error:
             self.error = passwordProp.error
             return None
         password = passwordProp.value[0]
-        origFiles = []
-        if hostname and username and password and files and any(files):
-            origFiles = files[:]
-            for i, file in enumerate(files):
-                if file:
-                    files[i] = getRemoteFile(hostname, username, password, file)
         resourceItems = None
         if files and any(files):
-            for i, file in enumerate(files):
+            if hostnames and any(hostnames):
+                origFiles = files[:]
+                files = []
+                for i, hostname in enumerate(hostnames):
+                    if hostname:
+                        if self.cardinality == 'one-to-one':
+                            try:
+                                files.append((getRemoteFile(hostname, username, password, origFiles[i]),
+                                              str(origFiles[i]), str(hostname), None))
+                            except IOError, err:
+                                files.append((origFiles[i], origFiles[i], str(hostname), str(err)))
+                        else:
+                            # default to one-to-many
+                            for j, file in enumerate(origFiles):
+                                if file:
+                                    try:
+                                        files.append((getRemoteFile(hostname, username, password, file), str(file),
+                                                      str(hostname), None))
+                                    except IOError, err:
+                                        files.append(file, file, str(hostname), str(err))
+            else:
+                for i, file in enumerate(files):
+                    files[i] = (file, None, None, None)
+            for j, file in enumerate(files):
                 if not resourceItems:
                     resourceItems = []
-                if file and path.isfile(file):
-                    resourceItems.append(self.handler.getResourceItem(extrapolated_properties, file))
-                elif i < len(origFiles):
-                    resourceItems.append(Item(hostname+":"+origFiles[i], None, Error(Error.FILE_NOT_FOUND, "File not found")))
-                elif file:
-                    resourceItems.append(Item(file, None, Error(Error.FILE_NOT_FOUND, "File not found")))
+                if not file[3]:
+                    if file[0] and path.isfile(file[0]):
+                        resourceItems.append(self.handler.getResourceItem(extrapolated_properties, file[0]))
+                    else:
+                        resourceItems.append(Item(file[2] + ":" + file[1] if file[1] else file[0], None,
+                                                  Error(Error.FILE_NOT_FOUND, "File not found")))
+                else:
+                    resourceItems.append(Item(file[2] + ":" + file[1], None, Error(Error.FILE_NOT_FOUND, file[3])))
         elif self.type == Type.SHELL:
             if not resourceItems:
                 resourceItems = []
-            resourceItems.append(self.handler.getResourceItem(extrapolated_properties, self.hostname,
-                                                              self.username, self.password))
+            if hostnames:
+                for hostname in hostnames:
+                    resourceItems.append(self.handler.getResourceItem(extrapolated_properties, hostname,
+                                                                  username, password))
+            else:
+                resourceItems.append(self.handler.getResourceItem(extrapolated_properties))
+        elif self.type == Type.STATIC:
+            if not resourceItems:
+                resourceItems = []
+            resourceItems.append(self.handler.getResourceItem(extrapolated_properties))
         else:
             self.error = Error(type=Error.EXTRAPOLATION_ERROR, message="Error in extrapolation of 'file'")
         if self.format is not None and resourceItems and any(resourceItems):
@@ -106,50 +135,12 @@ class Resource(object):
                                 property.value = values
         return resourceItems
 
-    def toString(self):
+    def __str__(self):
         return 'Type: ' + str(self.type) + ', Resource: ' + str(self.file) + ', Property: ' + str(
             self.property) + ', Format: ' + str(self.format)
 
     def getKey(self):
         return self.key
-
-    def extrapolate(self, dynamicMap, propertyStr):
-        properties = [propertyStr]
-        error = None
-        if any(properties):
-            if dynamicMap is not None and len(dynamicMap) > 0:
-                for m in re.finditer(RegularExpression.findIndexExpression, propertyStr):
-                    dynamickey = m.group(1)
-                    if dynamickey is not None and '.' in dynamickey:
-                        dynamickey = dynamickey.split('.')[0]
-                    if dynamickey in dynamicMap:
-                        valuesProp = self.fetchValueFromDynamicMap(m.group(1), dynamicMap)
-                        if not valuesProp.error:
-                            values = valuesProp.value
-                            newproperties = []
-                            if values is not None and any(values):
-                                for property in properties:
-                                    if isinstance(values, list):
-                                        for value in values:
-                                            newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
-                                    else:
-                                        newproperties.append(property.replace("${" + str(m.group(1)) + "}", values))
-                                properties = newproperties
-                            else:
-                                error = Error(type=Error.MISSING_DYNAMIC_VALUE,
-                                              message="No dynamic value present for key: '" + m.group(
-                                                  1) + "'")
-                                break
-                        else:
-                            error = valuesProp.error
-                            break
-                    else:
-                        error = Error(type=Error.MISSING_DYNAMIC_VALUE,
-                                      message="No dynamic value present for key: '" + m.group(
-                                          1) + "'")
-                        break
-        properties = None if error is not None else properties
-        return Property(propertyStr, properties, error)
 
     def getRegexPatternFormat(self):
         pattern = None
@@ -190,36 +181,47 @@ class Resource(object):
             pattern = prefix + '([^ ]+)' + '(?=' + suffix + '\\b)' + '.*'
         return pattern
 
-    def fetchValueFromDynamicMap(self, key, dynamicMap):
-        retValue = None
+    def extrapolate(self, propertyStr):
+        properties = [propertyStr]
         error = None
-        if key is not None and dynamicMap is not None:
-            dynamickey = key
-            if '.' in key:
-                dynamickey = key.split('.')[0]
-            if dynamickey in dynamicMap:
-                values = dynamicMap[dynamickey]
-                if not isinstance(values, list):
-                    values = [values]
-                if dynamickey != key:
-                    dynamickeyattributes = key.split('.')[1:]
-                    for attribute in dynamickeyattributes:
-                        newvalues = None
-                        for i, value in enumerate(values):
-                            if value:
-                                if attribute in value:
-                                    if not newvalues:
-                                        newvalues = []
-                                    newvalues.append(value.get(attribute))
+        if (
+                any(properties)
+                and self.dynamicProperties is not None
+                and len(self.dynamicProperties) > 0
+        ):
+            for m in re.finditer(RegularExpression.findIndexExpression, propertyStr):
+                dynamickey = m.group(1)
+                if dynamickey is not None and '.' in dynamickey:
+                    dynamickey = dynamickey.split('.')[0]
+                if dynamickey in self.dynamicProperties:
+                    valuesProp = self.dynamicProperties[m.group(1)]
+                    if not valuesProp.error:
+                        values = valuesProp.value
+                        if values is not None and any(values):
+                            newproperties = []
+                            for property in properties:
+                                if isinstance(values, list):
+                                    for value in values:
+                                        newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
                                 else:
-                                    error = Error(type=Error.MISSING_DYNAMIC_VALUE,
-                                                  message="No key: '" + str(
-                                                      attribute) + "' in object: " + dynamickey + " for dynamic key: '" + str(
-                                                      key))
-                                    break
-                        values = newvalues
-                retValue = values
-        return Property(key, retValue, error)
+                                    newproperties.append(property.replace("${" + str(m.group(1)) + "}", values))
+                            properties = newproperties
+                        else:
+                            error = Error(type=Error.MISSING_DYNAMIC_VALUE,
+                                          message="No dynamic value present for key: '" + m.group(
+                                              1) + "'")
+                            break
+                    else:
+                        error = valuesProp.error
+                        break
+                else:
+                    error = Error(type=Error.MISSING_DYNAMIC_VALUE,
+                                  message="No dynamic value present for key: '" + m.group(
+                                      1) + "'")
+                    break
+        properties = None if error is not None else properties
+        return Property(propertyStr, properties, error)
+
 
 class Type(object):
     JSON = "JSON"
@@ -228,5 +230,3 @@ class Type(object):
     SHELL = "SHELL"
     STATIC = "STATIC"
     CONFIG = "CONF"
-
-

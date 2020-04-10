@@ -20,9 +20,8 @@ NOTES:
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
 1. Create subcommands 'extract' for extracting the value given the property and file.
-2. Convert tests to use the Resource objects instead of using the logs, so logs can have timestamp and run time.
+2. Convert tests to use the Resource objects instead of using the logs, so logs can have timestamp and run time. And this also allows using PyTest or other frameworks for testing
 3. Use REGEX for parsing format text.
-4. Add STATIC type.
 5. Currently each dynamic property is computed as list of values with file attribute of the dynamic component being a single file.
    * PROBLEM: However if the file attribute of the dynamic component is itself extrapolated to multiple files, then how to handle?
    * SOLUTION *
@@ -76,7 +75,45 @@ To-Do
             }
         } //Remove the each variable from dynamic map
    }]
-
+6. Allow storing properties as object in dynamicProperty map. For example,
+        Below shell command produces output:
+        10.249.88.121 prc-internal.oracleoutsourcing.com
+        10.249.88.121 prj-internal.oracleoutsourcing.com
+        10.249.88.121 scm-internal.oracleoutsourcing.com
+        This is split on ' ' (by default), and stored as an array as, ['10.249.88.121','prc-internal.oracleoutsourcing.com'] in the dynamicProperties as
+        [
+            ['10.249.88.121','prc-internal.oracleoutsourcing.com'],
+            ['10.249.88.121','prc-internal.oracleoutsourcing.com'],
+            ['10.249.88.121','prc-internal.oracleoutsourcing.com']]
+        {
+          "key": "ip_domain",
+          "type": "SHELL",
+          "property": "cat /etc/hosts",
+          "value": {
+            "type": "array",
+            "format": ["__split__"]
+          }
+        }
+        Below also produces similar output as above, however it is stored as dict as, {'prc-internal.oracleoutsourcing.com': '10.249.88.121'} in the dynamicProperties as
+        [
+            {'prc-internal.oracleoutsourcing.com': '10.249.88.121'},
+            {'prc-internal.oracleoutsourcing.com': '10.249.88.121'},
+            {'prc-internal.oracleoutsourcing.com': '10.249.88.121'}
+        ]
+        {
+          "key": "ip_domain",
+          "type": "SHELL",
+          "property": "cat /etc/hosts",
+          "value": {
+            "type": "dict",
+            "key": ["__split__", "__index__,1"],
+            "value": ["__split__", "__index__,0"]
+          }
+        }
+        NOTE: "value" must be processed after "format" in Resource element type
+7. Refactor to include exception handling
+8. Use multiprocessing to allow parallel execution of checks/tests (Refer- https://docs.python.org/2/library/multiprocessing.html, https://realpython.com/lessons/parallel-processing-multiprocessing-overview/)
+9. Provide verbose/detailed logging
 
 Done
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -115,3 +152,16 @@ Done
        }]
 5. Modified ShellHandler to execute ssh/scp commands on fly rather than invoking a .sh file, which requires the .sh file to have execute permission
 6. Build project as module that can easily be distributed as tar/whl and installed using PIP
+-----------------------------------------------------
+                    V2
+-----------------------------------------------------
+7. Add STATIC type.
+8. Support for dynamic above 'tests' element
+9. Support for following remote get:
+         * no-password
+         * no-username, no-password
+         * no-username
+10. Added support for multiple hosts in resource. By default, for each host in 'hostname' element, all files in 'file' element are fetched.
+11. Support cardinality in resource like 'source' element and 'target' element. Default behavior is 'one-to-many'. This to support 'one-to-one' case. For example,
+consider, first host in hostnames, should be used for to fetch only first file in 'file's for a particular resource(source or target), second host for second file and so on.
+This is supported using 'one-to-one' cardinality.

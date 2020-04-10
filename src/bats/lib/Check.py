@@ -1,7 +1,7 @@
 from model import ResourceBuilder
 from model.Property import Property
 import comparelog
-from Dynamic import addDynamicProperties
+from Dynamic import PropertyMap
 from model.Item import Item
 from Error import Error
 
@@ -14,17 +14,17 @@ class Check:
         self.checkType = check['type'] if 'type' in check else "COMPARE"
         self.testName = testName
         self.failon = failon
-        self.dynamicProperties = dynamicProperties
+        self.dynamicProperties = PropertyMap(dynamicProperties)
 
     def evaluateCheck(self):
-        passed = addDynamicProperties(self.check, self.dynamicProperties, self.testName, self.failon)
+        passed = self.dynamicProperties.addDynamicPropertiesFromCheck(self.check, self.testName, self.failon)
         if Check.Type.getType(self) == Check.Type.COMPARE_PROPERTY:
             source = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
                                            checkName=self.checkName, dynamicProperties=self.dynamicProperties)
             target = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
                                            checkName=self.checkName, dynamicProperties=self.dynamicProperties)
             if source and target:
-                if not source.error and not target.error:
+                if not ((source.error or target.error)):
                     cardinality = 'one-to-one' if 'cardinality' not in self.check else self.check['cardinality']
                     sourceItems = source.items
                     targetItems = target.items
@@ -39,10 +39,9 @@ class Check:
                                                    args={'testName': self.testName, 'type': sourceItem.error.type,
                                                          "checkName": self.checkName, "source": sourceItem.file},
                                                    console=printToConsole)
-                            pass
                         elif cardinality == 'one-to-one':
-                            fromPropertiesIndex = 0
                             if targetItems:
+                                fromPropertiesIndex = 0
                                 for targetItem in targetItems:
                                     if targetItem.properties and not targetItem.error:
                                         targetProperties = targetItem.properties
@@ -50,9 +49,9 @@ class Check:
                                         if toPropertiesIndex <= len(sourceItem.properties):
                                             sourceProperties = sourceItem.properties[
                                                                fromPropertiesIndex:toPropertiesIndex]
-                                            fromPropertiesIndex = fromPropertiesIndex + len(targetProperties)
-                                            passed = passed and self.compareItem(
-                                                Item(sourceItem.file, sourceProperties, sourceItem.error), targetItem)
+                                            fromPropertiesIndex += len(targetProperties)
+                                            passed = self.compareItem(
+                                                Item(sourceItem.file, sourceProperties, sourceItem.error), targetItem) and passed
                                         else:
                                             passed = False
                                             comparelog.print_error(
@@ -101,7 +100,7 @@ class Check:
                                                                  "source": targetItem.file},
                                                            console=printToConsole)
                                 else:
-                                    passed = passed and self.compareItem(sourceItem, targetItem, True)
+                                    passed = self.compareItem(sourceItem, targetItem, True) and passed
                     else:
                         passed = False
                         comparelog.print_error(
@@ -136,7 +135,7 @@ class Check:
                     args={"testName": self.testName,
                           "type": comparelog.SYNTAX_ERROR,
                           "checkName": self.checkName})
-            elif not target:
+            else:
                 passed = False
                 comparelog.print_error(
                     msg="No target type available '" + self.check['target'][
@@ -156,7 +155,7 @@ class Check:
                 target['property'] = targetProperties
                 target = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
                                                checkName=self.checkName, dynamicProperties=self.dynamicProperties)
-                passed = passed and self.compareItem(source.items[0], target.items[0])
+                passed = self.compareItem(source.items[0], target.items[0]) and passed
             else:
                 passed = False
                 comparelog.print_error(
@@ -303,10 +302,17 @@ class Check:
         @classmethod
         def getType(self, checkObj):
             retType = None
-            if checkObj.checkType == 'COMPARE' and 'source' in checkObj.check and 'property' in checkObj.check[
-                'source'] and 'target' in checkObj.check and 'property' in checkObj.check['target']:
-                retType = Check.Type.COMPARE_PROPERTY
-            elif checkObj.checkType == 'COMPARE' and 'source' in checkObj.check and 'property' not in checkObj.check[
-                'source'] and 'target' in checkObj.check and 'property' not in checkObj.check['target']:
-                retType = Check.Type.COMPARE_FILES
+            if checkObj.checkType == 'COMPARE' and 'source' in checkObj.check:
+                if (
+                    'property' in checkObj.check['source']
+                    and 'target' in checkObj.check
+                    and 'property' in checkObj.check['target']
+                ):
+                    retType = Check.Type.COMPARE_PROPERTY
+                elif (
+                    'property' not in checkObj.check['source']
+                    and 'target' in checkObj.check
+                    and 'property' not in checkObj.check['target']
+                ):
+                    retType = Check.Type.COMPARE_FILES
             return retType
