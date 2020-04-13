@@ -1,6 +1,7 @@
 {
   "name": "Resizing Validation",
   "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "log": "${log}",
   "dynamic": [
     {
       "key": "fa-hostname",
@@ -26,7 +27,7 @@
         },
         {
           "key": "clusterObj",
-          "file": "metadatas/tests/jvm/source.json",
+          "file": "${source}",
           "type": "JSON",
           "property": "$..wlsClusters[*]"
         }
@@ -37,7 +38,7 @@
           "type": "COMPARE",
           "cardinality": "one-to-many",
           "source": {
-            "file": "metadatas/tests/one-to-many/source.json",
+            "file": "${source}",
             "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
             "type": "JSON"
           },

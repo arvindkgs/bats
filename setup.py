@@ -12,9 +12,9 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages('src'),
-    package_data={},
 	package_dir={'':'src'},
-    install_requires=['apacheconfig', 'decorator', 'ply', 'argparse', 'pbr', 'six', 'jsonpath-rw', 'jsonpath-rw-ext'],
+    include_package_data=True,
+    install_requires=['apacheconfig', 'decorator', 'ply', 'argparse', 'pbr', 'six', 'jsonpath-rw', 'jsonpath-rw-ext', 'setuptools'],
     classifiers=[
         "Programming Language :: Python :: 2.6"
     ],

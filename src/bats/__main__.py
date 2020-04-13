@@ -1,3 +1,4 @@
+import pkg_resources
 import json
 import sys
 import argparse
@@ -24,6 +25,8 @@ class CompareProperties(object):
 
     def __init__(self, args):
         self.action = args.action
+        self.source = args.source if self.action == "resize" else None
+        self.log = args.log if self.action == "resize" else None
         self.metadata = args.metadataFile if self.action == "metadata" else None
         self.srcFile = args.srcFile if self.action == "compare" else None
         self.srcType = args.srcType if self.action == "compare" else None
@@ -37,6 +40,12 @@ class CompareProperties(object):
 
     def validate(self):
         passed = True
+        # Set cmd-line dynamic properties
+        globalProperties = PropertyMap(None)
+        if self.dynamic:
+            for argument in self.dynamic:
+                key, value = argument.split('=')
+                globalProperties[key] = value
         if self.action == "metadata":
             try:
                 with open(self.metadata, 'r') as json_file:
@@ -52,6 +61,13 @@ class CompareProperties(object):
                          target=dict(type="JSON", file=self.trgFile))
             config = dict(name="Comparing source(" + self.srcFile + ") with target(" + self.trgFile + ")",
                           tests=[dict(name="File Comparision", checks=[check])])
+        elif self.action == "resize":
+            resource_package = "bats"
+            resource_path = '/'.join(('templates', 'resizing_metadata.json'))
+            resizing_metadata = pkg_resources.resource_stream(resource_package, resource_path)
+            config = json.load(resizing_metadata)
+            comparelog.setLogFileName("validation.log") if self.log is None else comparelog.setLogFileName(args.log)
+            globalProperties['source'] = args.source
         else:
             comparelog.print_error(msg="Only 'metadata' and 'compare' are allowed actions.")
             sys.exit(1)
@@ -70,11 +86,8 @@ class CompareProperties(object):
             comparelog.print_info("--------------------------------")
             comparelog.print_info("Running '" + self.metadata + "'")
             comparelog.print_info("--------------------------------")
-        globalProperties = PropertyMap(None)
-        if self.dynamic:
-            for argument in self.dynamic:
-                key, value = argument.split('=')
-                globalProperties[key] = value
+
+        # Add global dynamic properties from config
         globalProperties.addDynamicPropertiesFromCheck(config, failon=self.failon)
         for test in config['tests']:
             testName = test['name']
@@ -84,7 +97,7 @@ class CompareProperties(object):
             for check in test['checks']:
                 checkPassed = Check(check, testName, dynamicProperties, failon=self.failon).evaluateCheck()
                 passed = checkPassed and passed
-
+        # Return validation result
         return passed
 
     def __del__(self):
@@ -102,11 +115,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compares (static and dynamic) resources defined in the metadata.json")
 
     subparsers = parser.add_subparsers(help="allowed actions", dest="action")
+    # Metadata action
     parser_metadata = subparsers.add_parser("metadata",
                                             help="Takes metadata file and runs tests and checks defined in it.",
                                             parents=[parent_parser])
     parser_metadata.add_argument('metadataFile', default='metadata.json', type=str,
                                  help="(Required) Metadata file which defines resources that should be compared")
+    # Compare Action
     parser_compare = subparsers.add_parser("compare", help="Compares source and target file", parents=[parent_parser])
     parser_compare.add_argument('--srcFile', required=True, dest="srcFile", help="Source File")
     parser_compare.add_argument('--srcType', required=True, dest="srcType", help="Source type")
@@ -114,6 +129,13 @@ if __name__ == "__main__":
     parser_compare.add_argument('--trgFile', required=True, dest="trgFile", help="Target File")
     parser_compare.add_argument('--trgType', required=True, dest="trgType", help="Target type")
     parser_compare.add_argument('--trgProperty', required=False, dest="trgProperty", help="Target property")
+    # Resize Action
+    parser_resize = subparsers.add_parser("resize",
+                                          help="Runs resize OCI checks. Refer https://confluence.oraclecorp.com/confluence/display/FALCM/Resize+OCI+Checks for details.",
+                                          parents=[parent_parser])
+    parser_resize.add_argument('source', type=str, help="(Required) Path of size profile json to validate against. For example:"
+                                                                       " '/podscratch/lcm-artifacts/size-profiles-factory-default/facs/size-profile-overrides/11.13.19.10.0/s-post-factory-override.json'")
+    parser_resize.add_argument('--log', required=False, dest="log", help="Log - defaults to 'validation.log' in pwd")
     args = parser.parse_args()
 
     if args.action == "compare" and not args.srcProperty and args.trgProperty:

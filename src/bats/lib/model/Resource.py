@@ -72,7 +72,7 @@ class Resource(object):
                                         files.append((getRemoteFile(hostname, username, password, file), str(file),
                                                       str(hostname), None))
                                     except IOError, err:
-                                        files.append(file, file, str(hostname), str(err))
+                                        files.append((file, file, str(hostname), str(err)))
             else:
                 for i, file in enumerate(files):
                     files[i] = (file, None, None, None)
