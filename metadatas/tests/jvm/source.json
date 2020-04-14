@@ -15,6 +15,7 @@
         "memory": 18484,
         "max.memory": 18484,
         "cpus": 11,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       },
       {
@@ -23,6 +24,7 @@
         "memory": 9292,
         "max.memory": 9292,
         "cpus": 6,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       },
       {
@@ -31,6 +33,7 @@
         "memory": 164928,
         "max.memory": 164928,
         "cpus": 16,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       },
       {
@@ -39,6 +42,7 @@
         "memory": 5120,
         "max.memory": 5120,
         "cpus": 8,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360,
         "max.heap": "6048m",
         "elasticSearchNodes": 1,
@@ -50,6 +54,7 @@
         "memory": 122880,
         "max.memory": 122880,
         "cpus": 12,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       },
       {
@@ -58,6 +63,7 @@
         "memory": 24576,
         "max.memory": 24576,
         "cpus": 6,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       },
       {
@@ -66,6 +72,7 @@
         "memory": 17408,
         "max.memory": 17408,
         "cpus": 4,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       },
       {
@@ -74,6 +81,7 @@
         "memory": 117520,
         "max.memory": 117520,
         "cpus": 15,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       },
       {
@@ -82,6 +90,7 @@
         "memory": 9192,
         "max.memory": 9192,
         "cpus": 5,
+        "oci.vm.shape": "VM.Standard2.4",
         "swap.size": 15360
       }
     ],

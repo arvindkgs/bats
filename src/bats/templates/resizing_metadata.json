@@ -15,15 +15,17 @@
       "dynamic": [
         {
           "key": "ip",
+          "description": "Command to get ip address of FA, FA-HA, OPT1 (OPT2, OPT3, OPT4 if exists), all AUX if block. To determine if block or not, command used: '/podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos'",
           "type": "SHELL",
           "hostname": "${fa-hostname}",
           "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f1"
         },
         {
           "key": "domain_folders",
+          "description": "Command to get domain folders of the above ip address. Parent '/u01/APPLTOP/instance/domains/' contains these domains. One domain folder per vm.",
           "type": "SHELL",
 	      "hostname": "${fa-hostname}",
-          "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f2"
+          "property": "cat /etc/hosts | grep -e \"fa.oracleoutsourcing.com\" -e \"fa-ha1.oracleoutsourcing.com\" -e \"opt.*.oracleoutsourcing.com\" $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ] /etc/hosts; then echo \"-e aux.*.oracleoutsourcing.com\"; fi) | cut -d' ' -f2"
         },
         {
           "key": "clusterObj",
@@ -35,7 +37,6 @@
       "checks": [
         {
           "name": "Xms Check",
-          "type": "COMPARE",
           "cardinality": "one-to-many",
           "source": {
             "file": "${source}",
@@ -73,7 +74,6 @@
       "checks": [
         {
           "name": "Max capacity",
-          "type": "COMPARE",
           "source": {
             "file": "${source}",
             "type": "JSON",
@@ -88,7 +88,6 @@
         },
         {
           "name": "Min capacity",
-          "type": "COMPARE",
           "source": {
             "file": "${source}",
             "type": "JSON",
@@ -99,6 +98,272 @@
             "file": "/u01/APPLTOP/instance/domains/fa.oracleoutsourcing.com/FADomain/config/${jdbcfileName}",
             "type": "XML",
             "property": "jdbc-data-source.jdbc-connection-pool-params.min-capacity"
+          }
+        }
+      ]
+    },
+    {
+      "name": "OHS Test",
+      "dynamic": [
+        {
+          "key": "ip",
+          "hostname": "",
+          "property": "cat /etc/hosts | grep -e \"ohs.oracleoutsourcing.com\" -e \"ohs-ha1.oracleoutsourcing.com\" | cut -d' ' -f1",
+          "type": "SHELL"
+        },
+        {
+          "key": "domain_folders",
+          "property": "cat /etc/hosts | grep -e \"ohs.oracleoutsourcing.com\" -e \"ohs-ha1.oracleoutsourcing.com\" | cut -d' ' -f2",
+          "type": "SHELL"
+        }
+      ],
+      "checks": [
+        {
+          "name": "KeepAliveTimeout Check",
+          "source": {
+            "property": "$.topology.ohsTunings.KeepAliveTimeout",
+            "file": "${source}",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.KeepAliveTimeout",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ThreadLimit Check",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadLimit",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ThreadLimit",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ServerLimit Check",
+          "source": {
+            "property": "$.topology.ohsTunings.ServerLimit",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ServerLimit",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "StartServers Check",
+          "source": {
+            "property": "$.topology.ohsTunings.StartServers",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..StartServers",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxClients Check",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxClients",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxClients",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MinSpareThreads Check",
+          "source": {
+            "property": "$.topology.ohsTunings.MinSpareThreads",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MinSpareThreads",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxSpareThreads Check",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxSpareThreads",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxSpareThreads",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "ThreadsPerChild Check",
+          "source": {
+            "property": "$.topology.ohsTunings.ThreadsPerChild",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..ThreadsPerChild",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "MaxRequestsPerChild Check",
+          "source": {
+            "property": "$.topology.ohsTunings.MaxRequestsPerChild",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..MaxRequestsPerChild",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "AcceptMutex Check",
+          "source": {
+            "property": "$.topology.ohsTunings.AcceptMutex",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..mpm_worker_module..AcceptMutex",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/httpd.conf",
+            "type": "CONF"
+          }
+        },
+        {
+          "name": "WLSocketTimeoutSecs Check",
+          "source": {
+            "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "$.IfModule..WLSocketTimeoutSecs",
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/homes/${domain_folders}/FADomain_webtier_local/config/OHS/ohs1/mod_wl_ohs.conf",
+            "type": "CONF"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Elastic Search Test",
+      "dynamic": [
+        {
+          "key": "ip",
+          "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep $(if [ $(sh /podscratch/lcm-artifacts/pod-storage-util/pod-storage-util/bin/podstorage-util-tool.sh is_block_enabled -p /opt/facs/casrepos) != \"FALSE\" ]; then echo \"-e opt1.oracleoutsourcing.com\"; else echo \"-e fa.oracleoutsourcing.com\"; fi) | cut -d' ' -f1",
+          "type": "SHELL"
+        }
+      ],
+      "checks": [
+        {
+          "name": "Elastic Search 'NUMBER_OF_NODES' check",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=opt1)].elasticSearchNodes",
+            "file": "${source}",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "NUMBER_OF_NODES",
+            "hostname": "${ip}",
+            "file": "/u01/APPLTOP/instance/elasticsearch/elasticsearch.properties",
+            "type": "PROPERTIES"
+          }
+        },
+        {
+          "name": "Elastic Search 'ES_HEAP_VALUE' check",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.hostType=opt1)].['max.heap']",
+            "file": "${source}",
+            "type": "JSON",
+            "format": "{}?"
+          },
+          "target": {
+            "property": "ES_HEAP_VALUE",
+            "hostname": "${fa-hostname}",
+            "file": "/u01/APPLTOP/instance/elasticsearch/elasticsearch.properties",
+            "type": "PROPERTIES",
+            "format": "{}?"
+          }
+        }
+      ]
+    },
+    {
+      "name": "VM Resizing Test",
+      "dynamic": [
+        {
+          "key": "vm",
+          "description": "This will give a single string as 'idm-midtier.oracleoutsourcing.com -e ohs.oracleoutsourcing.com -e fa.oracleoutsourcing.com -e opt1.oracleoutsourcing.com -e opt2.oracleoutsourcing.com opt3.oracleoutsourcing.com -e opt4.oracleoutsourcing.com -e fa-ha1.oracleoutsourcing.com -e ohs-ha1.oracleoutsourcing.com'",
+          "file": "${source}",
+          "type": "JSON",
+          "property": "$.topology.vmHosts[*].vmName",
+          "join": " -e "
+        },
+        {
+          "key": "ip",
+          "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep -e '${vm}' | cut -d' ' -f1",
+          "type": "SHELL"
+        },
+        {
+          "key": "pod-vm",
+          "hostname": "${fa-hostname}",
+          "property": "cat /etc/hosts | grep -e ${vm} | cut -d' ' -f2",
+          "type": "SHELL"
+        }
+      ],
+      "checks": [
+        {
+          "name": "VM Shape check",
+          "source": {
+            "property": "$.topology.vmHosts[?(@.vmName='${pod-vm}')].['oci.vm.shape']",
+            "file": "${source}",
+            "type": "JSON"
+          },
+          "target": {
+            "property": "curl -X GET http://169.254.169.254/opc/v1/instance/shape",
+            "hostname": "${ip}",
+            "type": "SHELL"
           }
         }
       ]

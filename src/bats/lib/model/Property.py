@@ -10,7 +10,7 @@ class Property(object):
         self.error = error
 
     def __str__(self):
-        return self.name + "(" + str(self.value) + ")"
+        return str(self.name) + "(" + str(self.value) + ")"
 
     def compare(self, target):
         if self.value is not None and target is not None and isinstance(target, Property) and target.value is not None:

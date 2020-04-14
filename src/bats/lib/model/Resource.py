@@ -14,8 +14,9 @@ class Resource(object):
         self.cardinality = None if "cardinality" not in property else property['cardinality']
         self.file = None if "file" not in property else property['file']
         self.format = None if "format" not in property else property['format']
-        self.testName = testName
         self.key = None if "key" not in property else property['key']
+        self.join = None if "join" not in property else property['join']
+        self.testName = testName
         self.checkName = checkName
         self.handler = handler
         self.dynamicProperties = dynamicProperties
@@ -99,7 +100,7 @@ class Resource(object):
         elif self.type == Type.STATIC:
             if not resourceItems:
                 resourceItems = []
-            resourceItems.append(self.handler.getResourceItem(extrapolated_properties))
+            resourceItems.append(self.handler.getResourceItem(extrapolated_properties, self.key))
         else:
             self.error = Error(type=Error.EXTRAPOLATION_ERROR, message="Error in extrapolation of 'file'")
         if self.format is not None and resourceItems and any(resourceItems):
@@ -133,6 +134,19 @@ class Resource(object):
                                     property.error = Error(Error.MISSING_FORMAT,
                                                            "No format '" + self.format + "' in " + property.name)
                                 property.value = values
+        if self.join is not None and resourceItems and any(resourceItems):
+            joinedResourceItem = ""
+            error = None
+            for resourceItem in resourceItems:
+                if resourceItem.error is not None:
+                    error = Error(type=resourceItem.error.type, message=resourceItem.error.message)
+                    joinedResourceItem = ""
+                    break
+                for property in resourceItem.properties:
+                    joinedResourceItem += self.join.join(property.value) + self.join
+            if len(joinedResourceItem) > 0:
+                joinedResourceItem = joinedResourceItem[:len(joinedResourceItem)-len(self.join)]
+            resourceItems = [Item(self.key, [Property(self.key, joinedResourceItem, error)], error)]
         return resourceItems
 
     def __str__(self):

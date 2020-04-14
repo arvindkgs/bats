@@ -27,7 +27,6 @@
       "checks": [
         {
           "name": "KeepAliveTimeout Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.KeepAliveTimeout",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -44,7 +43,6 @@
         },
         {
           "name": "ThreadLimit Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.ThreadLimit",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -61,7 +59,6 @@
         },
         {
           "name": "ServerLimit Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.ServerLimit",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -78,7 +75,6 @@
         },
         {
           "name": "StartServers Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.StartServers",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -95,7 +91,6 @@
         },
         {
           "name": "MaxClients Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.MaxClients",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -112,7 +107,6 @@
         },
         {
           "name": "MinSpareThreads Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.MinSpareThreads",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -129,7 +123,6 @@
         },
         {
           "name": "MaxSpareThreads Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.MaxSpareThreads",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -146,7 +139,6 @@
         },
         {
           "name": "ThreadsPerChild Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.ThreadsPerChild",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -163,7 +155,6 @@
         },
         {
           "name": "MaxRequestsPerChild Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.MaxRequestsPerChild",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -180,7 +171,6 @@
         },
         {
           "name": "AcceptMutex Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.AcceptMutex",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -197,7 +187,6 @@
         },
         {
           "name": "WLSocketTimeoutSecs Check",
-          "type": "COMPARE",
           "source": {
             "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
             "file": "metadatas/tests/shell-dynamic/source.json",
@@ -210,6 +199,30 @@
             "password": "Welcome1",
             "file": "/u01/APPLTOP/instance/homes/${ohs-home}/FADomain_webtier_local/config/OHS/ohs1/mod_wl_ohs.conf",
             "type": "CONF"
+          }
+        },
+        {
+          "name": "Check join",
+          "dynamic": [{
+            "key": "vm",
+            "property": "$.topology.vmHosts[*].vmName",
+            "description": "This will give a single string as 'idm-midtier.oracleoutsourcing.com -e ohs.oracleoutsourcing.com -e fa.oracleoutsourcing.com -e opt1.oracleoutsourcing.com -e opt2.oracleoutsourcing.com opt3.oracleoutsourcing.com -e opt4.oracleoutsourcing.com -e fa-ha1.oracleoutsourcing.com -e ohs-ha1.oracleoutsourcing.com'",
+            "file": "metadatas/tests/shell-dynamic/source.json",
+            "type": "JSON",
+            "join": " -e "
+          }],
+          "source": {
+            "key": "/etc/hosts.ip-address",
+            "property": "cat /etc/hosts | grep -e ${vm} | cut -d' ' -f1",
+            "hostname": "slc14vsr.us.oracle.com",
+            "username": "oracle",
+            "password": "Welcome1",
+            "type": "SHELL"
+          },
+          "target": {
+            "key": "target ips",
+            "property": ["10.247.140.14", "1.1.1.1"],
+            "type": "STATIC"
           }
         }
       ]

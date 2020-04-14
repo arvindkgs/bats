@@ -76,7 +76,7 @@ To-Do
         } //Remove the each variable from dynamic map
    }]
 6. Allow storing properties as object in dynamicProperty map. For example,
-        Below shell command produces output:
+        'cat /etc/hosts' shell command produces output:
         10.249.88.121 prc-internal.oracleoutsourcing.com
         10.249.88.121 prj-internal.oracleoutsourcing.com
         10.249.88.121 scm-internal.oracleoutsourcing.com
@@ -84,7 +84,7 @@ To-Do
         [
             ['10.249.88.121','prc-internal.oracleoutsourcing.com'],
             ['10.249.88.121','prc-internal.oracleoutsourcing.com'],
-            ['10.249.88.121','prc-internal.oracleoutsourcing.com']]
+            ['10.249.88.121','prc-internal.oracleoutsourcing.com']
         {
           "key": "ip_domain",
           "type": "SHELL",
@@ -165,3 +165,4 @@ Done
 11. Support cardinality in resource like 'source' element and 'target' element. Default behavior is 'one-to-many'. This to support 'one-to-one' case. For example,
 consider, first host in hostnames, should be used for to fetch only first file in 'file's for a particular resource(source or target), second host for second file and so on.
 This is supported using 'one-to-one' cardinality.
+12. Added 'join' element to Resource (source, target, dynamic) which flattens the property list into a single string by joining the individual items in the properties using the join string.
