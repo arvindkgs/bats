@@ -107,12 +107,13 @@
       "dynamic": [
         {
           "key": "ip",
-          "hostname": "",
+          "hostname": "${fa-hostname}",
           "property": "cat /etc/hosts | grep -e \"ohs.oracleoutsourcing.com\" -e \"ohs-ha1.oracleoutsourcing.com\" | cut -d' ' -f1",
           "type": "SHELL"
         },
         {
           "key": "domain_folders",
+          "hostname": "${fa-hostname}",
           "property": "cat /etc/hosts | grep -e \"ohs.oracleoutsourcing.com\" -e \"ohs-ha1.oracleoutsourcing.com\" | cut -d' ' -f2",
           "type": "SHELL"
         }
@@ -137,7 +138,7 @@
           "name": "ThreadLimit Check",
           "source": {
             "property": "$.topology.ohsTunings.ThreadLimit",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -152,7 +153,7 @@
           "name": "ServerLimit Check",
           "source": {
             "property": "$.topology.ohsTunings.ServerLimit",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -167,7 +168,7 @@
           "name": "StartServers Check",
           "source": {
             "property": "$.topology.ohsTunings.StartServers",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -182,7 +183,7 @@
           "name": "MaxClients Check",
           "source": {
             "property": "$.topology.ohsTunings.MaxClients",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -197,7 +198,7 @@
           "name": "MinSpareThreads Check",
           "source": {
             "property": "$.topology.ohsTunings.MinSpareThreads",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -212,7 +213,7 @@
           "name": "MaxSpareThreads Check",
           "source": {
             "property": "$.topology.ohsTunings.MaxSpareThreads",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -227,7 +228,7 @@
           "name": "ThreadsPerChild Check",
           "source": {
             "property": "$.topology.ohsTunings.ThreadsPerChild",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -242,7 +243,7 @@
           "name": "MaxRequestsPerChild Check",
           "source": {
             "property": "$.topology.ohsTunings.MaxRequestsPerChild",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -257,7 +258,7 @@
           "name": "AcceptMutex Check",
           "source": {
             "property": "$.topology.ohsTunings.AcceptMutex",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -272,7 +273,7 @@
           "name": "WLSocketTimeoutSecs Check",
           "source": {
             "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
-            "file": "metadatas/tests/shell-dynamic/source.json",
+            "file": "${source}",
             "type": "JSON"
           },
           "target": {
@@ -342,7 +343,7 @@
         {
           "key": "ip",
           "hostname": "${fa-hostname}",
-          "property": "cat /etc/hosts | grep -e '${vm}' | cut -d' ' -f1",
+          "property": "cat /etc/hosts | grep -e ${vm} | cut -d' ' -f1",
           "type": "SHELL"
         },
         {

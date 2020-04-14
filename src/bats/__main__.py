@@ -2,6 +2,8 @@ import pkg_resources
 import json
 import sys
 import argparse
+
+from lib.model import ResourceBuilder
 from lib.Dynamic import PropertyMap
 
 if __name__ == "__main__" and __package__ is None:
@@ -25,9 +27,16 @@ class CompareProperties(object):
 
     def __init__(self, args):
         self.action = args.action
+        # Resize
         self.source = args.source if self.action == "resize" else None
         self.log = args.log if self.action == "resize" else None
+        # Metadata
         self.metadata = args.metadataFile if self.action == "metadata" else None
+        # Extract
+        self.file = args.file if self.action == "extract" else None
+        self.type = args.type if self.action == "extract" else None
+        self.property = args.property if self.action == "extract" else None
+        # Compare
         self.srcFile = args.srcFile if self.action == "compare" else None
         self.srcType = args.srcType if self.action == "compare" else None
         self.srcProperty = args.srcProperty if self.action == "compare" else None
@@ -46,7 +55,43 @@ class CompareProperties(object):
             for argument in self.dynamic:
                 key, value = argument.split('=')
                 globalProperties[key] = value
-        if self.action == "metadata":
+        if self.action == "compare":
+            check = dict(name="json compare", type="COMPARE", source=dict(type="JSON", file=self.srcFile),
+                         target=dict(type="JSON", file=self.trgFile))
+            config = dict(name="Comparing source(" + self.srcFile + ") with target(" + self.trgFile + ")",
+                          tests=[dict(name="File Comparision", checks=[check])])
+        elif self.action == "extract":
+            property = {'file': self.file, 'property': self.property}
+            if self.type is not None:
+                property['type'] = self.type
+            elif self.file.find('.') != -1:
+                property['type'] = self.file[self.file.rindex('.')+1:].upper()
+            if not (
+                'type' in property
+                and property['type'] in ['JSON', 'XML', 'PROPERTIES', 'CONFIG']
+            ):
+                print(
+                    "Not able to determine property type. Set cmdline arg '--type' = JSON or XML or PROPERTIES or CONFIG")
+                sys.exit(1)
+            else:
+                resource = ResourceBuilder.build(property, None, None, {})
+                if resource.error:
+                    print("Error: "+resource.error.type+", Message: "+resource.error.message)
+                    sys.exit(1)
+                else:
+                    print("Extracted properties: ")
+                    value_str = ''
+                    for item in resource.items:
+                        if item and item.properties:
+                            for values in item.properties:
+                                if values:
+                                    value_str += "\t"+str(values.value)+","
+                    if len(value_str)>0:
+                        value_str = value_str[:len(value_str)-1]
+                    print value_str
+                sys.exit(0)
+
+        elif self.action == "metadata":
             try:
                 with open(self.metadata, 'r') as json_file:
                     config = json.load(json_file)
@@ -56,11 +101,6 @@ class CompareProperties(object):
             except ValueError as e:
                 comparelog.print_error(msg="Error parsing metadata file '" + self.metadata + "'.")
                 sys.exit(1)
-        elif self.action == "compare":
-            check = dict(name="json compare", type="COMPARE", source=dict(type="JSON", file=self.srcFile),
-                         target=dict(type="JSON", file=self.trgFile))
-            config = dict(name="Comparing source(" + self.srcFile + ") with target(" + self.trgFile + ")",
-                          tests=[dict(name="File Comparision", checks=[check])])
         elif self.action == "resize":
             resource_package = "bats"
             resource_path = '/'.join(('templates', 'resizing_metadata.json'))
@@ -136,6 +176,11 @@ if __name__ == "__main__":
     parser_resize.add_argument('source', type=str, help="(Required) Path of size profile json to validate against. For example:"
                                                                        " '/podscratch/lcm-artifacts/size-profiles-factory-default/facs/size-profile-overrides/11.13.19.10.0/s-post-factory-override.json'")
     parser_resize.add_argument('--log', required=False, dest="log", help="Log - defaults to 'validation.log' in pwd")
+    # Extract Action
+    parser_extract = subparsers.add_parser("extract", help="Extracts a property from file", parents=[parent_parser])
+    parser_extract.add_argument('file', help='(Required) File to extract property from')
+    parser_extract.add_argument('property', help='(Required) Property to extract')
+    parser_extract.add_argument('--type', dest='type', required=False, help='Optional file type, if file extension is not correct. Supported file types = JSON, XML, PROPERTIES, CONFIG')
     args = parser.parse_args()
 
     if args.action == "compare" and not args.srcProperty and args.trgProperty:

@@ -19,10 +19,9 @@ NOTES:
 
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
-1. Create subcommands 'extract' for extracting the value given the property and file.
-2. Convert tests to use the Resource objects instead of using the logs, so logs can have timestamp and run time. And this also allows using PyTest or other frameworks for testing
-3. Use REGEX for parsing format text.
-5. Currently each dynamic property is computed as list of values with file attribute of the dynamic component being a single file.
+1. Convert tests to use the Resource objects instead of using the logs, so logs can have timestamp and run time. And this also allows using PyTest or other frameworks for testing
+2. Use REGEX for parsing format text.
+3. Currently each dynamic property is computed as list of values with file attribute of the dynamic component being a single file.
    * PROBLEM: However if the file attribute of the dynamic component is itself extrapolated to multiple files, then how to handle?
    * SOLUTION *
        * REFACTOR: Store each dynamic property as list of properties instead of list of values, so it can be a 2x2 where property is
@@ -75,7 +74,7 @@ To-Do
             }
         } //Remove the each variable from dynamic map
    }]
-6. Allow storing properties as object in dynamicProperty map. For example,
+4. Allow storing properties as object in dynamicProperty map. For example,
         'cat /etc/hosts' shell command produces output:
         10.249.88.121 prc-internal.oracleoutsourcing.com
         10.249.88.121 prj-internal.oracleoutsourcing.com
@@ -111,9 +110,9 @@ To-Do
           }
         }
         NOTE: "value" must be processed after "format" in Resource element type
-7. Refactor to include exception handling
-8. Use multiprocessing to allow parallel execution of checks/tests (Refer- https://docs.python.org/2/library/multiprocessing.html, https://realpython.com/lessons/parallel-processing-multiprocessing-overview/)
-9. Provide verbose/detailed logging
+5. Refactor to include exception handling
+6. Use multiprocessing to allow parallel execution of checks/tests (Refer- https://docs.python.org/2/library/multiprocessing.html, https://realpython.com/lessons/parallel-processing-multiprocessing-overview/)
+7. Provide verbose/detailed logging
 
 Done
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -166,3 +165,19 @@ Done
 consider, first host in hostnames, should be used for to fetch only first file in 'file's for a particular resource(source or target), second host for second file and so on.
 This is supported using 'one-to-one' cardinality.
 12. Added 'join' element to Resource (source, target, dynamic) which flattens the property list into a single string by joining the individual items in the properties using the join string.
+13. Added subcommands 'extract' for extracting the value given the property and file.
+    usage: python -m bats extract file property [-h] [-D KEY=VALUE]
+                           [--failon ERROR-TYPE [ERROR-TYPE ...]]
+                           [--type TYPE]
+    Required arguments:
+      file                  File to extract property from
+      property              Property to extract
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -D KEY=VALUE          Dynamic values to be passed
+      --failon ERROR-TYPE [ERROR-TYPE ...]
+                            Fail validation when this type of message is
+                            encountered
+      --type TYPE           Optional file type, if file extension is not correct.
+                            Supported file types = JSON, XML, PROPERTIES, CONFIG
