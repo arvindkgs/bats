@@ -167,7 +167,7 @@ class Check:
         else:
             passed = False
             comparelog.print_error(
-                msg="Unsupported check type '" + self.checkType + "'. Only 'COMPARE' and 'SUCCESS' is supported.",
+                msg="Unsupported check type '" + self.checkType + "'. Only 'COMPARE' is supported.",
                 args={"testName": self.testName, "checkName": self.checkName, "type": comparelog.SYNTAX_ERROR})
         return passed
 

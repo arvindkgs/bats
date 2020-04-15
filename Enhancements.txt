@@ -113,6 +113,7 @@ To-Do
 5. Refactor to include exception handling
 6. Use multiprocessing to allow parallel execution of checks/tests (Refer- https://docs.python.org/2/library/multiprocessing.html, https://realpython.com/lessons/parallel-processing-multiprocessing-overview/)
 7. Provide verbose/detailed logging
+8. Add check type - SUCCESS, which verifies SHELL command succeeded
 
 Done
 ---------------------------------------------------------------------------------------------------------------------------------------
