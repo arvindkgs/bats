@@ -17,6 +17,13 @@ NOTES:
    'password' elements in metadata) by attributes of each object. Note that if the attribute is list type then it will
    iterate over each of the list objects and get the corresponding values, so effectively flattening the list.
 
+   The dynamic block produces a list of values.
+* Each value from this list is used to evaluate a source and corresponding property value.
+* These values are then compared.
+* So based on the ordering of the dynamic block values, source and target properties are computed and compared.
+* So LIMITATION is extrapolation resulting in size(n) source properties, should also result in similar extrapolation
+on the target as well.
+
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
 1. Convert tests to use the Resource objects instead of using the logs, so logs can have timestamp and run time. And this also allows using PyTest or other frameworks for testing
@@ -113,13 +120,16 @@ To-Do
 5. Refactor to include exception handling
 6. Use multiprocessing to allow parallel execution of checks/tests (Refer- https://docs.python.org/2/library/multiprocessing.html, https://realpython.com/lessons/parallel-processing-multiprocessing-overview/)
 7. Provide verbose/detailed logging
+8. Add check type - SUCCESS, which verifies SHELL command succeeded
 
 Done
 ---------------------------------------------------------------------------------------------------------------------------------------
-1. Use POJO for storing property instead of tuple to avoid array of values when using extend.
-2. Add name to dynamic property instead of referring to it using index.
-3. Add SHELL type.
-4. Speed up dynamic matching by storing global dynamic map,
+1. Reduce repeatations using dynamic (for-each) construct
+2. Run Unit tests for multiple positive and negative permutation scenarios
+3. Use POJO for storing property instead of tuple to avoid array of values when using extend.
+4. Add name to dynamic property instead of referring to it using index.
+5. Add SHELL type.
+6. Speed up dynamic matching by storing global dynamic map,
     4.1 Previously compare fetches same dynamic values from JSON for each check.
     4.2 Now dynamic map can store objects in map in global scope and reuse for each check.
        "tests": [{
@@ -149,23 +159,23 @@ Done
             }
           ]
        }]
-5. Modified ShellHandler to execute ssh/scp commands on fly rather than invoking a .sh file, which requires the .sh file to have execute permission
-6. Build project as module that can easily be distributed as tar/whl and installed using PIP
+7. Modified ShellHandler to execute ssh/scp commands on fly rather than invoking a .sh file, which requires the .sh file to have execute permission
+8. Build project as module that can easily be distributed as tar/whl and installed using PIP
 -----------------------------------------------------
                     V2
 -----------------------------------------------------
-7. Add STATIC type.
-8. Support for dynamic above 'tests' element
-9. Support for following remote get:
+9. Add STATIC type.
+10. Support for dynamic above 'tests' element
+11. Support for following remote get:
          * no-password
          * no-username, no-password
          * no-username
-10. Added support for multiple hosts in resource. By default, for each host in 'hostname' element, all files in 'file' element are fetched.
-11. Support cardinality in resource like 'source' element and 'target' element. Default behavior is 'one-to-many'. This to support 'one-to-one' case. For example,
+12. Added support for multiple hosts in resource. By default, for each host in 'hostname' element, all files in 'file' element are fetched.
+13. Support cardinality in resource like 'source' element and 'target' element. Default behavior is 'one-to-many'. This to support 'one-to-one' case. For example,
 consider, first host in hostnames, should be used for to fetch only first file in 'file's for a particular resource(source or target), second host for second file and so on.
 This is supported using 'one-to-one' cardinality.
-12. Added 'join' element to Resource (source, target, dynamic) which flattens the property list into a single string by joining the individual items in the properties using the join string.
-13. Added subcommands 'extract' for extracting the value given the property and file.
+14. Added 'join' element to Resource (source, target, dynamic) which flattens the property list into a single string by joining the individual items in the properties using the join string.
+15. Added subcommands 'extract' for extracting the value given the property and file.
     usage: python -m bats extract file property [-h] [-D KEY=VALUE]
                            [--failon ERROR-TYPE [ERROR-TYPE ...]]
                            [--type TYPE]
