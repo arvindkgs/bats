@@ -1,0 +1,49 @@
+{
+  "name": "Resizing Validation",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "logFileName": "metadatas/tests/multiple-hosts/multiple-hosts.log",
+  "tests": [
+    {
+      "name": "JVM Args Test",
+      "dynamic": [
+        {
+          "key": "ip",
+          "type": "STATIC",
+          "property": ["slc14vsr.us.oracle.com","slc10wce.us.oracle.com"]
+        },
+        {
+          "key": "domain_folders",
+          "type": "STATIC",
+          "property": ["/home/akumargs/misc","/home/akumargs/properties"]
+        },
+        {
+          "key": "clusterObj",
+          "file": "metadatas/tests/jvm/source.json",
+          "type": "JSON",
+          "property": "$..wlsClusters[*]"
+        }
+      ],
+      "checks": [
+        {
+          "name": "Xms Check",
+          "type": "COMPARE",
+          "source": {
+            "file": "metadatas/tests/multiple-hosts/source.json",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xms",
+            "type": "JSON"
+          },
+          "target": {
+            "hostname": "${ip}",
+            "username": "oracle",
+            "password": "Welcome1",
+            "cardinality": "one-to-one",
+            "file": "${domain_folders}/fusionapps_start_params.properties",
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "type": "PROPERTIES",
+            "format": "-Xms{}?"
+          }
+        }
+      ]
+    }
+  ]
+}
