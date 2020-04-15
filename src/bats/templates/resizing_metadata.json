@@ -1,6 +1,6 @@
 {
   "name": "Resizing Validation",
-  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning.",
+  "description": "Post resizing validation checks for WLS (JDBS), JVM (WLS Cluster) Resizing, and OHS Tuning. Refer to https://confluence.oraclecorp.com/confluence/display/FALCM/Resize+OCI+Checks for more information",
   "log": "${log}",
   "dynamic": [
     {
