@@ -26,6 +26,11 @@ on the target as well.
 
 To-Do
 -----------------------------------------------------------------------------------------------------------------------------------------
+* Fix failing OHS tests
+* Ensure JDBC runs for all MinCapacity and MaxCapacity
+* Modify vm resizing to make it work for following case
+  
+
 1. Convert tests to use the Resource objects instead of using the logs, so logs can have timestamp and run time. And this also allows using PyTest or other frameworks for testing
 2. Use REGEX for parsing format text.
 3. Currently each dynamic property is computed as list of values with file attribute of the dynamic component being a single file.

@@ -151,6 +151,7 @@ if __name__ == "__main__":
                                action="append", metavar="KEY=VALUE")
     parent_parser.add_argument('--failon', required=False, dest="failon", nargs="+", metavar="ERROR-TYPE",
                                help="Fail validation when this type of message is encountered", type=str)
+    #parent_parser.add_argument('--test', required=False, dest="test", nargs="+", metavar="Test name defined in ")
 
     parser = argparse.ArgumentParser(description="Compares (static and dynamic) resources defined in the metadata.json")
 

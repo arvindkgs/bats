@@ -51,6 +51,96 @@
             "type": "PROPERTIES",
             "format": "-Xms{}?"
           }
+        },
+        {
+          "name": "Xmx Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].Xmx",
+            "file": "${source}",
+            "type": "JSON"
+          },
+          "target": {
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "file": "/u01/APPLTOP/instance/domains/${domain_folders}/FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "format": "-Xmx{}?"
+          }
+        },
+        {
+          "name": "Xss Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].XssInKb",
+            "file": "${source}",
+            "type": "JSON"
+          },
+          "target": {
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "property": "fusion.FADomain.${clusterObj.clusterName}.default.minmaxmemory.main",
+            "file": "/u01/APPLTOP/instance/domains/${domain_folders}/FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "format": "-Xss{}?"
+          }
+        },
+        {
+          "name": "XX:NewRatio Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:NewRatio'",
+            "file": "${source}",
+            "type": "JSON"
+          },
+          "target": {
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
+            "file": "/u01/APPLTOP/instance/domains/${domain_folders}/FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "format": "-XX:NewRatio={}"
+          }
+        },
+        {
+          "name": "ParallelGCThreads Check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "file": "${source}",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:ParallelGCThreads'"
+          },
+          "target": {
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/domains/${domain_folders}/FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:ParallelGCThreads={}"
+          }
+        },
+        {
+          "name": "XX:MaxPermSize check",
+          "type": "COMPARE",
+          "cardinality": "one-to-many",
+          "source": {
+            "file": "${source}",
+            "type": "JSON",
+            "property": "$..wlsClusters[?(@.clusterName=${clusterObj.clusterName})].'XX:MaxPermSize'"
+          },
+          "target": {
+            "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "file": "/u01/APPLTOP/instance/domains/${domain_folders}/FADomain/config/fusionapps_start_params.properties",
+            "type": "PROPERTIES",
+            "property": "fusion.${clusterObj.clusterName}.Linux-x86_64.memoryargs",
+            "format": "-XX:MaxPermSize={}?"
+          }
         }
       ]
     },
@@ -357,7 +447,7 @@
         {
           "name": "VM Shape check",
           "source": {
-            "property": "$.topology.vmHosts[?(@.vmName='${pod-vm}')].['oci.vm.shape']",
+            "property": "$.topology.vmHosts[?(@.vmName='${pod-vm}')].['oci.vm.shape.hw.map']",
             "file": "${source}",
             "type": "JSON"
           },
