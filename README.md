@@ -5,7 +5,7 @@ It takes an input 'metadata' json passed to it as a command-line argument.
 
 # Flowchart
 
-![Flowchart](Validation Suite.png)
+![Flowchart]('Validation Suite.png')
 
 # metadata
 The main component of the automation tool is metadata. Metadata can be created based on custom requirement. Structure of metadata is as follows:
