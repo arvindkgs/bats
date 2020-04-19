@@ -3,6 +3,10 @@ To validate whether all the configuration files and properties and VM arguments 
 
 It takes an input 'metadata' json passed to it as a command-line argument.
 
+# Flowchart
+
+![Flowchart]('Validation Suit.png')
+
 # metadata
 The main component of the automation tool is metadata. Metadata can be created based on custom requirement. Structure of metadata is as follows:
 
