@@ -45,6 +45,8 @@ class CompareProperties(object):
         self.trgProperty = args.trgProperty if self.action == "compare" else None
         self.dynamic = args.dynamic
         self.failon = args.failon
+        self.tests = args.test
+        self.checks = args.check
         runShellCommand("if [-d tmp]; then rm -rf tmp; fi; mkdir tmp")
 
     def validate(self):
@@ -130,13 +132,15 @@ class CompareProperties(object):
         # Add global dynamic properties from config
         globalProperties.addDynamicPropertiesFromCheck(config, failon=self.failon)
         for test in config['tests']:
-            testName = test['name']
-            dynamicProperties = PropertyMap(globalProperties)
-            if not dynamicProperties.addDynamicPropertiesFromCheck(test, failon=self.failon):
-                passed = False
-            for check in test['checks']:
-                checkPassed = Check(check, testName, dynamicProperties, failon=self.failon).evaluateCheck()
-                passed = checkPassed and passed
+            if not self.tests or (self.tests and test['name'] in self.tests):
+                testName = test['name']
+                dynamicProperties = PropertyMap(globalProperties)
+                if not dynamicProperties.addDynamicPropertiesFromCheck(test, failon=self.failon):
+                    passed = False
+                for check in test['checks']:
+                    if not self.checks or (self.checks and check['name'] in self.checks):
+                        checkPassed = Check(check, testName, dynamicProperties, failon=self.failon).evaluateCheck()
+                        passed = checkPassed and passed
         # Return validation result
         return passed
 
@@ -151,7 +155,6 @@ if __name__ == "__main__":
                                action="append", metavar="KEY=VALUE")
     parent_parser.add_argument('--failon', required=False, dest="failon", nargs="+", metavar="ERROR-TYPE",
                                help="Fail validation when this type of message is encountered", type=str)
-    #parent_parser.add_argument('--test', required=False, dest="test", nargs="+", metavar="Test name defined in ")
 
     parser = argparse.ArgumentParser(description="Compares (static and dynamic) resources defined in the metadata.json")
 
@@ -162,6 +165,10 @@ if __name__ == "__main__":
                                             parents=[parent_parser])
     parser_metadata.add_argument('metadataFile', default='metadata.json', type=str,
                                  help="(Required) Metadata file which defines resources that should be compared")
+    parser_metadata.add_argument('--test', required=False, dest="test", nargs="+", metavar="TEST_NAME",
+                               help="Specify test names of tests to run, separated by space.")
+    parser_metadata.add_argument('--check', required=False, dest="check", nargs="+", metavar="CHECK_NAME",
+                               help="Specify test names of tests to run, separated by space.")
     # Compare Action
     parser_compare = subparsers.add_parser("compare", help="Compares source and target file", parents=[parent_parser])
     parser_compare.add_argument('--srcFile', required=True, dest="srcFile", help="Source File")
@@ -177,6 +184,10 @@ if __name__ == "__main__":
     parser_resize.add_argument('source', type=str, help="(Required) Path of size profile json to validate against. For example:"
                                                                        " '/podscratch/lcm-artifacts/size-profiles-factory-default/facs/size-profile-overrides/11.13.19.10.0/s-post-factory-override.json'")
     parser_resize.add_argument('--log', required=False, dest="log", help="Log - defaults to 'validation.log' in pwd")
+    parser_resize.add_argument('--test', required=False, dest="test", nargs="+", metavar="TEST_NAME",
+                               help="Limits tests to run, specify test names separated by space.")
+    parser_resize.add_argument('--check', required=False, dest="check", nargs="+", metavar="CHECK_NAME",
+                               help="Limits checks to run, specify check names separated by space.")
     # Extract Action
     parser_extract = subparsers.add_parser("extract", help="Extracts a property from file", parents=[parent_parser])
     parser_extract.add_argument('file', help='(Required) File to extract property from')

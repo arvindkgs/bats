@@ -211,6 +211,7 @@
       "checks": [
         {
           "name": "KeepAliveTimeout Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.KeepAliveTimeout",
             "file": "${source}",
@@ -226,6 +227,7 @@
         },
         {
           "name": "ThreadLimit Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.ThreadLimit",
             "file": "${source}",
@@ -241,6 +243,7 @@
         },
         {
           "name": "ServerLimit Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.ServerLimit",
             "file": "${source}",
@@ -256,6 +259,7 @@
         },
         {
           "name": "StartServers Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.StartServers",
             "file": "${source}",
@@ -271,6 +275,7 @@
         },
         {
           "name": "MaxClients Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.MaxClients",
             "file": "${source}",
@@ -286,6 +291,7 @@
         },
         {
           "name": "MinSpareThreads Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.MinSpareThreads",
             "file": "${source}",
@@ -301,6 +307,7 @@
         },
         {
           "name": "MaxSpareThreads Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.MaxSpareThreads",
             "file": "${source}",
@@ -316,6 +323,7 @@
         },
         {
           "name": "ThreadsPerChild Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.ThreadsPerChild",
             "file": "${source}",
@@ -331,6 +339,7 @@
         },
         {
           "name": "MaxRequestsPerChild Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.MaxRequestsPerChild",
             "file": "${source}",
@@ -346,6 +355,7 @@
         },
         {
           "name": "AcceptMutex Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.AcceptMutex",
             "file": "${source}",
@@ -361,6 +371,7 @@
         },
         {
           "name": "WLSocketTimeoutSecs Check",
+          "cardinality": "one-to-many",
           "source": {
             "property": "$.topology.ohsTunings.WLSocketTimeoutSecs",
             "file": "${source}",
@@ -424,7 +435,7 @@
       "dynamic": [
         {
           "key": "vm",
-          "description": "This will give a single string as 'idm-midtier.oracleoutsourcing.com -e ohs.oracleoutsourcing.com -e fa.oracleoutsourcing.com -e opt1.oracleoutsourcing.com -e opt2.oracleoutsourcing.com opt3.oracleoutsourcing.com -e opt4.oracleoutsourcing.com -e fa-ha1.oracleoutsourcing.com -e ohs-ha1.oracleoutsourcing.com'",
+          "description": "This will give a single string as 'idm-midtier.oracleoutsourcing.com -e ohs.oracleoutsourcing.com -e fa.oracleoutsourcing.com -e opt1.oracleoutsourcing.com -e opt2.oracleoutsourcing.com -e opt3.oracleoutsourcing.com -e opt4.oracleoutsourcing.com -e fa-ha1.oracleoutsourcing.com -e ohs-ha1.oracleoutsourcing.com'",
           "file": "${source}",
           "type": "JSON",
           "property": "$.topology.vmHosts[*].vmName",
@@ -441,19 +452,22 @@
           "hostname": "${fa-hostname}",
           "property": "cat /etc/hosts | grep -e ${vm} | cut -d' ' -f2",
           "type": "SHELL"
+        },
+        {
+          "key": "vm_shapes_obj",
+          "property": "$.topology.vmHosts[?(@.vmName='${pod-vm}')].['oci.vm.shape.hw.map']",
+          "file": "${source}",
+          "type": "JSON"
         }
       ],
       "checks": [
         {
           "name": "VM Shape check",
-          "source": {
-            "property": "$.topology.vmHosts[?(@.vmName='${pod-vm}')].['oci.vm.shape.hw.map']",
-            "file": "${source}",
-            "type": "JSON"
-          },
+          "type": "SUCCESS",
           "target": {
-            "property": "curl -X GET http://169.254.169.254/opc/v1/instance/shape",
             "hostname": "${ip}",
+            "cardinality": "one-to-one",
+            "property": "'[[ $(curl -X GET http://169.254.169.254/opc/v1/instance/shape) = \"${vm_shapes_obj.X6}\" ]] || [[ $(curl -X GET http://169.254.169.254/opc/v1/instance/shape) = \"${one-to-one::vm_shapes_obj.X7}\" ]] || [[ $(curl -X GET http://169.254.169.254/opc/v1/instance/shape) = \"${one-to-one::vm_shapes_obj.AMD}\" ]]'",
             "type": "SHELL"
           }
         }

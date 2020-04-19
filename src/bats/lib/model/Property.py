@@ -1,3 +1,6 @@
+from bats.lib import comparelog
+
+
 class Property(object):
     MATCH = "0"  # length and value matches
     NO_MATCH = "1"  # length matches, but values do not match
@@ -34,3 +37,30 @@ class Property(object):
                 return Property.ERROR
         else:
             return Property.ERROR
+
+    def isSuccess(self):
+        if self.value:
+            for i in range(self.value):
+                if self.value[i]:
+                    return Property.NO_MATCH
+        else:
+            return Property.ERROR
+        return Property.MATCH
+
+    def has_error(self, check, file, target_file=None):
+        if self.error:
+            comparelog.print_error(
+                msg=self.error.message,
+                args={"testName": check.testName,
+                      "checkName": check.checkName,
+                      "cardinality": check.cardinality,
+                      "targetItem": target_file,
+                      "type": self.error.type,
+                      "source": file},
+                console=check.failon and self.error.type in check.failon)
+            return True
+        else:
+            return False
+
+    def failed(self, failon):
+        return self.error and failon and self.error.type in failon

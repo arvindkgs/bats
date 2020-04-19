@@ -15,282 +15,223 @@ class Check:
         self.testName = testName
         self.failon = failon
         self.dynamicProperties = PropertyMap(dynamicProperties)
+        self.cardinality = 'one-to-one' if 'cardinality' not in self.check else self.check['cardinality']
+
 
     def evaluateCheck(self):
         passed = self.dynamicProperties.addDynamicPropertiesFromCheck(self.check, self.testName, self.failon)
         if Check.Type.getType(self) == Check.Type.COMPARE_PROPERTY:
-            source = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
+            source_resource = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
                                            checkName=self.checkName, dynamicProperties=self.dynamicProperties)
-            target = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
+            target_resource = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
                                            checkName=self.checkName, dynamicProperties=self.dynamicProperties)
-            if source and target:
-                if not ((source.error or target.error)):
-                    cardinality = 'one-to-one' if 'cardinality' not in self.check else self.check['cardinality']
-                    sourceItems = source.items
-                    targetItems = target.items
-                    if sourceItems and len(sourceItems) > 0:
-                        sourceItem = sourceItems[0]
-                        if sourceItem.error:
-                            printToConsole = False
-                            if self.failon and sourceItem.error.type in self.failon:
-                                passed = False
-                                printToConsole = True
-                            comparelog.print_error(msg=sourceItem.error.message,
-                                                   args={'testName': self.testName, 'type': sourceItem.error.type,
-                                                         "checkName": self.checkName, "source": sourceItem.file},
-                                                   console=printToConsole)
-                        elif cardinality == 'one-to-one':
-                            if targetItems:
-                                fromPropertiesIndex = 0
-                                for targetItem in targetItems:
-                                    if targetItem.properties and not targetItem.error:
-                                        targetProperties = targetItem.properties
-                                        toPropertiesIndex = fromPropertiesIndex + len(targetProperties)
-                                        if toPropertiesIndex <= len(sourceItem.properties):
-                                            sourceProperties = sourceItem.properties[
-                                                               fromPropertiesIndex:toPropertiesIndex]
-                                            fromPropertiesIndex += len(targetProperties)
-                                            passed = self.compareItem(
-                                                Item(sourceItem.file, sourceProperties, sourceItem.error), targetItem) and passed
-                                        else:
-                                            passed = False
-                                            comparelog.print_error(
-                                                msg="Number of source properties from (" + source.file + ") != Number of target properties from (" + target.file + ")",
-                                                args={"testName": self.testName,
-                                                      "type": Error.VALUE_MISMATCH,
-                                                      "checkName": self.checkName})
-                                            break
-                                    elif targetItem.error:
-                                        printToConsole = False
-                                        if self.failon and targetItem.error.type in self.failon:
-                                            passed = False
-                                            printToConsole = True
-                                        comparelog.print_error(msg=targetItem.error.message,
-                                                               args={"testName": self.testName,
-                                                                     "type": targetItem.error.type,
-                                                                     "checkName": self.checkName,
-                                                                     "source": targetItem.file},
-                                                               console=printToConsole)
-                                    else:
-                                        passed = False
-                                        comparelog.print_error(msg="No target properties.",
-                                                               args={"testName": self.testName,
-                                                                     "type": Error.VALUE_MISMATCH,
-                                                                     "checkName": self.checkName,
-                                                                     "source": targetItem.file})
+
+            if source_resource.has_error(self.failon) or target_resource.has_error(self.failon):
+                passed = False if source_resource.failed(self.failon) or target_resource.failed(self.failon) else passed
+            else:
+                source_item = source_resource.items[0]
+                if source_item.has_error(self):
+                    passed = False if source_item.failed(self.failon) else passed
+                elif self.cardinality == 'one-to-one':
+                        fromPropertiesIndex = 0
+                        for target_item in target_resource.items:
+                            if target_item.has_error(self):
+                                passed = False if target_item.failed(self.failon) else passed
                             else:
-                                passed = False
-                                comparelog.print_error(
-                                    msg="No target items retrieved.",
-                                    args={"testName": self.testName,
-                                          "type": Error.VALUE_MISMATCH,
-                                          "checkName": self.checkName,
-                                          "source": target.file})
-                        elif cardinality == 'one-to-many':
-                            for targetItem in targetItems:
-                                if targetItem.error:
-                                    printToConsole = False
-                                    if self.failon and targetItem.error.type in self.failon:
-                                        passed = False
-                                        printToConsole = True
-                                    comparelog.print_error(msg=targetItem.error.message,
-                                                           args={"testName": self.testName,
-                                                                 "type": targetItem.error.type,
-                                                                 "checkName": self.checkName,
-                                                                 "source": targetItem.file},
-                                                           console=printToConsole)
+                                toPropertiesIndex = fromPropertiesIndex + len(target_item.properties)
+                                if toPropertiesIndex <= len(source_item.properties):
+                                    sourceProperties = source_item.properties[
+                                                       fromPropertiesIndex:toPropertiesIndex]
+                                    fromPropertiesIndex += len(target_item.properties)
+                                    passed = self.compareItem(
+                                        Item(source_item.file, sourceProperties, source_item.error), target_item) and passed
                                 else:
-                                    passed = self.compareItem(sourceItem, targetItem, True) and passed
-                    else:
-                        passed = False
-                        comparelog.print_error(
-                            msg="No source items retrieved.",
-                            args={"testName": self.testName,
-                                  "type": Error.VALUE_MISMATCH,
-                                  "checkName": self.checkName,
-                                  "source": source.file})
-                elif source.error:
-                    printToConsole = False
-                    if self.failon and source.error.type in self.failon:
-                        passed = False
-                        printToConsole = True
-                    comparelog.print_error(msg=source.error.message,
-                                           args={'testName': self.testName, 'type': source.error.type,
-                                                 "checkName": self.checkName, "source": source.file},
-                                           console=printToConsole)
-                else:
-                    printToConsole = False
-                    if self.failon and target.error.type in self.failon:
-                        passed = False
-                        printToConsole = True
-                    comparelog.print_error(msg=target.error.message,
-                                           args={'testName': self.testName, 'type': target.error.type,
-                                                 "checkName": self.checkName, "source": target.file},
-                                           console=printToConsole)
-            elif not source:
-                passed = False
-                comparelog.print_error(
-                    msg="No source type available '" + self.check['source'][
-                        'type'] + "' . Available types: JSON, PROPERTY, CONF, XML, SHELL",
-                    args={"testName": self.testName,
-                          "type": comparelog.SYNTAX_ERROR,
-                          "checkName": self.checkName})
-            else:
-                passed = False
-                comparelog.print_error(
-                    msg="No target type available '" + self.check['target'][
-                        'type'] + "' . Available types: JSON, PROPERTIES, CONF, XML, SHELL",
-                    args={"testName": self.testName,
-                          "type": comparelog.SYNTAX_ERROR,
-                          "checkName": self.checkName})
+                                    passed = False
+                                    comparelog.print_error(
+                                        msg="Number of source properties from (" + source_resource.file + ") != Number of target properties from (" + target_resource.file + ")",
+                                        args={"testName": self.testName,
+                                              "type": Error.VALUE_MISMATCH,
+                                              "checkName": self.checkName})
+                                    break
+                elif self.cardinality == 'one-to-many':
+                    for target_item in target_resource.items:
+                        if target_item.has_error(self):
+                            passed = False if target_item.failed(self.failon) else passed
+                        else:
+                            passed = self.compareItem(source_item, target_item, True) and passed
+
         elif Check.Type.getType(self) == Check.Type.COMPARE_FILES:
-            source = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
+            source_resource = ResourceBuilder.build(property=self.check['source'], testName=self.testName,
                                            checkName=self.checkName, dynamicProperties=self.dynamicProperties)
-            target = self.check['target']
-            if any(source.items):
-                targetProperties = []
-                if source.items[0].properties:
-                    for property in source.items[0].properties:
-                        targetProperties.append(property.name)
-                target['property'] = targetProperties
-                target = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
-                                               checkName=self.checkName, dynamicProperties=self.dynamicProperties)
-                passed = self.compareItem(source.items[0], target.items[0]) and passed
+            target_resource = self.check['target']
+            if source_resource.has_error(self.failon):
+                passed = False if source_resource.failed(self.failon) else passed
             else:
+                targetProperties = []
+                if source_resource.items[0].properties:
+                    for property in source_resource.items[0].properties:
+                        targetProperties.append(property.name)
+                target_resource['property'] = targetProperties
+                target_resource = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
+                                               checkName=self.checkName, dynamicProperties=self.dynamicProperties)
+                passed = self.compareItem(source_resource.items[0], target_resource.items[0]) and passed
+
+        elif Check.Type.getType(self) == Check.Type.SUCCESS:
+            if 'target' not in self.check:
                 passed = False
-                comparelog.print_error(
-                    msg="No source items retrieved.",
-                    args={"testName": self.testName,
-                          "type": Error.VALUE_MISMATCH,
-                          "checkName": self.checkName,
-                          "source": source.file})
+                comparelog.print_error(msg="'target' not defined in check: "+self.checkName, args={'testName': self.testName, 'type': Error.SYNTAX_ERROR,'checkName': self.checkName})
+            else:
+                target_resource = ResourceBuilder.build(property=self.check['target'], testName=self.testName,
+                                               checkName=self.checkName, dynamicProperties=self.dynamicProperties)
+                if target_resource.type == ResourceBuilder.Type.SHELL:
+                    if target_resource.error and target_resource.error.type == Error.SHELL_COMMAND_ERROR:
+                        passed = False
+                        comparelog.print_info(
+                            msg=str(target_resource.property),
+                            args={"testName": self.testName,
+                                  "checkName": self.checkName,
+                                  "type": "FAILED"})
+                    elif target_resource.error and target_resource.error.type == Error.MISSING_PROPERTY:
+                        comparelog.print_info(
+                            msg=str(target_resource.property),
+                            args={"testName": self.testName,
+                                  "checkName": self.checkName,
+                                  "type": "PASSED"},
+                        console=False)
+                    else:
+                        for item in target_resource.items:
+                            passed = self.isSuccessShell(item) and passed
+                else:
+                    if not target_resource.has_error(self.failon):
+                        for item in target_resource.items:
+                            passed = self.isSuccess(item) and passed
+                    else:
+                        passed = False if target_resource.failed(self.failon) else passed
+                            
         else:
-            passed = False
             comparelog.print_error(
-                msg="Unsupported check type '" + self.checkType + "'. Only 'COMPARE' is supported.",
-                args={"testName": self.testName, "checkName": self.checkName, "type": comparelog.SYNTAX_ERROR})
+                msg="Unsupported check type '" + self.checkType + "'. Only 'COMPARE' and 'SUCCESS' is supported.",
+                args={"testName": self.testName, "checkName": self.checkName, "type": Error.SYNTAX_ERROR})
         return passed
 
-    def compareItem(self, source, target, onetomany=False):
+    def compareItem(self, source_item, target_item, onetomany=False):
         passed = True
-        cardinality = "one-to-one" if not onetomany else "one-to-many"
-        if source.error:
-            printToConsole = False
-            if self.failon and source.error.type in self.failon:
-                passed = False
-                printToConsole = True
-            comparelog.print_error(
-                msg=source.error.message,
-                args={"testName": self.testName,
-                      "checkName": self.checkName,
-                      "cardinality": cardinality,
-                      "targetItem": target.file,
-                      "type": source.error.type,
-                      "source": source.file},
-                console=printToConsole)
-        elif target.error:
-            printToConsole = False
-            if self.failon and target.error.type in self.failon:
-                passed = False
-                printToConsole = True
-            comparelog.print_error(
-                msg=target.error.message,
-                args={"testName": self.testName,
-                      "checkName": self.checkName,
-                      "cardinality": cardinality,
-                      "targetItem": target.file,
-                      "type": target.error.type,
-                      "source": target.file},
-                console=printToConsole)
-        elif len(source.properties) != len(target.properties):
-            passed = False
-            comparelog.print_error(
-                msg="Number of source properties from (" + source.file + ") != Number of target properties from (" + target.file + ")",
-                args={"testName": self.testName,
-                      "checkName": self.checkName,
-                      "cardinality": cardinality,
-                      "targetItem": target.file,
-                      "type": Error.VALUE_MISMATCH})
-        elif not any(source.properties):
-            passed = False
-            comparelog.print_error(
-                msg="No source properties",
-                args={"testName": self.testName,
-                      "checkName": self.checkName,
-                      "cardinality": cardinality,
-                      "targetItem": target.file,
-                      "type": Error.VALUE_MISMATCH,
-                      "source": source.file})
-        elif not any(target.properties):
-            passed = False
-            comparelog.print_error(
-                msg="No target properties",
-                args={"testName": self.testName,
-                      "checkName": self.checkName,
-                      "cardinality": cardinality,
-                      "targetItem": target.file,
-                      "type": Error.VALUE_MISMATCH,
-                      "source": target.file})
+        if source_item.has_error(self, target_item.file) and target_item.has_error(self):
+            passed = False if source_item.failed(self.failon) or target_item.failed(self.failon) else passed
         else:
-            for i, source_property in enumerate(source.properties):
-                target_property = target.properties[i]
-                if source_property.error:
-                    printToConsole = False
-                    if self.failon and source_property.error.type in self.failon:
-                        passed = False
-                        printToConsole = True
-                    comparelog.print_error(
-                        msg=source_property.error.message,
-                        args={
-                            "testName": self.testName,
-                            "checkName": self.checkName,
-                            "cardinality": cardinality,
-                            "targetItem": target.file,
-                            "type": source_property.error.type,
-                            "source": source.file},
-                        console=printToConsole)
-                elif target_property.error:
-                    printToConsole = False
-                    if self.failon and target_property.error.type in self.failon:
-                        passed = False
-                        printToConsole = True
-                    comparelog.print_error(
-                        msg=target_property.error.message,
+            cardinality = "one-to-one" if not onetomany else "one-to-many"
+            if len(source_item.properties) != len(target_item.properties):
+                passed = False
+                comparelog.print_error(
+                    msg="Number of source properties from (" + source_item.file + ") != Number of target properties from (" + target_item.file + ")",
+                    args={"testName": self.testName,
+                          "checkName": self.checkName,
+                          "cardinality": cardinality,
+                          "targetItem": target_item.file,
+                          "type": Error.VALUE_MISMATCH})
+            else:
+                for i, source_property in enumerate(source_item.properties):
+                    target_property = target_item.properties[i]
+                    if source_property.has_error(self, source_item.file, target_item.file) or target_property.has_error(self, target_item.file):
+                        passed = False if source_property.failed(self.failon) or target_property.failed(self.failon) else passed
+                    else:
+                        compare = source_property.compare(target_property)
+                        if compare == Property.MATCH:
+                            comparelog.print_info(
+                                msg=str(source_property) + " == " + str(target_property),
+                                args={"testName": self.testName,
+                                      "checkName": self.checkName,
+                                      "cardinality": cardinality,
+                                      "targetItem": target_item.file,
+                                      "type": "PASSED"},
+                                console=False)
+                        elif compare == Property.NO_MATCH:
+                            comparelog.print_info(
+                                msg=str(source_property) + " != " + str(target_property),
+                                args={"testName": self.testName,
+                                      "checkName": self.checkName,
+                                      "cardinality": cardinality,
+                                      "targetItem": target_item.file,
+                                      "type": "FAILED"})
+                            passed = False
+                        elif compare == Property.ERROR:
+                            comparelog.print_info(
+                                msg="Values mismatch. Source: " + str(source_property) + ", Target: " + str(
+                                    target_property),
+                                args={"testName": self.testName,
+                                      "checkName": self.checkName,
+                                      "cardinality": cardinality,
+                                      "targetItem": target_item.file,
+                                      "type": Error.VALUE_MISMATCH})
+                            passed = False
+        return passed
+
+    def isSuccessShell(self, item):
+        passed = True
+        if item.error and item.error.type == Error.SHELL_COMMAND_ERROR:
+            passed = False
+            comparelog.print_info(
+                msg=str(item),
+                args={"testName": self.testName,
+                      "checkName": self.checkName,
+                      "type": "FAILED"})
+        elif item.error and item.error.type == Error.MISSING_PROPERTY:
+            comparelog.print_info(
+                msg=str(item),
+                args={"testName": self.testName,
+                      "checkName": self.checkName,
+                      "type": "PASSED"},
+                console=False)
+        else:
+            for i, property in enumerate(item.properties):
+                if property.error and property.error.type == Error.MISSING_PROPERTY:
+                    comparelog.print_info(
+                        msg=str(property),
                         args={"testName": self.testName,
                               "checkName": self.checkName,
-                              "cardinality": cardinality,
-                              "targetItem": target.file,
-                              "type": target_property.error.type,
-                              "source": target.file},
-                        console=printToConsole)
+                              "type": "PASSED"},
+                        console=False)
                 else:
-                    compare = source_property.compare(target_property)
-                    if compare == Property.MATCH:
+                    passed = False
+                    comparelog.print_info(
+                        msg=str(property),
+                        args={"testName": self.testName,
+                              "checkName": self.checkName,
+                              "type": "FAILED"})
+        return passed
+    
+    def isSuccess(self, item):
+        passed = True
+        if item.has_error(self):
+            passed = False if item.failed(self.failon) else passed
+        else:
+            for i, property in enumerate(item.properties):
+                if property.has_error(self, item.file):
+                    passed = False if property.failed(self.failon) else passed
+                else:
+                    success = property.isSuccess()
+                    if success == Property.MATCH:
                         comparelog.print_info(
-                            msg="PASSED : " + str(source_property) + " == " + str(target_property),
+                            msg=str(property),
                             args={"testName": self.testName,
                                   "checkName": self.checkName,
-                                  "cardinality": cardinality,
-                                  "targetItem": target.file,
-                                  "type": self.checkType},
+                                  "targetItem": item.file,
+                                  "type": "PASSED"},
                             console=False)
-                    elif compare == Property.NO_MATCH:
+                    elif success == Property.NO_MATCH:
                         comparelog.print_info(
-                            msg="FAILED : " + str(source_property) + " != " + str(target_property),
+                            msg=str(property),
                             args={"testName": self.testName,
                                   "checkName": self.checkName,
-                                  "cardinality": cardinality,
-                                  "targetItem": target.file,
-                                  "type": self.checkType})
+                                  "targetItem": item.file,
+                                  "type": "FAILED"})
                         passed = False
-                    elif compare == Property.ERROR:
+                    elif success == Property.ERROR:
                         comparelog.print_info(
-                            msg="Values mismatch. Source: " + str(source_property) + ", Target: " + str(
-                                target_property),
+                            msg="No values for item: " + str(property),
                             args={"testName": self.testName,
                                   "checkName": self.checkName,
-                                  "cardinality": cardinality,
-                                  "targetItem": target.file,
+                                  "targetItem": item.file,
                                   "type": Error.VALUE_MISMATCH})
                         passed = False
         return passed
@@ -298,6 +239,7 @@ class Check:
     class Type:
         COMPARE_PROPERTY = "COMPARE_PROPERTY"
         COMPARE_FILES = "COMPARE_FILES"
+        SUCCESS = "SUCCESS"
 
         @classmethod
         def getType(self, checkObj):
@@ -315,4 +257,6 @@ class Check:
                     and 'property' not in checkObj.check['target']
                 ):
                     retType = Check.Type.COMPARE_FILES
+            elif checkObj.checkType == 'SUCCESS':
+                retType = Check.Type.SUCCESS
             return retType

@@ -91,10 +91,11 @@ def setLogFileName(log='automation.log'):
 
 # Method to print Error log (prints to log and console)
 def print_error(msg, args={}, console=True):
+    # type: (string, dict, bool) -> object
     setLogFileName()
     file_name = os.path.basename(__file__)
     fnName = args['testName'] if 'testName' in args else None
-    if 'cardinality' in args and args['cardinality'] == 'one-to-one' and 'targetItem' in args:
+    if 'cardinality' in args and args['cardinality'] == 'one-to-one':
         args['targetItem'] = None
         args['cardinality'] = None
     record = getLogger().makeRecord(name, logging.ERROR, file_name, None, msg=msg, args=None,

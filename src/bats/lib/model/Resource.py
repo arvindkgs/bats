@@ -1,5 +1,6 @@
 from os import path
 
+from .. import comparelog
 from ..Constants import *
 from ..handler.ShellHandler import *
 
@@ -92,9 +93,14 @@ class Resource(object):
             if not resourceItems:
                 resourceItems = []
             if hostnames:
-                for hostname in hostnames:
-                    resourceItems.append(self.handler.getResourceItem(extrapolated_properties, hostname,
-                                                                  username, password))
+                    for i, hostname in enumerate(hostnames):
+                        if self.cardinality == 'one-to-one':
+                            if i in range(len(extrapolated_properties)):
+                                resourceItems.append(self.handler.getResourceItem([extrapolated_properties[i]], hostname,
+                                                                                  username, password))
+                        else:
+                            resourceItems.append(self.handler.getResourceItem(extrapolated_properties, hostname,
+                                                                          username, password))
             else:
                 resourceItems.append(self.handler.getResourceItem(extrapolated_properties))
         elif self.type == Type.STATIC:
@@ -199,24 +205,36 @@ class Resource(object):
         properties = [propertyStr]
         error = None
         if (
-                any(properties)
-                and self.dynamicProperties is not None
-                and len(self.dynamicProperties) > 0
-        ):
+                    any(properties)
+                    and self.dynamicProperties is not None
+                    and len(self.dynamicProperties) > 0
+            ):
             for m in re.finditer(RegularExpression.findIndexExpression, propertyStr):
                 dynamickey = m.group(1)
+                lookup = m.group(1)
+                one_to_one = False
+                if dynamickey is not None and '::' in dynamickey and dynamickey.split('::')[0] == 'one-to-one':
+                    one_to_one = True
+                    dynamickey = dynamickey.split('::')[1]
+                    lookup = dynamickey
                 if dynamickey is not None and '.' in dynamickey:
                     dynamickey = dynamickey.split('.')[0]
                 if dynamickey in self.dynamicProperties:
-                    valuesProp = self.dynamicProperties[m.group(1)]
+                    valuesProp = self.dynamicProperties[lookup]
                     if not valuesProp.error:
                         values = valuesProp.value
                         if values is not None and any(values):
                             newproperties = []
-                            for property in properties:
+                            for i, property in enumerate(properties):
                                 if isinstance(values, list):
-                                    for value in values:
-                                        newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
+                                    if one_to_one:
+                                        if i in range(len(values)):
+                                            newproperties.append(property.replace("${" + str(m.group(1)) + "}", values[i]))
+                                        else:
+                                            break
+                                    else:
+                                        for value in values:
+                                            newproperties.append(property.replace("${" + str(m.group(1)) + "}", value))
                                 else:
                                     newproperties.append(property.replace("${" + str(m.group(1)) + "}", values))
                             properties = newproperties
@@ -236,6 +254,35 @@ class Resource(object):
         properties = None if error is not None else properties
         return Property(propertyStr, properties, error)
 
+    def has_error(self, failon):
+        if self.error:
+            comparelog.print_error(
+                msg=self.error.message,
+                args={"testName": self.testName,
+                      "checkName": self.checkName,
+                      "cardinality": self.cardinality,
+                      "type": self.error.type,
+                      "source": self.file},
+                console=failon and self.error.type in failon)
+            return True
+        elif self.items is None or not any(self.items):
+            comparelog.print_error(
+                msg="No items retrieved.",
+                args={"testName": self.testName,
+                      "checkName": self.checkName,
+                      "cardinality": self.cardinality,
+                      "type": Error.VALUE_MISMATCH,
+                      "source": self.file})
+            return True
+        else:
+            return False
+
+    def failed(self, failon):
+        return (
+            (self.error and failon and self.error.type in failon)
+            or self.items is None
+            or not any(self.items)
+        )
 
 class Type(object):
     JSON = "JSON"

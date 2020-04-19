@@ -1,50 +1,50 @@
 [[INFO]]	--------------------------------
 [[INFO]]	Scaleout Automation Checks
 [[INFO]]	--------------------------------
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=UICluster)].Xms([2014]) == fusion.FADomain.UICluster.default.minmaxmemory.main([u'2014'])
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xms([2211]) != fusion.FADomain.ServiceCluster.default.minmaxmemory.main([u'2200'])
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=MWCluster)].Xms([2911]) != fusion.FADomain.MWCluster.default.minmaxmemory.main([u'2800'])
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xms([2912]) != fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main([u'2900'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=UICluster)].Xms([2014]) == fusion.FADomain.UICluster.default.minmaxmemory.main([u'2014'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xms([2211]) != fusion.FADomain.ServiceCluster.default.minmaxmemory.main([u'2200'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xms([2911]) != fusion.FADomain.MWCluster.default.minmaxmemory.main([u'2800'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xms([2912]) != fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main([u'2900'])
 [[ERROR]	[JVM ARGS test]	[Xms check]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.FADomain.bi_cluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=AdminServer)].Xms([1024]) == fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1024'])
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xms([256]) == fusion.FADomain.SingletonCluster.default.minmaxmemory.main([u'256'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=AdminServer)].Xms([1024]) == fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1024'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xms([256]) == fusion.FADomain.SingletonCluster.default.minmaxmemory.main([u'256'])
 [[ERROR]	[JVM ARGS test]	[Xms check]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xms([512]) == fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'512'])
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xms([256]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'256'])
-[[INFO]	[JVM ARGS test]	[Xms check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xms([1024]) != fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'1026'])
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=UICluster)].Xmx([13388]) != fusion.FADomain.UICluster.default.minmaxmemory.main([u'10240'])
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xmx([12299]) != fusion.FADomain.ServiceCluster.default.minmaxmemory.main([u'10240'])
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=MWCluster)].Xmx([7899]) != fusion.FADomain.MWCluster.default.minmaxmemory.main([u'4096'])
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xmx([12399]) != fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main([u'8192'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xms([512]) == fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'512'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xms([256]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'256'])
+[[INFO]	[JVM ARGS test]	[Xms check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xms([1024]) != fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'1026'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=UICluster)].Xmx([13388]) != fusion.FADomain.UICluster.default.minmaxmemory.main([u'10240'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].Xmx([12299]) != fusion.FADomain.ServiceCluster.default.minmaxmemory.main([u'10240'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].Xmx([7899]) != fusion.FADomain.MWCluster.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].Xmx([12399]) != fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main([u'8192'])
 [[ERROR]	[JVM ARGS test]	[Xmx check]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.FADomain.bi_cluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=AdminServer)].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xmx([8192]) != fusion.FADomain.SingletonCluster.default.minmaxmemory.main([u'4192'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=AdminServer)].Xmx([2700]) != fusion.FADomain.AdminServer.default.minmaxmemory.main([u'1700'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].Xmx([8192]) != fusion.FADomain.SingletonCluster.default.minmaxmemory.main([u'4192'])
 [[ERROR]	[JVM ARGS test]	[Xmx check]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xmx([16384]) != fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'8192'])
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx([8192]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'8192'])
-[[INFO]	[JVM ARGS test]	[Xmx check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xmx([10240]) != fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'7168'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].Xmx([16384]) != fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'8192'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].Xmx([8192]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'8192'])
+[[INFO]	[JVM ARGS test]	[Xmx check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=bip_cluster)].Xmx([10240]) != fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'7168'])
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_FORMAT]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No format '-Xss{}?' in fusion.FADomain.UICluster.default.minmaxmemory.main
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/SDI_HOST_properties.json]]	No property: $.topology.wlsClusters[?(@.clusterName=ServiceCluster)].XssInKb
-[[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=MWCluster)].XssInKb([4096]) == fusion.FADomain.MWCluster.default.minmaxmemory.main([u'4096'])
-[[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].XssInKb([4096]) == fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM ARGS test]	[XssInKb]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].XssInKb([4096]) == fusion.FADomain.MWCluster.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM ARGS test]	[XssInKb]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].XssInKb([4096]) == fusion.FADomain.ESS_SOACluster.default.minmaxmemory.main([u'4096'])
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.FADomain.bi_cluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=AdminServer)].XssInKb([4096]) == fusion.FADomain.AdminServer.default.minmaxmemory.main([u'4096'])
-[[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SingletonCluster)].XssInKb([4096]) == fusion.FADomain.SingletonCluster.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM ARGS test]	[XssInKb]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=AdminServer)].XssInKb([4096]) == fusion.FADomain.AdminServer.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM ARGS test]	[XssInKb]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].XssInKb([4096]) == fusion.FADomain.SingletonCluster.default.minmaxmemory.main([u'4096'])
 [[ERROR]	[JVM ARGS test]	[XssInKb]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.FADomain.SharedServicesCluster.default.minmaxmemory.main
-[[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].XssInKb([102400]) == fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'102400'])
-[[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb([4096]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'4096'])
-[[INFO]	[JVM ARGS test]	[XssInKb]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=bip_cluster)].XssInKb([4096]) == fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'4096'])
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'([15]) != fusion.UICluster.Linux-x86_64.memoryargs([u'10'])
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'([12]) != fusion.ServiceCluster.Linux-x86_64.memoryargs([u'10'])
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'([8]) != fusion.MWCluster.Linux-x86_64.memoryargs([u'12'])
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:ParallelGCThreads'([12]) != fusion.ESS_SOACluster.Linux-x86_64.memoryargs([u'8'])
+[[INFO]	[JVM ARGS test]	[XssInKb]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].XssInKb([102400]) == fusion.FADomain.SupplyPlanningEngineCluster.default.minmaxmemory.main([u'102400'])
+[[INFO]	[JVM ARGS test]	[XssInKb]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].XssInKb([4096]) == fusion.FADomain.SEMSearchCluster.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM ARGS test]	[XssInKb]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=bip_cluster)].XssInKb([4096]) == fusion.FADomain.bip_cluster.default.minmaxmemory.main([u'4096'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=UICluster)].'XX:ParallelGCThreads'([15]) != fusion.UICluster.Linux-x86_64.memoryargs([u'10'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=ServiceCluster)].'XX:ParallelGCThreads'([12]) != fusion.ServiceCluster.Linux-x86_64.memoryargs([u'10'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=MWCluster)].'XX:ParallelGCThreads'([8]) != fusion.MWCluster.Linux-x86_64.memoryargs([u'12'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=ESS_SOACluster)].'XX:ParallelGCThreads'([12]) != fusion.ESS_SOACluster.Linux-x86_64.memoryargs([u'8'])
 [[ERROR]	[JVM ARGS test]	[ParallelGCThreads check]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.bi_cluster.Linux-x86_64.memoryargs
 [[ERROR]	[JVM ARGS test]	[ParallelGCThreads check]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.AdminServer.Linux-x86_64.memoryargs
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=SingletonCluster)].'XX:ParallelGCThreads'([12]) != fusion.SingletonCluster.Linux-x86_64.memoryargs([u'4'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=SingletonCluster)].'XX:ParallelGCThreads'([12]) != fusion.SingletonCluster.Linux-x86_64.memoryargs([u'4'])
 [[ERROR]	[JVM ARGS test]	[ParallelGCThreads check]	[MISSING_PROPERTY]	[metadatas/tests/dynamic/fusionapps_start_params.properties]]	No property: fusion.SharedServicesCluster.Linux-x86_64.memoryargs
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	PASSED : $.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:ParallelGCThreads'([8]) == fusion.SupplyPlanningEngineCluster.Linux-x86_64.memoryargs([u'8'])
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:ParallelGCThreads'([12]) != fusion.SEMSearchCluster.Linux-x86_64.memoryargs([u'8'])
-[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[COMPARE]]	FAILED : $.topology.wlsClusters[?(@.clusterName=bip_cluster)].'XX:ParallelGCThreads'([12]) != fusion.bip_cluster.Linux-x86_64.memoryargs([u'8'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[PASSED]]	$.topology.wlsClusters[?(@.clusterName=SupplyPlanningEngineCluster)].'XX:ParallelGCThreads'([8]) == fusion.SupplyPlanningEngineCluster.Linux-x86_64.memoryargs([u'8'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=SEMSearchCluster)].'XX:ParallelGCThreads'([12]) != fusion.SEMSearchCluster.Linux-x86_64.memoryargs([u'8'])
+[[INFO]	[JVM ARGS test]	[ParallelGCThreads check]	[FAILED]]	$.topology.wlsClusters[?(@.clusterName=bip_cluster)].'XX:ParallelGCThreads'([12]) != fusion.bip_cluster.Linux-x86_64.memoryargs([u'8'])
 [[INFO]]	--------------------------------
 [[INFO]]	Validation Failed.
 [[INFO]]	--------------------------------

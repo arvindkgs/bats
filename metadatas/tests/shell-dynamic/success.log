@@ -1,18 +1,18 @@
 [[INFO]]	--------------------------------
 [[INFO]]	OHS Checks
 [[INFO]]	--------------------------------
-[[INFO]	[OHS Test]	[KeepAliveTimeout Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.KeepAliveTimeout([61]) == $.KeepAliveTimeout(['61'])
-[[INFO]	[OHS Test]	[ThreadLimit Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.ThreadLimit([250]) == $.IfModule..mpm_worker_module..ThreadLimit(['250'])
-[[INFO]	[OHS Test]	[ServerLimit Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.ServerLimit([4]) == $.IfModule..mpm_worker_module..ServerLimit(['4'])
-[[INFO]	[OHS Test]	[StartServers Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.StartServers([2]) == $.IfModule..mpm_worker_module..StartServers(['2'])
-[[INFO]	[OHS Test]	[MaxClients Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MaxClients([2900]) == $.IfModule..mpm_worker_module..MaxClients(['2900'])
-[[INFO]	[OHS Test]	[MinSpareThreads Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MinSpareThreads([100]) == $.IfModule..mpm_worker_module..MinSpareThreads(['100'])
-[[INFO]	[OHS Test]	[MaxSpareThreads Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MaxSpareThreads([400]) == $.IfModule..mpm_worker_module..MaxSpareThreads(['400'])
-[[INFO]	[OHS Test]	[ThreadsPerChild Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.ThreadsPerChild([250]) == $.IfModule..mpm_worker_module..ThreadsPerChild(['250'])
-[[INFO]	[OHS Test]	[MaxRequestsPerChild Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.MaxRequestsPerChild([10000]) == $.IfModule..mpm_worker_module..MaxRequestsPerChild(['10000'])
-[[INFO]	[OHS Test]	[AcceptMutex Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.AcceptMutex([u'fcntl']) == $.IfModule..mpm_worker_module..AcceptMutex(['fcntl'])
-[[INFO]	[OHS Test]	[WLSocketTimeoutSecs Check]	[COMPARE]]	PASSED : $.topology.ohsTunings.WLSocketTimeoutSecs([15]) == $.IfModule..WLSocketTimeoutSecs(['15'])
-[[INFO]	[OHS Test]	[Check join]	[COMPARE]]	PASSED : cat /etc/hosts | grep -e idm-midtier.oracleoutsourcing.com -e ohs.oracleoutsourcing.com -e fa.oracleoutsourcing.com -e opt1.oracleoutsourcing.com -e opt2.oracleoutsourcing.com -e opt3.oracleoutsourcing.com -e opt4.oracleoutsourcing.com -e fa-ha1.oracleoutsourcing.com -e ohs-ha1.oracleoutsourcing.com | cut -d' ' -f1([u'10.247.140.14', u'1.1.1.1']) == target ips([u'10.247.140.14', u'1.1.1.1'])
+[[INFO]	[OHS Test]	[KeepAliveTimeout Check]	[PASSED]]	$.topology.ohsTunings.KeepAliveTimeout([61]) == $.KeepAliveTimeout(['61'])
+[[INFO]	[OHS Test]	[ThreadLimit Check]	[PASSED]]	$.topology.ohsTunings.ThreadLimit([250]) == $.IfModule..mpm_worker_module..ThreadLimit(['250'])
+[[INFO]	[OHS Test]	[ServerLimit Check]	[PASSED]]	$.topology.ohsTunings.ServerLimit([4]) == $.IfModule..mpm_worker_module..ServerLimit(['4'])
+[[INFO]	[OHS Test]	[StartServers Check]	[PASSED]]	$.topology.ohsTunings.StartServers([2]) == $.IfModule..mpm_worker_module..StartServers(['2'])
+[[INFO]	[OHS Test]	[MaxClients Check]	[PASSED]]	$.topology.ohsTunings.MaxClients([2900]) == $.IfModule..mpm_worker_module..MaxClients(['2900'])
+[[INFO]	[OHS Test]	[MinSpareThreads Check]	[PASSED]]	$.topology.ohsTunings.MinSpareThreads([100]) == $.IfModule..mpm_worker_module..MinSpareThreads(['100'])
+[[INFO]	[OHS Test]	[MaxSpareThreads Check]	[PASSED]]	$.topology.ohsTunings.MaxSpareThreads([400]) == $.IfModule..mpm_worker_module..MaxSpareThreads(['400'])
+[[INFO]	[OHS Test]	[ThreadsPerChild Check]	[PASSED]]	$.topology.ohsTunings.ThreadsPerChild([250]) == $.IfModule..mpm_worker_module..ThreadsPerChild(['250'])
+[[INFO]	[OHS Test]	[MaxRequestsPerChild Check]	[PASSED]]	$.topology.ohsTunings.MaxRequestsPerChild([10000]) == $.IfModule..mpm_worker_module..MaxRequestsPerChild(['10000'])
+[[INFO]	[OHS Test]	[AcceptMutex Check]	[PASSED]]	$.topology.ohsTunings.AcceptMutex([u'fcntl']) == $.IfModule..mpm_worker_module..AcceptMutex(['fcntl'])
+[[INFO]	[OHS Test]	[WLSocketTimeoutSecs Check]	[PASSED]]	$.topology.ohsTunings.WLSocketTimeoutSecs([15]) == $.IfModule..WLSocketTimeoutSecs(['15'])
+[[INFO]	[OHS Test]	[Check join]	[PASSED]]	cat /etc/hosts | grep -e idm-midtier.oracleoutsourcing.com -e ohs.oracleoutsourcing.com -e fa.oracleoutsourcing.com -e opt1.oracleoutsourcing.com -e opt2.oracleoutsourcing.com -e opt3.oracleoutsourcing.com -e opt4.oracleoutsourcing.com -e fa-ha1.oracleoutsourcing.com -e ohs-ha1.oracleoutsourcing.com | cut -d' ' -f1([u'10.247.140.14', u'1.1.1.1']) == target ips([u'10.247.140.14', u'1.1.1.1'])
 [[INFO]]	--------------------------------
 [[INFO]]	Validation Successful.
 [[INFO]]	--------------------------------
