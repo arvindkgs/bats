@@ -74,6 +74,7 @@ To-Do
 10. Add Type: 'RDBMS' type, where a query can be run and output is compared.
 11. Look to see if jinja templates can be utilized for templating - https://jinja.palletsprojects.com/en/2.11.x/
 12. Check if the bats can be dockerized. Check https://herzo175.github.io/cicada-2/, https://github.com/herzo175/cicada-2
+13. Add dependencies. For example if one test depends on another test. So build a Directed-Acyclic-Graph (DAG) and then evalute each test at leaf level parallelly.
 
 Done
 ---------------------------------------------------------------------------------------------------------------------------------------
