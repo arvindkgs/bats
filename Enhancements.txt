@@ -67,6 +67,7 @@ To-Do
 4. Use REGEX for parsing format text.
 5. Refactor to include exception handling
 6. Use multiprocessing to allow parallel execution of checks/tests (Refer- https://docs.python.org/2/library/multiprocessing.html, https://realpython.com/lessons/parallel-processing-multiprocessing-overview/)
+	https://docs.python.org/3/library/concurrent.futures.html, https://docs.dask.org/en/latest/
 7. Provide verbose/detailed logging
 8. Implement front controller pattern. The front controller here is the Test Engine, and each Resource object creation should spin a separate thread.
    Once Resource object is created, the Test Engine then does the comparision.

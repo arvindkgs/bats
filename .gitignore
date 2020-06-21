@@ -13,3 +13,4 @@ build/
 src/basic_acceptance_test_suite.egg-info
 dependencies/basic-acceptance-test-suite-0.0.1.tar.gz
 lib/
+docsite/node_modules
