@@ -25,6 +25,11 @@ module.exports = {
           label: 'GitHub',
           position: 'left',
         },
+        {
+          href: 'https://arvindkgs.com',
+          label: 'About me',
+          position: 'right',
+        }
       ],
     },
     footer: {
