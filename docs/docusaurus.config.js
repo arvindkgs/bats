@@ -1,14 +1,14 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://arvindkgs.com',
+  title: 'Bats',
+  tagline: 'Basic Acceptance Test Suite',
+  url: 'https://arvindkgs.com/bats',
   baseUrl: '/bats/',
   favicon: 'img/favicon.ico',
   organizationName: 'arvindkgs', // Usually your GitHub org/user name.
   projectName: 'bats', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'Bats',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -20,11 +20,11 @@ module.exports = {
           label: 'Docs',
           position: 'left',
         },
-        {to: 'blog', label: 'Blog', position: 'left'},
+        {to: 'blog', label: 'Blog', position: 'center'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/arvindkgs/bats',
           label: 'GitHub',
-          position: 'right',
+          position: 'left',
         },
       ],
     },

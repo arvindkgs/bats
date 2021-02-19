@@ -8,35 +8,51 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Easy to Use</>,
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    title: <>Automate Resource comparision</>,
+    imageUrl: 'img/compare.png',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Bats was designed to allow you to automate comparision of values in config files like 
+        <code>XML</code> <code>PROPERTIES</code> <code>JSON</code> <code>APACHE config</code> <code>SHELL</code>
       </>
     ),
   },
   {
-    title: <>Focus on What Matters</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    title: <>Validate success/failure of shell commands</>,
+    imageUrl: 'img/terminal.png',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Bats lets you run shell commands on remote machines via ssh and verify whether ouput matches a given regex
       </>
     ),
   },
   {
-    title: <>Powered by React</>,
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    title: <>Extract values</>,
+    imageUrl: 'img/extract.png',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Bats allows you to extract values of certain properties from one resource and compare them to values of different properties in another resource of same or different type
       </>
     ),
   },
+  {
+    title: <>Dynamically define locations</>,
+    imageUrl: 'img/change.png',
+    description: (
+      <>
+        Bats enables to dynamically define the properties and resource location
+      </>
+    ),
+  },
+  {
+    title: <>Generate simplified or detailed logs</>,
+    imageUrl: 'img/logs.png',
+    description: (
+      <>
+        Bats allows to see simple or verbose logs
+      </>
+    ),
+  }
 ];
 
 function Feature({imageUrl, title, description}) {

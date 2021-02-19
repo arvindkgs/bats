@@ -188,13 +188,14 @@ Except type, format, cardinality, key all other resource attributes are extrapol
 To build an artifact, cd into the root directory and run `sh build.sh`
 
 This creates in root
-
+```
 (ROOT)
-|- bats.tar.gz (This is file that should be transferred to the POD)
+|- bats.tar.gz (This is file that should be transferred to the POD/vm where *bats* should run)
 |- dist
    |- basic_acceptance_test_suite-0.0.1-py2-none-any.whl
    |- basic-acceptance-test-suite-0.0.1.tar.gz (Package that can be installed directly using pip (pip install ...), or  extracting and running python setup.py install)
    |- README.md
+```
    
 ## Install
 
@@ -202,10 +203,6 @@ This creates in root
     Expand the archive
     Install running `sh setup.sh`.
 
-    NOTE: 
-
-    This will install only for the particular user in /u01/app/oracle/tools/home/oracle/.local/lib/python2.6/site-packages/basic_acceptance_test_suite-0.0.1-py2.6.egg folder. This will not effect the global python library present in /usr/lib/python2.x.
-    If you don't want the effect to be permanent, then you can always have a cleanup scripts that deletes above folder 
 
 ## Distribute
 
@@ -264,7 +261,6 @@ On Python <2.7 (POD it is 2.6) run `python -m bats.__main__`
 
 There are four actions supported:
 
-    Resize : Runs resize OCI checks as defined in Resize OCI Checks
     Metadata : Reads a metadata.json file that contains the configuration of tests to execute
     Compare : Compares two files that are provided as command-line arguments
     Extract : Extracts a property from a file
