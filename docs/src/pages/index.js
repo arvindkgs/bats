@@ -61,6 +61,15 @@ const features = [
         Define complex flows with ‘one-to-one’ or ‘one-to-many’ comparisons
       </>
     ),
+  },
+  {
+    title: <>Define custom behavior on error</>,
+    imageUrl: 'img/error.png',
+    description: (
+      <>
+        Define custom behavior on error ‘FILE_NOT_FOUND’.  For example should ‘FILE_NOT_FOUND’ fail validation or should it ignore and move on.
+      </>
+    ),
   }
 ];
 
