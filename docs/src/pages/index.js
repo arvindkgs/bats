@@ -52,6 +52,15 @@ const features = [
         Bats allows to see simple or verbose logs
       </>
     ),
+  },
+  {
+    title: <>Define complex flows</>,
+    imageUrl: 'img/cardinality.png',
+    description: (
+      <>
+        Define complex flows with ‘one-to-one’ or ‘one-to-many’ comparisons
+      </>
+    ),
   }
 ];
 
