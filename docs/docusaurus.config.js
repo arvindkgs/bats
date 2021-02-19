@@ -20,7 +20,6 @@ module.exports = {
           label: 'Docs',
           position: 'left',
         },
-        {to: 'blog', label: 'Blog', position: 'center'},
         {
           href: 'https://github.com/arvindkgs/bats',
           label: 'GitHub',
