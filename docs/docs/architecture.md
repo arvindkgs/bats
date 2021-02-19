@@ -11,4 +11,4 @@ It takes an input 'metadata' json passed to it as a command-line argument.
 
 # Flowchart
 
-![Flowchart](../img/flow-diagram.png)
+![Flowchart](/img/flow-diagram.png)
