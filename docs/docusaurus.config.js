@@ -74,7 +74,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} arvindkgs.com, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://arvindkgs.com">arvindkgs.com</a> , Inc. Built with Docusaurus.`,
     },
   },
   presets: [
