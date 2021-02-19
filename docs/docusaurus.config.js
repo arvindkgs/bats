@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Bats',
   tagline: 'Basic Acceptance Test Suite',
-  url: 'https://arvindkgs.com/bats',
+  url: 'https://arvindkgs.com',
   baseUrl: '/bats/',
   favicon: 'img/favicon.ico',
   organizationName: 'arvindkgs', // Usually your GitHub org/user name.
