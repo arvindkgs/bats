@@ -60,4 +60,6 @@ jobs:
           else
           npm i
           fi
+          yarn install
+          npx  docusaurus install
           npx docusaurus deploy
